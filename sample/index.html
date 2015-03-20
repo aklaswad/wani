@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+  <head>
+    <meta charset="UTF-8">
+    <script src="Waml.js"></script>
+    <script src="DefaultOscillator.js"></script>
+    <script src="TriOscillator.js"></script>
+  </head>
+  <body>
+Waml
+
+  <script>
+var ctx = Waml.getAudioContext();
+var tri = new Waml.modules['TriOscillator'].create(ctx);
+tri.frequency.value = 440;
+var osc = ctx.createOscillator();
+osc.frequency.value = 1.0;
+osc.type="sawtooth";
+var shaper = ctx.createWaveShaper();
+shaper.curve = new Float32Array([220,660]);
+osc.connect(shaper);
+osc.start(0);
+shaper.connect(tri.frequency);
+tri.noteOn();
+tri.connect(ctx.destination);
+  </script>
+  </body>
+</html>
