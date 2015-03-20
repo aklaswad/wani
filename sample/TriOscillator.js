@@ -33,7 +33,7 @@
     };
     return this;
   };
-  TriOscillator.prototype = Object.create(Waml.Oscillator.prototype);
+  TriOscillator.prototype = Object.create(Waml.Synthesizer.prototype);
 
   TriOscillator.prototype.noteOn = function (noteNumber) {
     this.osc1.start(0);
@@ -46,7 +46,7 @@
     this.mixer.gain.value = 0.0;
   };
 
-  Waml.registerModule({
+  Waml.registerSynthesizer({
     name: 'TriOscillator',
     author: 'aklaswad<aklaswad@gmail.com>',
     description: 'TriOscillator',

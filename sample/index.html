@@ -2,7 +2,6 @@
   <head>
     <meta charset="UTF-8">
     <script src="Waml.js"></script>
-    <script src="DefaultOscillator.js"></script>
     <script src="TriOscillator.js"></script>
   </head>
   <body>
@@ -10,7 +9,7 @@ Waml
 
   <script>
 var ctx = Waml.getAudioContext();
-var tri = new Waml.modules['TriOscillator'].create(ctx);
+var tri = new Waml.synthesizers['TriOscillator'].create(ctx);
 tri.frequency.value = 440;
 var osc = ctx.createOscillator();
 osc.frequency.value = 1.0;
