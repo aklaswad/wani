@@ -6,7 +6,8 @@ var http = require('http')
 var documents = {
   'Waml.js': '/../lib/Waml.js',
   'index.html': '/index.html',
-  'TriOscillator.js': '/TriOscillator.js'
+  'TriOscillator.js': '/TriOscillator.js',
+  'SimpleTremolo.js': '/SimpleTremolo.js'
 };
 
 var filename, path;

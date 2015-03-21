@@ -3,24 +3,93 @@
     <meta charset="UTF-8">
     <script src="Waml.js"></script>
     <script src="TriOscillator.js"></script>
+    <script src="SimpleTremolo.js"></script>
   </head>
   <body>
-Waml
-
+    <h1>Waml demo</h1>
+    <div>
+      <canvas id="waveform" width="512", height="200" style="border: 1px solid #888;"></canvas>
+    <div>max: <span id="max"></span></div>
+    </div>
   <script>
+
+function WaveFormRenderer (ctx,wave) {
+  var proc = ctx.createScriptProcessor(512,1,1);
+  var canvas = document.getElementById('waveform');
+  var cctx = canvas.getContext('2d');
+  var maxElem = document.getElementById('max');
+  cctx.strokeStyle = '#000';
+  var frames = 0;
+  var last = {max: 0, maxframe: 0 };
+  proc.onaudioprocess = function(evt) {
+    var i,channel = evt.inputBuffer.getChannelData(0);
+    cctx.clearRect(0,0,canvas.width,canvas.height);
+    cctx.moveTo(0,100);
+    cctx.beginPath();
+    var max = 0;
+    for(i=0;i<512;i++){
+      var v = channel[i];
+      if ( v < -1 ) v = -1;
+      if ( 1 < v ) v = 1;
+      var abs = Math.abs(v);
+      if ( max < abs ) max = abs;
+      v = v * -1;
+      cctx.lineTo(i,100 + 100 * v);
+    }
+    if ( last.max < max || last.maxframe < frames - 14 ) {
+      last.max = max;
+      last.maxframe = frames;
+      maxElem.innerHTML = max;
+    }
+    cctx.stroke();
+    frames++;
+  };
+  wave.connect(proc);
+  var mute = ctx.createGain();
+  mute.gain.value = 0.0;
+  mute.connect(ctx.destination);
+  proc.connect(mute);
+};
+
+
+
 var ctx = Waml.getAudioContext();
+
+
+
+
+
 var tri = new Waml.synthesizers['TriOscillator'].create(ctx);
-tri.frequency.value = 440;
+tri.frequency.value = 110;
 var osc = ctx.createOscillator();
-osc.frequency.value = 1.0;
-osc.type="sawtooth";
+osc.frequency.value = 0.07;
+osc.type="sine";
 var shaper = ctx.createWaveShaper();
-shaper.curve = new Float32Array([220,660]);
+shaper.curve = new Float32Array([1,200]);
 osc.connect(shaper);
 osc.start(0);
 shaper.connect(tri.frequency);
 tri.noteOn();
-tri.connect(ctx.destination);
+
+var trm = new Waml.effectors['SimpleTremolo'].create(ctx);
+console.log(trm);
+trm.connect(ctx.destination);
+tri.connect(trm.inlet);
+//Waml.DCOffset(1).connect(trm.inlet);
+
+var mod = ctx.createOscillator();
+mod.frequency.value = 0.1;
+mod.start();
+var modrange = ctx.createWaveShaper();
+modrange.curve = new Float32Array([0.2,10]);
+mod.connect(modrange);
+modrange.connect(trm.frequency);
+WaveFormRenderer(ctx,trm);
+
+
+
+
+
   </script>
   </body>
 </html>
