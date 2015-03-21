@@ -25,7 +25,7 @@
     };
     this.frequency = this.createAudioParamBridge(
       0,
-      [ mul1,mul2,mul3],
+      [ mul1,mul2,mul3 ],
       setValue
     );
     //Set default value
@@ -44,6 +44,7 @@
   TriOscillator.prototype = Object.create(Waml.Synthesizer.prototype);
 
   TriOscillator.prototype.noteOn = function (noteNumber) {
+    this.frequency.cancelScheduledValues(0);
     this.frequency.value = Waml.midi2freq(noteNumber);
     this.mixer.gain.value = 0.3;
   };
