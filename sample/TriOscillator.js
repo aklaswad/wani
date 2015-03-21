@@ -10,19 +10,23 @@
     var mul2 = ctx.createGain();
     var mul3 = ctx.createGain();
     mul1.gain.value = 1.0;
-    mul2.gain.value = 2;
-    mul3.gain.value = 3;
+    mul2.gain.value = 1 + 1/3;
+    mul3.gain.value = 1 + 2/3;
     mul1.connect(osc1.frequency);
     mul2.connect(osc2.frequency);
     mul3.connect(osc3.frequency);
+    var setValue = function (value) {
+      osc1.frequency.value = newValue;
+      osc2.frequency.value = newValue * (1 + 1/3);
+      osc3.frequency.value = newValue * (1 + 2/3);
+    };
     this.frequency = this.createAudioParamBridge(
-      440,
+      0,
       [ mul1,mul2,mul3],
-      function (newValue) {
-        osc1.frequency.value = newValue;
-        osc2.frequency.value = newValue * 2;
-        osc3.frequency.value = newValue * 3;
-      });
+      setValue;
+    );
+    //Set default value
+    setValue(220);
 
     var mixer = this.mixer = ctx.createGain();
     osc1.connect(mixer);
