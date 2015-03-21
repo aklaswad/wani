@@ -9,7 +9,9 @@ var documents = {
   'index.html': '/index.html',
   'controls.html': '/webaudio-controls/webcomponents/controls.html',
   'TriOscillator.js': '/TriOscillator.js',
-  'SimpleTremolo.js': '/SimpleTremolo.js'
+  'SimpleTremolo.js': '/SimpleTremolo.js',
+  'SimpleAutoWah.js': '/SimpleAutoWah.js',
+  'SimpleOverDrive.js': '/SimpleOverDrive.js'
 };
 
 var filename, path;
