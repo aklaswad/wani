@@ -53,22 +53,25 @@
     this.mixer.gain.value = 0.0;
   };
 
-  Waml.registerSynthesizer({
-    name: 'TriOscillator',
-    author: 'aklaswad<aklaswad@gmail.com>',
-    description: 'TriOscillator',
-    create: TriOscillator,
-    audioParams: {
-      frequency: {
-        description: 'frequency (hz)',
-        range: [0, 20000],
+  if ( 'undefined' !== typeof window
+    && 'undefined' !== typeof window.Waml ) {
+    Waml.registerSynthesizer({
+      name: 'TriOscillator',
+      author: 'aklaswad<aklaswad@gmail.com>',
+      description: 'TriOscillator',
+      create: TriOscillator,
+      audioParams: {
+        frequency: {
+          description: 'frequency (hz)',
+          range: [0, 20000],
+        },
       },
-    },
-    params: {
-      type: {
-        values: ["sine", "sawtooth", "square", "triangle" ],
-        description: "Wave shape type.",
+      params: {
+        type: {
+          values: ["sine", "sawtooth", "square", "triangle" ],
+          description: "Wave shape type.",
+        }
       }
-    }
-  });
+    });
+  }
 })();
