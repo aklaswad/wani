@@ -5,7 +5,6 @@
     <script src="Waml.Web.js"></script>
     <script src="TriOscillator.js"></script>
     <script src="SimpleTremolo.js"></script>
-    <script src="SimpleAutoWah.js"></script>
     <script src="SimpleOverDrive.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/polymer/0.5.5/polymer.min.js"></script>
     <link rel="import" href="/controls.html" >
@@ -38,9 +37,7 @@ modrange.curve = new Float32Array([0.4,5]);
 mod.connect(modrange);
 modrange.connect(trm.frequency);
 var od = Waml.createEffect('SimpleOverDrive');
-var wah = Waml.createEffect('SimpleAutoWah');
-trm.connect(wah.inlet);
-wah.connect(od.inlet);
+trm.connect(od.inlet);
 od.connect(ctx.destination);
 
 var kb = document.getElementById('keyboard');
