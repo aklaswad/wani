@@ -11,7 +11,8 @@ var documents = {
   'TriOscillator.js': '/TriOscillator.js',
   'SimpleTremolo.js': '/SimpleTremolo.js',
   'SimpleAutoWah.js': '/SimpleAutoWah.js',
-  'SimpleOverDrive.js': '/SimpleOverDrive.js'
+  'SimpleOverDrive.js': '/SimpleOverDrive.js',
+  'site.js': '/site.js'
 };
 
 var filename, path;
