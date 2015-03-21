@@ -30,13 +30,13 @@
     filter.connect(outlet);
     return this;
   };
-  SimpleAutoWah.prototype = Object.create(Waml.Effector.prototype);
+  SimpleAutoWah.prototype = Object.create(Waml.Effect.prototype);
 
   SimpleAutoWah.prototype.connect = function (dest) {
     return this.outlet.connect(dest);
   };
 
-  Waml.registerEffector({
+  Waml.registerEffect({
     name: 'SimpleAutoWah',
     author: 'aklaswad<aklaswad@gmail.com>',
     description: 'Sample AutoWah effector module for Waml',

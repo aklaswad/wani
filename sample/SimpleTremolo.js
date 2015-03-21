@@ -40,13 +40,13 @@
     osc.start();
     return this;
   };
-  SimpleTremolo.prototype = Object.create(Waml.Effector.prototype);
+  SimpleTremolo.prototype = Object.create(Waml.Effect.prototype);
 
   SimpleTremolo.prototype.connect = function (dest) {
     return this.outlet.connect(dest);
   };
 
-  Waml.registerEffector({
+  Waml.registerEffect({
     name: 'SimpleTremolo',
     author: 'aklaswad<aklaswad@gmail.com>',
     description: 'Sample Tremolo effector module for Waml',

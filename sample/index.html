@@ -23,8 +23,8 @@
 var ctx = Waml.getAudioContext();
 var tri = Waml.createSynthesizer('TriOscillator');
 
-// Effector
-var trm = Waml.createEffector('SimpleTremolo');
+// Effect
+var trm = Waml.createEffect('SimpleTremolo');
 trm.depth.value = 2.0;
 trm.frequency.value = 0.0;
 console.log(trm);
@@ -37,8 +37,8 @@ var modrange = ctx.createWaveShaper();
 modrange.curve = new Float32Array([0.4,5]);
 mod.connect(modrange);
 modrange.connect(trm.frequency);
-var od = Waml.createEffector('SimpleOverDrive');
-var wah = Waml.createEffector('SimpleAutoWah');
+var od = Waml.createEffect('SimpleOverDrive');
+var wah = Waml.createEffect('SimpleAutoWah');
 trm.connect(wah.inlet);
 wah.connect(od.inlet);
 od.connect(ctx.destination);

@@ -54,13 +54,13 @@
     inlet.connect(drive);
     drive.connect(outlet);
   }
-  SimpleOverDrive.prototype = Object.create(Waml.Effector.prototype);
+  SimpleOverDrive.prototype = Object.create(Waml.Effect.prototype);
 
   SimpleOverDrive.prototype.connect = function (dest) {
     return this.outlet.connect(dest);
   };
 
-  Waml.registerEffector({
+  Waml.registerEffect({
     name: 'SimpleOverDrive',
     author: 'aklaswad<aklaswad@gmail.com>',
     description: 'Sample OverDrive effector module for Waml',
