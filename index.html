@@ -1,10 +1,65 @@
 <!DOCTYPE html>
-<head>
-  <meta charset="UTF-8">
-  <title>WAML</title>
-</head>
-<body>
-  <h1>WAML</h1>
-  すごいデモ建設予定地
-</body>
+  <head>
+    <meta charset="UTF-8">
+    <script src="Waml.js"></script>
+    <script src="Waml.Web.js"></script>
+    <script src="TriOscillator.js"></script>
+    <script src="SimpleTremolo.js"></script>
+    <script src="SimpleOverDrive.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/polymer/0.5.5/polymer.min.js"></script>
+    <link rel="import" href="/controls.html" >
+  </head>
+  <body>
+    <h1>Waml demo</h1>
+    <div>
+      <webaudio-keyboard id="keyboard" keys="25" min="36"></webaudio-keyboard>
+      <canvas id="waveform" width="512", height="200" style="border: 1px solid #888;"></canvas>
+    <div>max: <span id="max"></span></div>
+    </div>
+  <script>
+
+// Synth
+var ctx = Waml.getAudioContext();
+var tri = Waml.createSynthesizer('TriOscillator');
+
+// Effect
+var trm = Waml.createEffect('SimpleTremolo');
+trm.depth.value = 2.0;
+trm.frequency.value = 0.0;
+console.log(trm);
+tri.connect(trm.inlet);
+
+var mod = ctx.createOscillator();
+mod.frequency.value = 0.1;
+mod.start();
+var modrange = ctx.createWaveShaper();
+modrange.curve = new Float32Array([0.4,5]);
+mod.connect(modrange);
+modrange.connect(trm.frequency);
+var od = Waml.createEffect('SimpleOverDrive');
+trm.connect(od.inlet);
+od.connect(ctx.destination);
+
+var kb = document.getElementById('keyboard');
+kb.addEventListener('change', function(e) {
+  var note = e.note;
+  if ( note[0] ) {
+    tri.noteOn(note[1]);
+    setTimeout(function () {
+      tri.frequency.setTargetAtTime(40, ctx.currentTime + 2, 2);
+    },2000);
+    setTimeout(function () {
+      tri.frequency.value = 400;
+    },9000);
+  }
+  else {
+    tri.noteOff();
+  }
+});
+
+var renderer = Waml.Web.createWaveFormRenderer('waveform');
+od.connect(renderer);
+
+  </script>
+  </body>
 </html>
