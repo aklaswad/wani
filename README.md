@@ -1,6 +1,6 @@
 # WAML
 
-Web Audio Module Library
+Web Audio Module Librarian
 
 ## なんぞ？
 
@@ -95,7 +95,7 @@ This software is still alpha quality. We may change APIs without notice.
 
 # Author
 
-Aklaswad
+aklaswad
 
 License
 
