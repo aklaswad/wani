@@ -4,8 +4,8 @@ var http = require('http')
   , fs = require('fs')
   ;
 var documents = {
-  'WAML.js': '/../lib/Waml.js',
-  'Waml.Web.js': '/../lib/Web.js',
+  'Waml.js': '/../lib/Waml.js',
+  'Web.js': '/../lib/Web.js',
   'index.html': '/index.html',
   'webaudio-controls/webcomponents/controls.html': '/webaudio-controls/webcomponents/controls.html',
   'TriOscillator.js': '/TriOscillator.js',
