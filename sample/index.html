@@ -37,21 +37,14 @@ var modrange = ctx.createWaveShaper();
 modrange.curve = new Float32Array([0.4,5]);
 mod.connect(modrange);
 modrange.connect(trm.frequency);
-var od = Waml.createEffect('SimpleOverDrive');
-trm.connect(od.inlet);
-od.connect(ctx.destination);
+trm.connect(ctx.destination);
+
 
 var kb = document.getElementById('keyboard');
 kb.addEventListener('change', function(e) {
   var note = e.note;
   if ( note[0] ) {
     tri.noteOn(note[1]);
-    setTimeout(function () {
-      tri.frequency.setTargetAtTime(40, ctx.currentTime + 2, 2);
-    },2000);
-    setTimeout(function () {
-      tri.frequency.value = 400;
-    },9000);
   }
   else {
     tri.noteOff();
@@ -59,7 +52,7 @@ kb.addEventListener('change', function(e) {
 });
 
 var renderer = Waml.Web.createWaveFormRenderer('waveform');
-od.connect(renderer);
+trm.connect(renderer);
 
   </script>
   </body>
