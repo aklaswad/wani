@@ -5,6 +5,7 @@ var http = require('http')
   ;
 var documents = {
   'Waml.js': '/../lib/Waml.js',
+  'Waml.Web.js': '/../lib/Web.js',
   'index.html': '/index.html',
   'controls.html': '/webaudio-controls/webcomponents/controls.html',
   'TriOscillator.js': '/TriOscillator.js',

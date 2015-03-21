@@ -16,16 +16,15 @@
     oscGain.gain.value = 0.0;
     half.connect(oscGain);
 
-
-    var offset = Waml.DCOffset(0.5);
-    var offsetBase = Waml.DCOffset(1);
+    var offset = Waml.createDCOffset(0);
+    var offsetBase = Waml.createDCOffset(1);
     var offsetHalf = ctx.createGain();
     offsetHalf.gain.value = 0.5;
     offset.connect(offsetHalf);
+    offset.connect(oscGain.gain);
     var neg = ctx.createGain();
     neg.gain.value = -1;
     offsetHalf.connect(neg);
-    offset.connect(oscGain.gain);
     this.neg = neg;
     this.offset = offset;
     outlet.gain.value = 1.0;
