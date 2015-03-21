@@ -4,10 +4,10 @@ var http = require('http')
   , fs = require('fs')
   ;
 var documents = {
-  'Waml.js': '/../lib/Waml.js',
+  'WAML.js': '/../lib/Waml.js',
   'Waml.Web.js': '/../lib/Web.js',
   'index.html': '/index.html',
-  'controls.html': '/webaudio-controls/webcomponents/controls.html',
+  'webaudio-controls/webcomponents/controls.html': '/webaudio-controls/webcomponents/controls.html',
   'TriOscillator.js': '/TriOscillator.js',
   'SimpleTremolo.js': '/SimpleTremolo.js',
   'SimpleAutoWah.js': '/SimpleAutoWah.js',
