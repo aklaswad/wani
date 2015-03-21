@@ -11,7 +11,7 @@
   <body>
     <h1>Waml demo</h1>
     <div>
-      <webaudio-keyboard id="keyboard" keys="25" min="24"></webaudio-keyboard>
+      <webaudio-keyboard id="keyboard" keys="25" min="36"></webaudio-keyboard>
       <canvas id="waveform" width="512", height="200" style="border: 1px solid #888;"></canvas>
     <div>max: <span id="max"></span></div>
     </div>
@@ -49,6 +49,7 @@ kb.addEventListener('change', function(e) {
 });
 
 var renderer = Waml.Web.createWaveFormRenderer('waveform');
+trm.connect(renderer);
 
   </script>
   </body>
