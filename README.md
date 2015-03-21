@@ -9,9 +9,17 @@ WebAudio APIで書かれたシンセサイザーやエフェクターをモジ�
 
 # 仕様
 
-モジュールをWamlから読み込み可能にするためには、スクリプトファイルから`Waml.registerSynthesizer()`または`Waml.registerEffect()`にモジュール定義を渡します。以下がモジュール定義の例です。
+モジュールはざっくりシンセとエフェクターに分類されます。それぞれ、モジュールをWamlから読み込み可能にするために、スクリプトファイルから`Waml.registerSynthesizer()`または`Waml.registerEffect()`を呼び出してモジュール定義を渡します。以下がモジュール定義の例です。
 
 ```
+function TriOscillator (ctx) {
+  // construct module
+  return module;
+}
+
+...
+
+
 if ( 'undefined' !== typeof window
   && 'undefined' !== typeof window.Waml ) {
   Waml.registerSynthesizer({
@@ -57,14 +65,17 @@ ry
 
 モジュールの音声入力に使用するAudioNodeのプロパティ名を指定します。 *inletという名前決め打ちでもいいか？複数必要な場合は？*
 
-## モジュールの構成要素
+## AudioParamのインスタンス作れないんだけど？
 
-全てのモジュールは、`connect`メソッドを実装する必要があります。
-シンセサイザーとして登録したモジュールは、`NoteOn(noteNumber)`と`NoteOff()`のふたつのメソッドを実装する必要があります。
-*TODO:ポリ音源について*
+現状、正攻法では作れないようです。黒魔術してください。または`Waml.createAudioParamBridge`を使ってください。
+
+## モジュールの必須プロパティ
+
+ * 全てのモジュールは、`connect`メソッドを実装する必要があります。
+ * シンセサイザーとして登録したモジュールは、`NoteOn(noteNumber)`と`NoteOff()`のふたつのメソッドを実装する必要があります。 *TODO:ポリ音源について*
 
 
-## モジュール利用側
+## モジュールの利用
 
 ```
 <script src="//example.com/Waml.js"></script>
@@ -77,3 +88,15 @@ ry
 
 </script>
 ```
+
+# Disclaimer
+
+This software is still alpha quality. We may change APIs without notice.
+
+# Author
+
+Aklaswad
+
+License
+
+MIT
