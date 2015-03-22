@@ -9,7 +9,11 @@ WebAudio APIで書かれたシンセサイザーやエフェクターをモジ�
 
 ## 名前がださい
 
-ごめん
+ごめん。アイデアください。
+
+## モジュールとは？
+
+シンセサイザーやエフェクター等の内部実装とします。GUIは含みません。
 
 # 仕様
 
@@ -72,6 +76,7 @@ ry
 ## AudioParamのインスタンス作れないんだけど？
 
 現状、正攻法では作れないようです。黒魔術してください。または`Waml.createAudioParamBridge`を使ってください。
+See Also https://github.com/WebAudio/web-audio-api/issues/367
 
 ## モジュールの必須プロパティ
 

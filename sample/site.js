@@ -29,7 +29,11 @@ $(function () {
     }
   });
 
-  var renderer = Waml.Web.createWaveFormRenderer('waveform');
+  var renderer = Waml.Web.createWaveFormRenderer('waveform', {
+    waveColor: '#f84',
+    backgroundColor: '#fff',
+    centerLine: '#abc'
+  });
   trm.connect(renderer);
   Waml.onmoduleload = function (module) {
     Waml.describe(module.name, function (message) {

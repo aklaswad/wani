@@ -12,13 +12,15 @@
     <link rel="import" href="webaudio-controls/webcomponents/controls.html" />
     <style>
 html,body{height:100%;}
-.tool { margin: 20px;}
+.tools { padding: 10px;}
+.tool h1 { font-size: 14px; color: #e73; }
+#waveform { border: 1px solid #e73; }
 #js-console { max-height: 300px; overflow: scroll; }
     </style>
   </head>
   <body class="container-fluid">
     <div class="row">
-      <div class="col-md-9 col-md-push-3">
+      <div class="col-md-9 col-md-push-3 col-sm-8 col-sm-push-4 col-xs-6 col-xs-push-6">
         <section>
           <header>
           <h1>WAML
@@ -38,8 +40,6 @@ Waml.registerSynthesizer({
   create: ConstructorOfYourSyntehsizer,
 });
 </pre>
-
-
           </p>
           <p>
             <h3>WAML Module behaves like native AudioNode</h3>
@@ -56,8 +56,6 @@ nativeOsc.connect(wamlEffect.inlet);
 wamlEffect.connect(ctx.destination);
 </pre>
 
-
-
           </p>
           <h2>DEMOS</h2>
           <h3>Load Module</h3>
@@ -65,21 +63,30 @@ wamlEffect.connect(ctx.destination);
           <h3>Load Module from outer world on the fly</h3>
           <p> TBD </p>
           <footer>
+            <p><h3>Disclaimer</h3>
+This software is still alpha quality. We may change APIs without notice.</p>
+            <p><h3>License</h3>MIT</p>
+            <p>
 written by aklaswad <a href="https://github.com/aklaswad">github</a> <a href="https://twitter.com/aklaswad">twitter</a>
+            </p>
           </footer>
         </section>
       </div>
-      <div id="tools" class="col-md-3 col-md-pull-9 affix fill">
-        <div>
-
+      <div id="tools" class="tools col-md-3 col-md-pull-9 col-sm-4 col-sm-pull-8 col-xs-6 col-xs-pull-6 affix fill">
+        <div class="tool">
+          <webaudio-keyboard id="keyboard" keys="12" min="48" width="256" height="100"></webaudio-keyboard>
         </div>
         <div class="tool">
-          <webaudio-keyboard id="keyboard" keys="12" min="48" width="256"></webaudio-keyboard>
+          <canvas id="waveform" width="256", height="70"></canvas>
         </div>
         <div class="tool">
-          <canvas id="waveform" width="256", height="120"></canvas>
+          <h1>circuit</h1>
+          <pre id="js-circuit" class="pre-scrollable">//current circuit</pre>
         </div>
-        <div id="js-console" class="tool">
+        <div class="tool">
+          <h1>console out</h1>
+          <div id="js-console" class="tool pre-scrollable">
+          </div>
         </div>
       </div>
     </div>
