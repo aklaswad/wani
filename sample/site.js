@@ -24,7 +24,7 @@ $(function () {
 
     // UIs
     this.initUI();
-    this.updateUI();
+    this.updateModuleList();
     this.initKeyboard();
   };
 
@@ -45,6 +45,16 @@ $(function () {
       that.appendModule( name );
       return false;
     });
+
+    $('.js-load-module').click( function () {
+      Waml.Web.loadScriptFromURL(
+        $(this).siblings('.js-module-url').val(),
+        function () {
+          that.updateModuleList();
+        }
+      );
+    });
+
     $(document).on('click', '.js-remove-module', function(event) {
       var $module = $(this).parents('.waml-module');
       // minus one because primarySynth is in DOM but not in effects list
@@ -96,7 +106,7 @@ $(function () {
     return $div;
   };
 
-  App.prototype.updateUI = function () {
+  App.prototype.updateModuleList = function () {
     var synthesizers = Waml.listSynthesizers();
     var effects = Waml.listEffects();
     var i,len;
@@ -151,13 +161,13 @@ $(function () {
     var $ui = this.buildModuleUI(name);
     $('#js-circuit').append($ui);
     this.effects.push(name);
-    this.updateUI();
+    this.updateModuleList();
     this.makeDSPChain();
   };
 
   App.prototype.removeModule = function(nth) {
     this.effects.splice(nth,1);
-    this.updateUI();
+    this.updateModuleList();
     this.makeDSPChain();
   };
 

@@ -106,6 +106,10 @@ html,body{
     border-radius:4px;
     box-shadow: 5px 5px 8px #CCC;
 }
+
+.js-module-url {
+  width: 80%;
+}
     </style>
   </head>
   <body class="container-fluid">
@@ -151,11 +155,21 @@ wamlEffect.connect(ctx.destination);
           </p>
           <h2>DEMOS</h2>
           <h3>Load Module</h3>
-          <select class="js-list-effects"></select><input type="button" value="add" class="js-add-effect" />
+          <p>You can easilly create module instance.
+          <pre>
+var moduleInstance = Waml.createModule('Foobar');
+</pre></p>
 
-          <p> TBD </p>
+          <p>Here, add selected module to the end of DSP chain.
+            <div><select class="js-list-effects"></select></div>
+            <div><input type="button" value="Add" class="js-add-effect" /></div>
+          </p>
+
           <h3>Load Module from outer world on the fly</h3>
-          <p> TBD </p>
+          <p>Also, you can load module from external javascript file on the fly. just push load button to load new module from outer world. ( or If you know any Waml-ized effector, put the URL to try it ;)
+          <div><input type="text" class="js-module-url" value="http://aklaswad.github.io/Waml/SimpleAutoWah.js" /></div>
+          <div><input type="button" value="Load" class="js-load-module" /></div></p>
+          <p>And then, you can see new module in the select menu above.</p>
           <footer>
             <p><h3>Disclaimer</h3>
 This software is still alpha quality. We may change APIs without notice.</p>
