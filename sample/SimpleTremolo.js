@@ -40,16 +40,17 @@
     osc.start();
     return this;
   };
-  SimpleTremolo.prototype = Object.create(Waml.Effect.prototype);
+  SimpleTremolo.prototype = Object.create(Waml.Module.prototype);
 
   SimpleTremolo.prototype.connect = function (dest) {
     return this.outlet.connect(dest);
   };
 
-  Waml.registerEffect({
+  Waml.registerModule({
     name: 'SimpleTremolo',
     author: 'aklaswad<aklaswad@gmail.com>',
     description: 'Sample Tremolo effector module for Waml',
+    isEffect: true,
     create: SimpleTremolo,
     audioParams: {
       frequency: {

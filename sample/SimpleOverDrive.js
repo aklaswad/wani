@@ -54,17 +54,18 @@
     inlet.connect(drive);
     drive.connect(outlet);
   }
-  SimpleOverDrive.prototype = Object.create(Waml.Effect.prototype);
+  SimpleOverDrive.prototype = Object.create(Waml.Module.prototype);
 
   SimpleOverDrive.prototype.connect = function (dest) {
     return this.outlet.connect(dest);
   };
 
-  Waml.registerEffect({
+  Waml.registerModule({
     name: 'SimpleOverDrive',
     author: 'aklaswad<aklaswad@gmail.com>',
     description: 'Sample OverDrive effector module for Waml',
     create: SimpleOverDrive,
+    isEffect: true,
     audioParams: {
       frequency: {
         description: 'frequency (hz)',
