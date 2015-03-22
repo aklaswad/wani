@@ -48,14 +48,6 @@
     create: SimpleAutoWah,
     isEffect: true,
     audioParams: {
-      frequency: {
-        description: 'frequency (hz)',
-        range: [0, 20000],
-      },
-      depth: {
-        description: 'depth',
-        range: [0, 1],
-      },
     },
     params: {
       wavetype: {
