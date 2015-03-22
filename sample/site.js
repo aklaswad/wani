@@ -76,11 +76,16 @@ $(function () {
       $knobWrapper.append(
         $('<h2 />').text(name).addClass('tooltipo').append(
           $('<span />').text(this.description).addClass ));
+      var range = Math.abs( this.range[0] - this.range[1] );
       var $knob = $('<webaudio-knob width="32" height="32" '
         + 'min="' + this.range[0] + '" '
         + 'max="' + this.range[1] + '" '
+        + 'step="' + range / 256 + '" '
         + '/>');
       $knob.addClass('knob');
+      $knob.data('target', name);
+      $knob.addClass('waml-audioparam');
+
       // FIXME: css help is needed for centering knob ;p
       $knobWrapperInner = $('<div />').addClass('knob-wrapper-inner');
       $knobWrapperInner.append($knob);
@@ -111,15 +116,35 @@ $(function () {
       effect.disconnect();
     });
     this.effectInstances = [];
-    var module, last = this.primarySynth;
-    var lastname = 'primarySynth';
+    var module, last = this.primarySynth, that = this;
     $.each( this.effects, function(idx,name) {
-      lastname = name;
       module = Waml.createModule(name);
       last.connect( module.inlet );
       last = module;
+      that.effectInstances.push(module);
     });
     last.connect(this.masterOut);
+    this.rebuildUIBindings();
+  };
+
+  App.prototype.rebuildUIBindings = function () {
+    var app = this;
+    $('.waml-module').each( function (idx) {
+      var module = idx ? app.effectInstances[idx-1] : app.primarySynth;
+      var $moduleUI = $(this);
+      (function (module) {  // create scope
+        $moduleUI.find('.waml-audioparam').each( function () {
+          var $knob = $(this);
+          var target = $knob.data('target');
+          (function ($knob, target) {  // create scope again
+            $knob.off('change').on('change', function (e) {
+              console.log(module,target,e.target.value);
+              module[target].value = e.target.value;
+            });
+          })($knob, target);
+        });
+      })(module);
+    });
   };
 
   App.prototype.appendModule = function(name) {
