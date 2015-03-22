@@ -6,54 +6,84 @@
     <script src="TriOscillator.js"></script>
     <script src="SimpleTremolo.js"></script>
     <script src="SimpleOverDrive.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/polymer/0.5.5/polymer.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/polymer/0.5.5/polymer.min.js"></script>
+    <script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
     <link rel="import" href="webaudio-controls/webcomponents/controls.html" />
-
+    <style>
+html,body{height:100%;}
+.tool { margin: 20px;}
+#js-console { max-height: 300px; overflow: scroll; }
+    </style>
   </head>
-  <body>
-    <h1>Waml demo</h1>
-    <div>
-      <webaudio-keyboard id="keyboard" keys="25" min="36"></webaudio-keyboard>
-      <canvas id="waveform" width="512", height="200" style="border: 1px solid #888;"></canvas>
-    <div>max: <span id="max"></span></div>
-    </div>
-  <script>
-
-// Synth
-var ctx = Waml.getAudioContext();
-var tri = Waml.createSynthesizer('TriOscillator');
-
-// Effect
-var trm = Waml.createEffect('SimpleTremolo');
-trm.depth.value = 2.0;
-trm.frequency.value = 0.0;
-console.log(trm);
-tri.connect(trm.inlet);
-
-var mod = ctx.createOscillator();
-mod.frequency.value = 0.1;
-mod.start();
-var modrange = ctx.createWaveShaper();
-modrange.curve = new Float32Array([0.4,5]);
-mod.connect(modrange);
-modrange.connect(trm.frequency);
-trm.connect(ctx.destination);
-
-
-var kb = document.getElementById('keyboard');
-kb.addEventListener('change', function(e) {
-  var note = e.note;
-  if ( note[0] ) {
-    tri.noteOn(note[1]);
-  }
-  else {
-    tri.noteOff();
-  }
+  <body class="container-fluid">
+    <div class="row">
+      <div class="col-md-9 col-md-push-3">
+        <section>
+          <header>
+          <h1>WAML
+            <small> - WebAudio Module Librarian</small></h1>
+          </header>
+          <p>
+            <h3>WAML is A Specification</h3>
+            propose to Web Audio Community that to make your code Reusable, Self-Documentable, and Sharable.</p>
+          <p>
+            <h3>WAML is Very Simple Interface Spec</h3>
+            to make your code into WAML module.
+            <pre>
+function ConstructorOfYourSynthesizer () { ... }
+// just add this to the end of your *.js file (with some more rule...)
+Waml.registerSynthesizer({
+  name: "MySynthesizer",
+  create: ConstructorOfYourSyntehsizer,
 });
+</pre>
 
-var renderer = Waml.Web.createWaveFormRenderer('waveform');
-trm.connect(renderer);
 
-  </script>
+          </p>
+          <p>
+            <h3>WAML Module behaves like native AudioNode</h3>
+            such like this.
+            <pre>
+var wamlSynth = Waml.createSynthesizer('SYNTH_NAME');
+var nativeDelay = ctx.createDelay();
+wamlSynth.connect(nativeDelay);
+nativeDelay.connect(ctx.destination);
+
+var nativeOsc = ctx.createOsc();
+var wamlEffect = Waml.createEffect('EFFECT_NAME');
+nativeOsc.connect(wamlEffect.inlet);
+wamlEffect.connect(ctx.destination);
+</pre>
+
+
+
+          </p>
+          <h2>DEMOS</h2>
+          <h3>Load Module</h3>
+          <p> TBD </p>
+          <h3>Load Module from outer world on the fly</h3>
+          <p> TBD </p>
+          <footer>
+written by aklaswad <a href="https://github.com/aklaswad">github</a> <a href="https://twitter.com/aklaswad">twitter</a>
+          </footer>
+        </section>
+      </div>
+      <div id="tools" class="col-md-3 col-md-pull-9 affix fill">
+        <div>
+
+        </div>
+        <div class="tool">
+          <webaudio-keyboard id="keyboard" keys="12" min="48" width="256"></webaudio-keyboard>
+        </div>
+        <div class="tool">
+          <canvas id="waveform" width="256", height="120"></canvas>
+        </div>
+        <div id="js-console" class="tool">
+        </div>
+      </div>
+    </div>
+<a href="https://github.com/aklaswad/Waml" style="z-index:9999"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
+    <script src="site.js"></script>
   </body>
 </html>
