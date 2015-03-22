@@ -10,13 +10,13 @@
     var half = ctx.createGain();
     half.gain.value = 0.5;
     var osc = ctx.createOscillator();
-    osc.frequency.value = 20;
+    osc.frequency.value = 5;
     osc.connect(half);
     var oscGain = ctx.createGain();
     oscGain.gain.value = 0.0;
     half.connect(oscGain);
 
-    var offset = Waml.createDCOffset(0);
+    var offset = Waml.createDCOffset(1);
     var offsetBase = Waml.createDCOffset(1);
     var offsetHalf = ctx.createGain();
     offsetHalf.gain.value = 0.5;

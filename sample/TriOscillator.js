@@ -36,12 +36,17 @@
     osc1.connect(mixer);
     osc2.connect(mixer);
     osc3.connect(mixer);
-    this.connect = function (node) {
-      return mixer.connect(node);
-    };
     return this;
   };
   TriOscillator.prototype = Object.create(Waml.Module.prototype);
+
+  TriOscillator.prototype.connect = function () {
+    return this.mixer.connect.apply(this.mixer,arguments);
+  };
+
+  TriOscillator.prototype.disconnect = function () {
+    return this.mixer.disconnect.apply(this.mixer,arguments);
+  };
 
   TriOscillator.prototype.noteOn = function (noteNumber) {
     this.frequency.cancelScheduledValues(0);

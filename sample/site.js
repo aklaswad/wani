@@ -21,7 +21,15 @@ $(function () {
     this.primarySynth.connect(this.masterOut);
     this.masterOut.connect(this.renderer);
     this.masterOut.connect(ctx.destination);
+
     // UIs
+    this.initUI();
+    this.updateUI();
+    this.initKeyboard();
+  };
+
+  App.prototype.initUI = function () {
+    // Keyboard
     Waml.onmoduleload = function (module) {
       Waml.describe(module.name, function (message) {
         var $console = $('#js-console');
@@ -30,8 +38,13 @@ $(function () {
       });
     };
 
-    this.updateUI();
-    this.initKeyboard();
+    // jQuery actions
+    var that = this;
+    $('.js-add-effect').on('click', function(event){
+      var name = $(this).siblings('select').val();
+      that.loadModule( name );
+      return false;
+    });
   };
 
   App.prototype.updateUI = function () {
@@ -55,22 +68,24 @@ $(function () {
     });
     this.effectInstances = [];
     var module, last = this.primarySynth;
+    var lastname = 'primarySynth';
     var record = '';
     $.each( this.effects, function(idx,name) {
+      record += lastname + '.connect(' + name + ")\n";
+      lastname = name;
       module = Waml.createModule(name);
-      last.connect( module );
-      record += last.name + '.connect(' + module.name + ")\n";
+      last.connect( module.inlet );
       last = module;
     });
     last.connect(this.masterOut);
-    record += last.name + ".connect(masterOut)\n";
+    record += lastname + ".connect(masterOut)\n";
     $('#js-circuit').text(record);
   }
 
   App.prototype.loadModule = function(name) {
-    this.effects.push(Waml.createModule(name));
+    this.effects.push(name);
     this.updateUI();
-    makeDSPChain();
+    this.makeDSPChain();
   };
 
   App.prototype.initKeyboard = function () {

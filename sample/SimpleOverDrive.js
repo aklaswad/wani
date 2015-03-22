@@ -40,7 +40,7 @@
     }
   }
 
-  function SimpleOverDrive() {
+  function SimpleOverDrive(ctx) {
     this.ctx = ctx;
     var inlet = this.inlet = ctx.createGain();
     inlet.gain.value = 0.6;
