@@ -74,7 +74,7 @@
     audioParams: {
       drive: {
         description: 'Amplifier!!',
-        range: [0.5, 3],
+        range: [0.5, 1.5],
       },
     },
     params: {
