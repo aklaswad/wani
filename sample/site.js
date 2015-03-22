@@ -46,8 +46,10 @@ $(function () {
       return false;
     });
     $(document).on('click', '.js-remove-module', function(event) {
-      that.removeModule( $(this).data('id') );
-      $(this).parents('.waml-module').remove();
+      var $module = $(this).parents('.waml-module');
+      // minus one because primarySynth is in DOM but not in effects list
+      that.removeModule( $module.index() - 1 );
+      $module.remove();
       return false;
     });
 
@@ -61,11 +63,10 @@ $(function () {
     if (!opts) opts = {};
     var def = Waml.definition(name);
     var $div = $('<div />');
-    $div.data( 'id', this.effects.length );
     $div.addClass('waml-module');
     var $h1 = $('<h1 />').text( def.name );
     if ( !opts.noClose ) {
-      $h1.append( $('<a>remove</a>').attr('href','#').addClass('js-remove-module') );
+      $('<a>remove</a>').attr('href','#').addClass('js-remove-module').appendTo($h1);
     }
     $div.append( $h1 );
     var $knobs = $('<div />').addClass('knobs');
@@ -80,7 +81,7 @@ $(function () {
         + 'max="' + this.range[1] + '" '
         + '/>');
       $knob.addClass('knob');
-      // FIXME: css help is needed ;p
+      // FIXME: css help is needed for centering knob ;p
       $knobWrapperInner = $('<div />').addClass('knob-wrapper-inner');
       $knobWrapperInner.append($knob);
       $knobWrapper.append( $knobWrapperInner );
