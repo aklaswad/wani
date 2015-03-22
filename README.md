@@ -2,6 +2,8 @@
 
 Web Audio Module Librarian
 
+[DEMO](http://aklaswad.github.io/Waml/)
+
 ## なんぞ？
 
 WebAudio APIで書かれたシンセサイザーやエフェクターをモジュール化し、外部スクリプトとして読み込み可能にしようという試みです。
