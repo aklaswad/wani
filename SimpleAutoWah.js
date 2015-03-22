@@ -36,6 +36,11 @@
     return this.outlet.connect(dest);
   };
 
+  SimpleAutoWah.prototype.disconnect = function () {
+    return this.outlet.disconnect.apply(this.outlet,arguments);
+  };
+
+
   Waml.registerModule({
     name: 'SimpleAutoWah',
     author: 'aklaswad<aklaswad@gmail.com>',
@@ -43,14 +48,6 @@
     create: SimpleAutoWah,
     isEffect: true,
     audioParams: {
-      frequency: {
-        description: 'frequency (hz)',
-        range: [0, 20000],
-      },
-      depth: {
-        description: 'depth',
-        range: [0, 1],
-      },
     },
     params: {
       wavetype: {

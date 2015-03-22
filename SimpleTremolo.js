@@ -46,6 +46,11 @@
     return this.outlet.connect(dest);
   };
 
+  SimpleTremolo.prototype.disconnect = function () {
+    return this.outlet.disconnect.apply(this.outlet,arguments);
+  };
+
+
   Waml.registerModule({
     name: 'SimpleTremolo',
     author: 'aklaswad<aklaswad@gmail.com>',

@@ -61,6 +61,10 @@
     return this.outlet.connect(dest);
   };
 
+  SimpleOverDrive.prototype.disconnect = function () {
+    return this.outlet.disconnect.apply(this.outlet,arguments);
+  };
+
   Waml.registerModule({
     name: 'SimpleOverDrive',
     author: 'aklaswad<aklaswad@gmail.com>',
