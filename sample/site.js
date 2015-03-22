@@ -68,6 +68,25 @@ $(function () {
       $h1.append( $('<a>remove</a>').attr('href','#').addClass('js-remove-module') );
     }
     $div.append( $h1 );
+    var $knobs = $('<div />').addClass('knobs');
+    $.each( def.audioParams, function (name) {
+      var $knobWrapper = $('<div />');
+      $knobWrapper.addClass('knob-wrapper');
+      $knobWrapper.append(
+        $('<h2 />').text(name).addClass('tooltipo').append(
+          $('<span />').text(this.description).addClass ));
+      var $knob = $('<webaudio-knob width="32" height="32" '
+        + 'min="' + this.range[0] + '" '
+        + 'max="' + this.range[1] + '" '
+        + '/>');
+      $knob.addClass('knob');
+      // FIXME: css help is needed ;p
+      $knobWrapperInner = $('<div />').addClass('knob-wrapper-inner');
+      $knobWrapperInner.append($knob);
+      $knobWrapper.append( $knobWrapperInner );
+      $knobs.append($knobWrapper);
+    });
+    $div.append($knobs);
     return $div;
   };
 
