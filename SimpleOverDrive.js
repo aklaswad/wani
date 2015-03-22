@@ -67,17 +67,13 @@
     create: SimpleOverDrive,
     isEffect: true,
     audioParams: {
-      frequency: {
-        description: 'frequency (hz)',
-        range: [0, 20000],
-      },
-      depth: {
-        description: 'depth',
+      drive: {
+        description: 'Amplifier!!',
         range: [0, 1],
       },
     },
     params: {
-      wavetype: {
+      type: {
         description: 'mudulator wave shape',
         values: ["sine", "sawtooth", "square", "triangle"]
       }

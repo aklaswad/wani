@@ -18,18 +18,25 @@
     mul1.connect(osc1.frequency);
     mul2.connect(osc2.frequency);
     mul3.connect(osc3.frequency);
-    var setValue = function (value) {
+    var setFrequencyValue = function (value) {
       osc1.frequency.value = value;
       osc2.frequency.value = value * (1 + 1/3);
       osc3.frequency.value = value * (1 + 2/3);
     };
+
     this.frequency = this.createAudioParamBridge(
       0,
       [ mul1,mul2,mul3 ],
-      setValue
+      setFrequencyValue
     );
+
+    this.detune = this.createAudioParamBridge(
+      0,
+      [ osc1.detune, osc2.detune, osc3.detune ]
+    );
+
     //Set default value
-    setValue(220);
+    setFrequencyValue(220);
 
     var mixer = this.mixer = ctx.createGain();
     mixer.gain.value = 0.0;
@@ -70,6 +77,10 @@
         frequency: {
           description: 'frequency (hz)',
           range: [0, 20000],
+        },
+        detune: {
+          description: 'detune (cent)',
+          range: [-100, 100],
         },
       },
       params: {

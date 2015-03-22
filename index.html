@@ -11,11 +11,101 @@
     <link rel="stylesheet" type="text/css" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" />
     <link rel="import" href="webaudio-controls/webcomponents/controls.html" />
     <style>
-html,body{height:100%;}
-.tools { padding: 10px;}
-.tool h1 { font-size: 14px; color: #e73; }
-#waveform { border: 1px solid #e73; }
-#js-console { max-height: 300px; overflow: scroll; }
+html,body{
+  height:100%;
+}
+
+.tools {
+  padding: 10px;
+}
+
+.tool h1 {
+  font-size: 14px;
+  color: #e73;
+}
+
+#waveform {
+  border: 1px solid #e73;
+}
+
+#js-console {
+  max-height: 300px;
+  overflow: scroll;
+}
+
+.waml-module {
+  border: 1px solid #888;
+  background-color: #abc;
+  color: #fff;
+  position: relative;
+  width: 256px;
+  margin: 2px;
+}
+
+.waml-module.synth {
+  background-color: #acb;
+}
+
+.waml-module h1 {
+  color: #fff;
+  padding: 3px;
+  margin: 2px;
+}
+
+.waml-module .js-remove-module {
+  float: right;
+  position: absolute;
+  right: 0px;
+  top: 0x;
+}
+
+.knobs {
+  display: box;
+  display: -webkit-box;
+  display: -moz-box;
+}
+
+.knob-wrapper {
+  width: 64px;
+  height: 48px;
+  text-align: center;
+}
+
+.knob-wrapper h2 {
+  position: relative;
+  top: 0;
+  margin: 0;
+  font-size: 11px;
+  color: #333;
+  z-index: 10000;
+}
+
+.knob-wrapper-inner {
+  position: relative;
+  left: 16px;
+}
+
+/* http://www.menucool.com/tooltip/css-tooltip */
+.tooltip {outline:none; }
+.tooltip strong {line-height:30px;}
+.tooltip:hover {text-decoration:none;}
+.tooltip span {
+  z-index:10;display:none; padding:14px 20px;
+  margin-top:-30px; margin-left:28px;
+  width:300px; line-height:16px;
+}
+
+.tooltip:hover span{
+    display:inline; position:absolute; color:#111;
+    border:1px solid #DCA; background:#fffAF0;
+}
+.callout {z-index:20;position:absolute;top:30px;border:0;left:-12px;}
+/*CSS3 extras*/
+.tooltip span
+{
+    border-radius:4px;
+    box-shadow: 5px 5px 8px #CCC;
+}
     </style>
   </head>
   <body class="container-fluid">
@@ -34,7 +124,8 @@ html,body{height:100%;}
             to make your code into WAML module.
             <pre>
 function ConstructorOfYourSynthesizer () { ... }
-// just add this to the end of your *.js file (with some more rule...)
+
+// then, just add this to the end of your *.js file (with some rules tho ;)
 Waml.registerModule({
   name: "MySynthesizer",
   create: ConstructorOfYourSyntehsizer,
@@ -83,8 +174,7 @@ written by aklaswad <a href="https://github.com/aklaswad">github</a> <a href="ht
           <canvas id="waveform" width="256", height="70"></canvas>
         </div>
         <div class="tool">
-          <h1>circuit</h1>
-          <pre id="js-circuit" class="pre-scrollable">//current circuit</pre>
+          <div id="js-circuit"></div>
         </div>
         <div class="tool">
           <h1>console out</h1>

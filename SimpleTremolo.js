@@ -16,7 +16,7 @@
     oscGain.gain.value = 0.0;
     half.connect(oscGain);
 
-    var offset = Waml.createDCOffset(1);
+    var offset = Waml.createDCOffset(0);
     var offsetBase = Waml.createDCOffset(1);
     var offsetHalf = ctx.createGain();
     offsetHalf.gain.value = 0.5;
@@ -55,11 +55,11 @@
     audioParams: {
       frequency: {
         description: 'frequency (hz)',
-        range: [0, 20000],
+        range: [0, 20],
       },
       depth: {
         description: 'depth',
-        range: [0, 1],
+        range: [0, 10],
       },
     },
     params: {

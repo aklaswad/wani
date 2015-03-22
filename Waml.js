@@ -212,6 +212,9 @@
         this.describe(name, reader);
       }
     },
+    definition: function(name) {
+      return this.modules[name];
+    },
     describe: function (name, reader) {
       if ( 'undefined' === reader ) {
         reader = console.log;
