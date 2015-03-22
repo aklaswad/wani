@@ -80,11 +80,11 @@ $(function () {
     }
     $div.append( $h1 );
     var $knobs = $('<div />').addClass('knobs');
-    $.each( def.audioParams, function (name) {
+    $.each( (def.audioParams || []), function (name) {
       var $knobWrapper = $('<div />');
       $knobWrapper.addClass('knob-wrapper');
       $knobWrapper.append(
-        $('<h2 />').text(name).addClass('tooltipo').append(
+        $('<h2 />').text(name).append(
           $('<span />').text(this.description).addClass ));
       var range = Math.abs( this.range[0] - this.range[1] );
       var $knob = $('<webaudio-knob width="32" height="32" '
@@ -103,6 +103,22 @@ $(function () {
       $knobs.append($knobWrapper);
     });
     $div.append($knobs);
+
+    var $params = $('<div />').addClass('params');
+    $.each( (def.params || []), function (name, definition) {
+      var $paramBox = $('<div />').addClass('param-wrapper');
+      $('<h2 />').text(name).appendTo($paramBox);
+      if ( definition.values ) {
+        var $select = $('<select />').addClass('waml-param-select').data('target', name);
+        $.each( definition.values, function (idx, value) {
+          $select.append( $('<option />').text(value) );
+        });
+        $select.appendTo($paramBox);
+      }
+      $paramBox.appendTo($params);
+    });
+    $div.append($params);
+
     return $div;
   };
 
@@ -152,6 +168,17 @@ $(function () {
             });
           })($knob, target);
         });
+
+        $moduleUI.find('.waml-param-select').each( function () {
+          var $select = $(this);
+          var target = $select.data('target');
+
+          (function ($select, target) {  // create scope again
+            $select.off('change').on('change', function (e) {
+              module[target] = $select.val();
+            });
+          })($select, target);
+        });
       })(module, $moduleUI);
     });
   };
@@ -184,5 +211,5 @@ $(function () {
     });
   };
 
-  var app = new App();
+  window.app = new App();
 });

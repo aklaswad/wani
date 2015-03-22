@@ -106,10 +106,12 @@
   }
   WamlModule.prototype = Object.create(AudioNode.prototype);
 
+
+
   /* A hacky way to create own AudioParam;
-     a scriptProcessor which outputs DC offset(1.0)
-     is connected to Gain node. And publish
-     gain's parameter instance as interface.
+     DC offset(1.0) is connected to Gain node, And publish
+     gain's parameter instance as interface. So we can get
+     the params value as Audio signals. (when it is modulated);
      There also is needed to watch the static value.
    */
   WamlModule.prototype.createAudioParamBridge = function(defaultValue, dest, callback) {
@@ -127,37 +129,13 @@
     return param;
   };
 
-  WamlModule.prototype.multiply = function (from, value) {
-    var gain = this.ctx.createGain();
-    gain.gain.value = value;
-    from.connect(gain);
-    return {
-      connect: function (dest) {
-        return gain.connect(dest);
-      }
-    };
-  };
-
-  WamlModule.prototype.add = function (from, value) {
-    var offset = Waml.createDCOffset(value);
-    var gain = this.ctx.createGain();
-    gain.gain.value = 1;
-    offset.connect(gain);
-    from.connect(gain);
-    return {
-      connect: function (dest) {
-        return gain.connect(dest);
-      }
-    };
-  };
-
   WamlModule.prototype.destory = function () {
     __paramWatcher.remove(this);
   };
 
   var Waml = {
     getAudioContext: getAudioContext,
-    // ********* Provide Base Classes *********
+    // ********* Provide Base Class *********
     Module: WamlModule,
     modules: {},
     // ********* Package Manager *********
@@ -212,9 +190,6 @@
         this.describe(name, reader);
       }
     },
-    definition: function(name) {
-      return this.modules[name];
-    },
     describe: function (name, reader) {
       if ( 'undefined' === reader ) {
         reader = console.log;
@@ -226,6 +201,9 @@
       }
       reader( "Name: " + name );
       reader( "Author: " + module.author || '(unknown)' );
+    },
+    definition: function(name) {
+      return this.modules[name];
     },
 
     // ********* Helpers *********

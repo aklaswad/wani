@@ -47,14 +47,6 @@
     description: 'Sample AutoWah effector module for Waml',
     create: SimpleAutoWah,
     isEffect: true,
-    audioParams: {
-    },
-    params: {
-      wavetype: {
-        description: 'mudulator wave shape',
-        values: ["sine", "sawtooth", "square", "triangle"]
-      }
-    },
     inlet: "inlet",
   });
 })();

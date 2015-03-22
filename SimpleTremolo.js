@@ -67,12 +67,6 @@
         range: [0, 10],
       },
     },
-    params: {
-      wavetype: {
-        description: 'mudulator wave shape',
-        values: ["sine", "sawtooth", "square", "triangle"]
-      }
-    },
     // Specify the inlet as string. "inlet" should be default.
     // XXX: should allow multiple inlet?
     inlet: "inlet",
