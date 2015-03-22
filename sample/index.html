@@ -161,19 +161,20 @@ var moduleInstance = Waml.createModule('Foobar');
 </pre></p>
 
           <p>Here, add selected module to the end of DSP chain.
-            <div><select class="js-list-effects"></select></div>
-            <div><input type="button" value="Add" class="js-add-effect" /></div>
+            <div><select class="js-list-effects form-control"></select>
+            <input type="button" value="Add" class="btn js-add-effect" /></div>
           </p>
 
           <h3>Load Module from outer world on the fly</h3>
           <p>Also, you can load module from external javascript file on the fly. just push load button to load new module from outer world. ( or If you know any Waml-ized effector, put the URL to try it ;)
-          <div><input type="text" class="js-module-url" value="http://aklaswad.github.io/Waml/SimpleAutoWah.js" /></div>
-          <div><input type="button" value="Load" class="js-load-module" /></div></p>
+          <div><input type="text" class="js-module-url form-control" value="http://aklaswad.github.io/Waml/SimpleAutoWah.js" />
+          <input type="button" value="Load" class="btn js-load-module" /></div></p>
           <p>And then, you can see new module in the select menu above.</p>
           <footer>
             <p><h3>Disclaimer</h3>
 This software is still alpha quality. We may change APIs without notice.</p>
             <p><h3>License</h3>MIT</p>
+            <p>GUI parts used in this page are from <a href="https://github.com/g200kg/webaudio-controls">g200kg/webaudio-controls</a>, thanks so much!</p>
             <p>
 written by aklaswad <a href="https://github.com/aklaswad">github</a> <a href="https://twitter.com/aklaswad">twitter</a>
             </p>
