@@ -184,5 +184,5 @@ $(function () {
     });
   };
 
-  var app = new App();
+  window.app = new App();
 });

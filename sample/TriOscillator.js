@@ -3,66 +3,69 @@
 
   function TriOscillator(ctx) {
     this.ctx = ctx;
-    var osc1 = this.osc1 = ctx.createOscillator();
-    var osc2 = this.osc2 = ctx.createOscillator();
-    var osc3 = this.osc3 = ctx.createOscillator();
-    this.osc1.start(0);
-    this.osc2.start(0);
-    this.osc3.start(0);
-    var mul1 = ctx.createGain();
-    var mul2 = ctx.createGain();
-    var mul3 = ctx.createGain();
-    mul1.gain.value = 1.0;
-    mul2.gain.value = 1 + 1/3;
-    mul3.gain.value = 1 + 2/3;
-    mul1.connect(osc1.frequency);
-    mul2.connect(osc2.frequency);
-    mul3.connect(osc3.frequency);
+    this.outlet = ctx.createGain();
+    var that = this;
+    var oscs = [];
+    var freqMultipliers = [];
+    var i;
+    for ( i=0;i<3;i++) {
+      oscs[i] = ctx.createOscillator();
+      oscs[i].start(0);
+      freqMultipliers[i] = ctx.createGain();
+      freqMultipliers[i].gain.value = 1 + i/3;
+      freqMultipliers[i].connect(oscs[i].frequency);
+      oscs[i].connect(this.outlet);
+    }
+
     var setFrequencyValue = function (value) {
-      osc1.frequency.value = value;
-      osc2.frequency.value = value * (1 + 1/3);
-      osc3.frequency.value = value * (1 + 2/3);
+      for ( i=0;i<3;i++) {
+        oscs[i].frequency.value = value * (1 + i/3);
+      }
     };
+    setFrequencyValue(220); // Set Default value
 
     this.frequency = this.createAudioParamBridge(
-      0,
-      [ mul1,mul2,mul3 ],
+      220,
+      freqMultipliers,
       setFrequencyValue
     );
 
     this.detune = this.createAudioParamBridge(
       0,
-      [ osc1.detune, osc2.detune, osc3.detune ]
+      [ oscs[0].detune, oscs[1].detune, oscs[2].detune ]
     );
 
-    //Set default value
-    setFrequencyValue(220);
-
-    var mixer = this.mixer = ctx.createGain();
-    mixer.gain.value = 0.0;
-    osc1.connect(mixer);
-    osc2.connect(mixer);
-    osc3.connect(mixer);
+    Object.defineProperty(this, 'type', {
+      set: function(type) {
+        that._type = type;
+        oscs[0].type = oscs[1].type = oscs[2].type = type;
+      },
+      get: function() {
+        return that._type;
+      }
+    });
+    this.outlet.gain.value = 0.0; //Using as note gate, so set zero at first.
     return this;
   };
+
   TriOscillator.prototype = Object.create(Waml.Module.prototype);
 
   TriOscillator.prototype.connect = function () {
-    return this.mixer.connect.apply(this.mixer,arguments);
+    return this.outlet.connect.apply(this.outlet,arguments);
   };
 
   TriOscillator.prototype.disconnect = function () {
-    return this.mixer.disconnect.apply(this.mixer,arguments);
+    return this.outlet.disconnect.apply(this.outlet,arguments);
   };
 
   TriOscillator.prototype.noteOn = function (noteNumber) {
     this.frequency.cancelScheduledValues(0);
     this.frequency.value = Waml.midi2freq(noteNumber);
-    this.mixer.gain.value = 0.3;
+    this.outlet.gain.value = 0.3;
   };
 
   TriOscillator.prototype.noteOff = function (noteNumber) {
-    this.mixer.gain.value = 0.0;
+    this.outlet.gain.value = 0.0;
   };
 
   if ( 'undefined' !== typeof window
