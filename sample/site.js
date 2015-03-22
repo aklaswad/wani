@@ -42,9 +42,33 @@ $(function () {
     var that = this;
     $('.js-add-effect').on('click', function(event){
       var name = $(this).siblings('select').val();
-      that.loadModule( name );
+      that.appendModule( name );
       return false;
     });
+    $(document).on('click', '.js-remove-module', function(event) {
+      that.removeModule( $(this).data('id') );
+      $(this).parents('.waml-module').remove();
+      return false;
+    });
+
+    // The first primary synth's UI
+    var $synth = this.buildModuleUI('TriOscillator', { noClose: true });
+    $synth.addClass('synth');
+    $('#js-circuit').append($synth);
+  };
+
+  App.prototype.buildModuleUI = function (name, opts) {
+    if (!opts) opts = {};
+    var def = Waml.definition(name);
+    var $div = $('<div />');
+    $div.data( 'id', this.effects.length );
+    $div.addClass('waml-module');
+    var $h1 = $('<h1 />').text( def.name );
+    if ( !opts.noClose ) {
+      $h1.append( $('<a>remove</a>').attr('href','#').addClass('js-remove-module') );
+    }
+    $div.append( $h1 );
+    return $div;
   };
 
   App.prototype.updateUI = function () {
@@ -69,21 +93,25 @@ $(function () {
     this.effectInstances = [];
     var module, last = this.primarySynth;
     var lastname = 'primarySynth';
-    var record = '';
     $.each( this.effects, function(idx,name) {
-      record += lastname + '.connect(' + name + ")\n";
       lastname = name;
       module = Waml.createModule(name);
       last.connect( module.inlet );
       last = module;
     });
     last.connect(this.masterOut);
-    record += lastname + ".connect(masterOut)\n";
-    $('#js-circuit').text(record);
-  }
+  };
 
-  App.prototype.loadModule = function(name) {
+  App.prototype.appendModule = function(name) {
+    var $ui = this.buildModuleUI(name);
+    $('#js-circuit').append($ui);
     this.effects.push(name);
+    this.updateUI();
+    this.makeDSPChain();
+  };
+
+  App.prototype.removeModule = function(nth) {
+    this.effects.splice(nth,1);
     this.updateUI();
     this.makeDSPChain();
   };
