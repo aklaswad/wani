@@ -148,7 +148,6 @@ $(function () {
           var target = $knob.data('target');
           (function ($knob, target) {  // create scope again
             $knob.off('change').on('change', function (e) {
-              console.log(module,target,e.target.value);
               module[target].value = e.target.value;
             });
           })($knob, target);
