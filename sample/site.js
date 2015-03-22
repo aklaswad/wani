@@ -31,3 +31,12 @@ kb.addEventListener('change', function(e) {
 
 var renderer = Waml.Web.createWaveFormRenderer('waveform');
 trm.connect(renderer);
+Waml.onmoduleload = function (module) {
+  Waml.describe(module.name, function (message) {
+console.log(message);
+    var $console = $('#js-console');
+    var html = $console.html();
+    $console.html( html + "<br />" + message );
+  });
+};
+Waml.Web.loadScriptFromURL('SimpleAutoWah.js');
