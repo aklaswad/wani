@@ -36,6 +36,11 @@
     return this.outlet.connect(dest);
   };
 
+  SimpleAutoWah.prototype.disconnect = function () {
+    return this.outlet.disconnect.apply(this.outlet,arguments);
+  };
+
+
   Waml.registerModule({
     name: 'SimpleAutoWah',
     author: 'aklaswad<aklaswad@gmail.com>',

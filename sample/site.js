@@ -142,7 +142,7 @@ $(function () {
     $('.waml-module').each( function (idx) {
       var module = idx ? app.effectInstances[idx-1] : app.primarySynth;
       var $moduleUI = $(this);
-      (function (module) {  // create scope
+      (function (module, $moduleUI) {  // create scope
         $moduleUI.find('.waml-audioparam').each( function () {
           var $knob = $(this);
           var target = $knob.data('target');
@@ -152,7 +152,7 @@ $(function () {
             });
           })($knob, target);
         });
-      })(module);
+      })(module, $moduleUI);
     });
   };
 
