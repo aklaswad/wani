@@ -41,7 +41,7 @@
     };
     return this;
   };
-  TriOscillator.prototype = Object.create(Waml.Synthesizer.prototype);
+  TriOscillator.prototype = Object.create(Waml.Module.prototype);
 
   TriOscillator.prototype.noteOn = function (noteNumber) {
     this.frequency.cancelScheduledValues(0);
@@ -55,11 +55,12 @@
 
   if ( 'undefined' !== typeof window
     && 'undefined' !== typeof window.Waml ) {
-    Waml.registerSynthesizer({
+    Waml.registerModule({
       name: 'TriOscillator',
       author: 'aklaswad<aklaswad@gmail.com>',
       description: 'TriOscillator',
       create: TriOscillator,
+      isSynth: true,
       audioParams: {
         frequency: {
           description: 'frequency (hz)',

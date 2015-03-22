@@ -17,7 +17,7 @@ WebAudio APIで書かれたシンセサイザーやエフェクターをモジ�
 
 # 仕様
 
-モジュールはざっくりシンセとエフェクターに分類されます。それぞれ、モジュールをWamlから読み込み可能にするために、スクリプトファイルから`Waml.registerSynthesizer()`または`Waml.registerEffect()`を呼び出してモジュール定義を渡します。以下がモジュール定義の例です。
+モジュールはざっくりシンセとエフェクターに分類されます。それぞれ、モジュールをWamlから読み込み可能にするために、スクリプトファイルから`Waml.registerModule()`を呼び出してモジュール定義を渡します。以下がモジュール定義の例です。
 
 ```
 function TriOscillator (ctx) {
@@ -30,11 +30,12 @@ function TriOscillator (ctx) {
 
 if ( 'undefined' !== typeof window
   && 'undefined' !== typeof window.Waml ) {
-  Waml.registerSynthesizer({
+  Waml.registerModule({
     name: 'TriOscillator',
     author: 'aklaswad<aklaswad@gmail.com>',
     description: 'TriOscillator',
     create: TriOscillator,
+    isSynth: true,
     audioParams: {
       frequency: {
         description: 'frequency (hz)',
@@ -60,6 +61,10 @@ ry
 ### create
 
 モジュールのインスタンスを生成するコンストラクタを指定します。いわゆるJavaScriptのfunctionです。`new foobar(ctx)`のように呼ばれます。
+
+### isSynth and isEffect
+
+モジュールのタイプを指定します。
 
 ### audioParams
 

@@ -1,10 +1,10 @@
 $(function () {
   // Synth
   var ctx = Waml.getAudioContext();
-  var tri = Waml.createSynthesizer('TriOscillator');
+  var tri = Waml.createModule('TriOscillator');
 
   // Effect
-  var trm = Waml.createEffect('SimpleTremolo');
+  var trm = Waml.createModule('SimpleTremolo');
   trm.depth.value = 2.0;
   trm.frequency.value = 0.0;
   tri.connect(trm.inlet);

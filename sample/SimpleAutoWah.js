@@ -30,17 +30,18 @@
     filter.connect(outlet);
     return this;
   };
-  SimpleAutoWah.prototype = Object.create(Waml.Effect.prototype);
+  SimpleAutoWah.prototype = Object.create(Waml.Module.prototype);
 
   SimpleAutoWah.prototype.connect = function (dest) {
     return this.outlet.connect(dest);
   };
 
-  Waml.registerEffect({
+  Waml.registerModule({
     name: 'SimpleAutoWah',
     author: 'aklaswad<aklaswad@gmail.com>',
     description: 'Sample AutoWah effector module for Waml',
     create: SimpleAutoWah,
+    isEffect: true,
     audioParams: {
       frequency: {
         description: 'frequency (hz)',
