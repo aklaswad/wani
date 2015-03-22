@@ -155,94 +155,68 @@
     __paramWatcher.remove(this);
   };
 
-  function WamlSynthesizer (ctx) {
-
-  }
-  WamlSynthesizer.prototype = Object.create(WamlModule.prototype);
-
-  WamlSynthesizer.prototype.noteOn = function (noteNumber) {
-    throw('Virtual method "WamlSynthesizer.noteOn" has called');
-  };
-
-  WamlSynthesizer.prototype.noteOff = function (noteNumber) {
-    throw('Virtual method "WamlSynthesizer.noteOff" has called');
-  };
-
-  function WamlEffect (ctx) {
-  }
-  WamlEffect.prototype = Object.create(WamlModule.prototype);
-
   var Waml = {
     getAudioContext: getAudioContext,
     // ********* Provide Base Classes *********
-    Synthesizer: WamlSynthesizer,
-    Effect: WamlEffect,
+    Module: WamlModule,
+    modules: {},
     // ********* Package Manager *********
-    synthesizers: {},
-    effects: {},
-    registerSynthesizer: function (module) {
-      if ( !this.validateSynthesizer(module) ) {
+    registerModule: function (module) {
+      if ( !this.__validate(module) ) {
         this.console.error('Failed to load module');
         return;
       }
-      this.synthesizers[module.name] = module;
+      this.modules[module.name] = module;
       if ( 'undefined' !== typeof this.onmoduleload ) {
         this.onmoduleload(module);
       }
     },
-    registerEffect: function (module) {
-      if ( !this.validateEffect(module) ) {
-        this.console.error('Failed to load module');
-        return;
-      }
-      this.effects[module.name] = module;
-      if ( 'undefined' !== typeof this.onmoduleload ) {
-        this.onmoduleload(module);
-      }
-    },
-    validateSynthesizer: function(module) {
-      return this.__validate(module,[]);
-    },
-    validateEffect: function(module) {
-      return this.__validate(module,['inlet']);
-    },
-    __validate: function(module, requires) {
+    __validate: function(module) {
       var name, i,len;
       if ( !module.name ) {
         this.console.error('Cannot register unnamed module');
         return false;
       }
       name = module.name;
-      len = requires.length;
-      for (i=0;i<len;i++) {
-        if ( !module[ requires[i] ]) {
-          this.console.error('Module: ' + name + ' does not have required info ' + requires[i] );
-          return false;
-        }
+      if ( !module.isSynth && !module.isEffect ) {
+        this.console.error('Module must be synth or effect');
+        return false;
       }
       return true;
     },
-    createSynthesizer: function (name) {
-      var synthesizer = this.synthesizers[name];
-      if (!synthesizer) throw("synthesizer " + name + " is not found");
-      return new synthesizer.create(this.getAudioContext());
+    createModule: function (name) {
+      var module = this.modules[name];
+      if (!module) throw("Module '" + name + "' is not found");
+      return new module.create(this.getAudioContext());
     },
-    createEffect: function (name) {
-      var effect = this.effects[name];
-      if (!effect) throw("effect " + name + " is not found");
-      return new effect.create(this.getAudioContext());
+    listSynthesizers: function () {
+      var name, synthesizers = [];
+      for (name in this.modules) {
+        if ( this.modules[name].isSynth ) {
+          synthesizers.push(name);
+        }
+      }
+      return synthesizers;
     },
-    describeAll: function () {
-      console.log('/* Registered Synthesizers */');
-      console.log(this.synthesizers);
-      console.log('/* Registered Effects */');
-      console.log(this.effects);
+    listEffects: function () {
+      var name, effects = [];
+      for (name in this.modules) {
+        if ( this.modules[name].isEffect ) {
+          effects.push(name);
+        }
+      }
+      return effects;
+    },
+    describeAll: function (reader) {
+      for (var name in this.modules) {
+        this.describe(name, reader);
+      }
     },
     describe: function (name, reader) {
       if ( 'undefined' === reader ) {
         reader = console.log;
       }
-      var module = this.synthesizers[name] || this.effects[name];
+      var module = this.modules[name];
       if ( !module ) {
         reader( 'Module ' + name + ' is not registered' );
         return;

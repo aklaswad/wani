@@ -36,12 +36,17 @@
     osc1.connect(mixer);
     osc2.connect(mixer);
     osc3.connect(mixer);
-    this.connect = function (node) {
-      return mixer.connect(node);
-    };
     return this;
   };
-  TriOscillator.prototype = Object.create(Waml.Synthesizer.prototype);
+  TriOscillator.prototype = Object.create(Waml.Module.prototype);
+
+  TriOscillator.prototype.connect = function () {
+    return this.mixer.connect.apply(this.mixer,arguments);
+  };
+
+  TriOscillator.prototype.disconnect = function () {
+    return this.mixer.disconnect.apply(this.mixer,arguments);
+  };
 
   TriOscillator.prototype.noteOn = function (noteNumber) {
     this.frequency.cancelScheduledValues(0);
@@ -55,11 +60,12 @@
 
   if ( 'undefined' !== typeof window
     && 'undefined' !== typeof window.Waml ) {
-    Waml.registerSynthesizer({
+    Waml.registerModule({
       name: 'TriOscillator',
       author: 'aklaswad<aklaswad@gmail.com>',
       description: 'TriOscillator',
       create: TriOscillator,
+      isSynth: true,
       audioParams: {
         frequency: {
           description: 'frequency (hz)',
