@@ -35,9 +35,10 @@ html,body{height:100%;}
             <pre>
 function ConstructorOfYourSynthesizer () { ... }
 // just add this to the end of your *.js file (with some more rule...)
-Waml.registerSynthesizer({
+Waml.registerModule({
   name: "MySynthesizer",
   create: ConstructorOfYourSyntehsizer,
+  isSynth: true
 });
 </pre>
           </p>
@@ -45,13 +46,13 @@ Waml.registerSynthesizer({
             <h3>WAML Module behaves like native AudioNode</h3>
             such like this.
             <pre>
-var wamlSynth = Waml.createSynthesizer('SYNTH_NAME');
+var wamlSynth = Waml.createModule('SYNTH_NAME');
 var nativeDelay = ctx.createDelay();
 wamlSynth.connect(nativeDelay);
 nativeDelay.connect(ctx.destination);
 
 var nativeOsc = ctx.createOsc();
-var wamlEffect = Waml.createEffect('EFFECT_NAME');
+var wamlEffect = Waml.createModule('EFFECT_NAME');
 nativeOsc.connect(wamlEffect.inlet);
 wamlEffect.connect(ctx.destination);
 </pre>
