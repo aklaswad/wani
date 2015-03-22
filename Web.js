@@ -1,19 +1,31 @@
 (function () {
 
-  function createWaveFormRenderer(canvas, multiplier) {
+  function createWaveFormRenderer(canvas, opts) {
     var ctx = Waml.getAudioContext();
-    if ( !multiplier ) multiplier = 1;
     var proc = ctx.createScriptProcessor(2048,1,1);
     var cvs = document.getElementById(canvas);
     var w = cvs.width;
     var h = cvs.height;
     var cctx = cvs.getContext('2d');
-    cctx.strokeStyle = '#000';
+    var multiplier = opts.mutiplier || 1.0;
+    cctx.fillStyle = opts.backgroundColor || '#fff';
+    cctx.lineWidth = '1px';
     var frames = 0;
     var last = {max: 0, maxframe: 0 };
     proc.onaudioprocess = function(evt) {
       var i,channel = evt.inputBuffer.getChannelData(0);
       cctx.clearRect(0,0,w,h);
+      cctx.fillRect(0,0,w,h);
+
+      if (opts.centerLine) {
+        cctx.strokeStyle = opts.centerLine;
+        cctx.beginPath();
+        cctx.moveTo(0,h/2);
+        cctx.lineTo(w-1,h/2);
+        cctx.stroke();
+      }
+
+      cctx.strokeStyle = opts.waveColor || '#000';
       cctx.moveTo(0,h/2);
       cctx.beginPath();
       var max = 0;
