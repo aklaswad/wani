@@ -31,7 +31,7 @@
       return(Math.exp(n) - Math.exp(-n)) / (Math.exp(n) + Math.exp(-n));
   }
 
-  function build_table (amount, n_samples, ws_table) {
+  function build_table2 (amount, n_samples, ws_table) {
     var i, x, y, a = 1 - amount;
     for(i = 0; i < n_samples; i++) {
       x = i * 2 / n_samples - 1;
@@ -52,6 +52,7 @@
     var drive = ctx.createWaveShaper();
     drive.curve = table;
     inlet.connect(drive);
+    this.drive = inlet.gain;
     drive.connect(outlet);
   }
   SimpleOverDrive.prototype = Object.create(Waml.Module.prototype);
@@ -69,7 +70,7 @@
     audioParams: {
       drive: {
         description: 'Amplifier!!',
-        range: [0, 1],
+        range: [0.5, 3],
       },
     },
     params: {
