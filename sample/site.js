@@ -84,7 +84,7 @@ $(function () {
       var $knobWrapper = $('<div />');
       $knobWrapper.addClass('knob-wrapper');
       $knobWrapper.append(
-        $('<h2 />').text(name).addClass('tooltipo').append(
+        $('<h2 />').text(name).append(
           $('<span />').text(this.description).addClass ));
       var range = Math.abs( this.range[0] - this.range[1] );
       var $knob = $('<webaudio-knob width="32" height="32" '
