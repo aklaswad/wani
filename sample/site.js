@@ -80,7 +80,7 @@ $(function () {
     }
     $div.append( $h1 );
     var $knobs = $('<div />').addClass('knobs');
-    $.each( def.audioParams, function (name) {
+    $.each( (def.audioParams || []), function (name) {
       var $knobWrapper = $('<div />');
       $knobWrapper.addClass('knob-wrapper');
       $knobWrapper.append(
@@ -103,6 +103,22 @@ $(function () {
       $knobs.append($knobWrapper);
     });
     $div.append($knobs);
+
+    var $params = $('<div />').addClass('params');
+    $.each( (def.params || []), function (name, definition) {
+      var $paramBox = $('<div />').addClass('param-wrapper');
+      $('<h2 />').text(name).appendTo($paramBox);
+      if ( definition.values ) {
+        var $select = $('<select />').addClass('waml-param-select').data('target', name);
+        $.each( definition.values, function (idx, value) {
+          $select.append( $('<option />').text(value) );
+        });
+        $select.appendTo($paramBox);
+      }
+      $paramBox.appendTo($params);
+    });
+    $div.append($params);
+
     return $div;
   };
 
@@ -151,6 +167,17 @@ $(function () {
               module[target].value = e.target.value;
             });
           })($knob, target);
+        });
+
+        $moduleUI.find('.waml-param-select').each( function () {
+          var $select = $(this);
+          var target = $select.data('target');
+
+          (function ($select, target) {  // create scope again
+            $select.off('change').on('change', function (e) {
+              module[target] = $select.val();
+            });
+          })($select, target);
         });
       })(module, $moduleUI);
     });

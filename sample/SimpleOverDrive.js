@@ -77,12 +77,6 @@
         range: [0.5, 1.5],
       },
     },
-    params: {
-      type: {
-        description: 'mudulator wave shape',
-        values: ["sine", "sawtooth", "square", "triangle"]
-      }
-    },
     inlet: "inlet",
   });
 })();
