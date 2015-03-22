@@ -26,6 +26,7 @@ $(function () {
     this.initUI();
     this.updateModuleList();
     this.initKeyboard();
+    this.rebuildUIBindings();
   };
 
   App.prototype.initUI = function () {
