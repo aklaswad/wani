@@ -3,16 +3,6 @@
   // Wave shape builders taken from Tuna https://github.com/Dinahmoe/tuna
 
   var table;
-  function build_table3 (amount, n_samples, ws_table) {
-    amount = Math.min(amount, 0.9999);
-    var k = 2 * amount / (1 - amount),
-        i, x;
-    for(i = 0; i < n_samples; i++) {
-        x = i * 2 / n_samples - 1;
-        ws_table[i] = (1 + k) * x / (1 + k * Math.abs(x));
-    }
-  }
-
   function build_table (amount, n_samples, ws_table) { // fixed curve, amount doesn't do anything, the distortion is just from the drive
     var i, x;
     for(i = 0; i < n_samples; i++) {
@@ -24,19 +14,6 @@
       } else {
         ws_table[i] = 0.630035;
       }
-    }
-  }
-
-  function tanh(n) {
-      return(Math.exp(n) - Math.exp(-n)) / (Math.exp(n) + Math.exp(-n));
-  }
-
-  function build_table2 (amount, n_samples, ws_table) {
-    var i, x, y, a = 1 - amount;
-    for(i = 0; i < n_samples; i++) {
-      x = i * 2 / n_samples - 1;
-      y = x < 0 ? -Math.pow(Math.abs(x), a + 0.04) : Math.pow(x, a);
-      ws_table[i] = tanh(y * 2);
     }
   }
 
@@ -56,14 +33,6 @@
     drive.connect(outlet);
   }
   SimpleOverDrive.prototype = Object.create(Waml.Module.prototype);
-
-  SimpleOverDrive.prototype.connect = function (dest) {
-    return this.outlet.connect(dest);
-  };
-
-  SimpleOverDrive.prototype.disconnect = function () {
-    return this.outlet.disconnect.apply(this.outlet,arguments);
-  };
 
   Waml.registerModule({
     name: 'SimpleOverDrive',

@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 "use strict";
-var http = require('http')
-  , fs = require('fs')
-  ;
+var http = require('http'),
+  fs = require('fs');
+
 var documents = {
   'Waml.js': '/../lib/Waml.js',
   'Web.js': '/../lib/Web.js',
@@ -22,10 +22,12 @@ for ( filename in documents ) {
 }
 
 var httpserver = http.createServer(function(request, response) {
-  var path = request.url.replace(/^\//,'')
-    , content, type;
+  var path = request.url.replace(/^\//,''),
+    content,
+    type;
   if ( path === '' ) path = 'index.html';
-  if ( content = documents[path] ) {
+  content = documents[path];
+  if ( content ) {
     type = path.match(/\.js$/) ? 'text/javascript' : 'text/html';
     response.writeHead(200, {"Content-Type": type});
     response.write(content);

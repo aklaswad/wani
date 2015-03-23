@@ -7,33 +7,31 @@
     var that = this;
     var oscs = [];
     var freqMultipliers = [];
+    var pitches = [];
+    var mtofs = [];
     var i;
+
+    this.frequency = Waml.createAudioParam(this.ctx,220);
+
     for ( i=0;i<3;i++) {
       oscs[i] = ctx.createOscillator();
+      oscs[i].frequency.value = 0; //Always zero. use audio signal only!
       oscs[i].start(0);
+      pitches[i] = Waml.createAudioParam(ctx,0);
+      mtofs[i] = Waml.createMtofTilde(ctx,-24,24,4096,1,0);
       freqMultipliers[i] = ctx.createGain();
-      freqMultipliers[i].gain.value = 1 + i/3;
+      freqMultipliers[i].gain.value = 0;
+
+      pitches[i].connect(mtofs[i]);
+      mtofs[i].connect(freqMultipliers[i].gain);
+      this.frequency.connect(freqMultipliers[i]);
       freqMultipliers[i].connect(oscs[i].frequency);
       oscs[i].connect(this.outlet);
     }
 
-    var setFrequencyValue = function (value) {
-      for ( i=0;i<3;i++) {
-        oscs[i].frequency.value = value * (1 + i/3);
-      }
-    };
-    setFrequencyValue(220); // Set Default value
-
-    this.frequency = this.createAudioParamBridge(
-      220,
-      freqMultipliers,
-      setFrequencyValue
-    );
-
-    this.detune = this.createAudioParamBridge(
-      0,
-      [ oscs[0].detune, oscs[1].detune, oscs[2].detune ]
-    );
+    pitches[0].value = 0;
+    this.secondFreqBy = pitches[1];
+    this.thirdFreqBy = pitches[2];
 
     Object.defineProperty(this, 'type', {
       set: function(type) {
@@ -46,17 +44,8 @@
     });
     this.outlet.gain.value = 0.0; //Using as note gate, so set zero at first.
     return this;
-  };
-
+  }
   TriOscillator.prototype = Object.create(Waml.Module.prototype);
-
-  TriOscillator.prototype.connect = function () {
-    return this.outlet.connect.apply(this.outlet,arguments);
-  };
-
-  TriOscillator.prototype.disconnect = function () {
-    return this.outlet.disconnect.apply(this.outlet,arguments);
-  };
 
   TriOscillator.prototype.noteOn = function (noteNumber) {
     this.frequency.cancelScheduledValues(0);
@@ -68,8 +57,8 @@
     this.outlet.gain.value = 0.0;
   };
 
-  if ( 'undefined' !== typeof window
-    && 'undefined' !== typeof window.Waml ) {
+  if ( 'undefined' !== typeof window &&
+       'undefined' !== typeof window.Waml ) {
     Waml.registerModule({
       name: 'TriOscillator',
       author: 'aklaswad<aklaswad@gmail.com>',
@@ -81,17 +70,21 @@
           description: 'frequency (hz)',
           range: [0, 20000],
         },
-        detune: {
-          description: 'detune (cent)',
-          range: [-100, 100],
+        secondFreqBy: {
+          description: "multiprier for second oscillator(margin of midinote)",
+          range: [-24,24]
         },
+        thirdFreqBy: {
+          description: "multiprier for third oscillator(margin of midinote)",
+          range: [-24,24]
+        }
       },
       params: {
         type: {
           values: ["sine", "sawtooth", "square", "triangle" ],
-          description: "Wave shape type.",
-        }
-      }
+          description: "Wave shape type."
+        },
+      },
     });
   }
 })();

@@ -68,6 +68,7 @@ $(function () {
     var $synth = this.buildModuleUI('TriOscillator', { noClose: true });
     $synth.addClass('synth');
     $('#js-circuit').append($synth);
+
   };
 
   App.prototype.buildModuleUI = function (name, opts) {
@@ -88,11 +89,11 @@ $(function () {
         $('<h2 />').text(name).append(
           $('<span />').text(this.description).addClass ));
       var range = Math.abs( this.range[0] - this.range[1] );
-      var $knob = $('<webaudio-knob width="32" height="32" '
-        + 'min="' + this.range[0] + '" '
-        + 'max="' + this.range[1] + '" '
-        + 'step="' + range / 256 + '" '
-        + '/>');
+      var $knob = $('<webaudio-knob width="32" height="32" ' +
+          'min="' + this.range[0] + '" ' +
+          'max="' + this.range[1] + '" ' +
+          'step="' + range / 256 + '" ' +
+          '/>');
       $knob.addClass('knob');
       $knob.data('target', name);
       $knob.addClass('waml-audioparam');
@@ -181,6 +182,10 @@ $(function () {
           })($select, target);
         });
       })(module, $moduleUI);
+    });
+
+    $('.waml-audioparam').each(function () {
+      $(this.shadowRoot).append('<style>#wac-value-tip{ opacity: 1.0 !important; transition: none !important; z-index:9999999;}</style>');
     });
   };
 

@@ -29,17 +29,8 @@
     filterBp.connect(filter);
     filter.connect(outlet);
     return this;
-  };
+  }
   SimpleAutoWah.prototype = Object.create(Waml.Module.prototype);
-
-  SimpleAutoWah.prototype.connect = function (dest) {
-    return this.outlet.connect(dest);
-  };
-
-  SimpleAutoWah.prototype.disconnect = function () {
-    return this.outlet.disconnect.apply(this.outlet,arguments);
-  };
-
 
   Waml.registerModule({
     name: 'SimpleAutoWah',

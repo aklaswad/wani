@@ -5,21 +5,23 @@
 (function () {
   "use strict";
   var __ctx;
-  var __paramWatcher;
 
   function getAudioContext() {
     if ( __ctx ) return __ctx;
     __ctx = new AudioContext();
-    __paramWatcher = new ParamWatcher(__ctx);
     return __ctx;
   }
 
-  function midi2freq(noteNumber) {
-    return 440.0 * Math.pow(2, (noteNumber-69)/12);
+  function midi2freq(noteNumber, centerFreq, centerNote) {
+    if ( 'undefined' === typeof centerFreq ) { centerFreq = 440; }
+    if ( 'undefined' === typeof centerNote ) { centerNote = 69; }
+    return centerFreq * Math.pow(2, (noteNumber-centerNote)/12);
   }
 
-  function freq2midi(frequency) {
-    return Math.log2(frequency/440.0)*12 + 69;
+  function freq2midi(frequency,centerFreq,centerNote) {
+    if ( 'undefined' === typeof centerFreq ) { centerFreq = 440; }
+    if ( 'undefined' === typeof centerNote ) { centerNote = 69; }
+    return Math.log2(frequency/centerFreq)*12 + centerNote;
   }
 
   function createDCOffset(value) {
@@ -38,99 +40,85 @@
     return gain;
   }
 
-  // Param Watcher Singleton Object
-  // TODO: make sure no memory leaks
-  function ParamWatcher(ctx) {
-    this.owners = {};
-    this.ownerAutoIndex = 0;
-    this.init(ctx);
-    return this;
+  function createAudioParam(ctx,defaultValue,onchange) {
+    var lfo = ctx.createGain();
+    var offset = createDCOffset(1.0);
+    Object.defineProperty(lfo,'value',{
+      set: function(value) {
+        if ( 'function' === typeof lfo.onchange ) {
+          var res = lfo.onchange(value, lfo.__waml_value);
+          if (false === res) return;
+        }
+        lfo.__waml_value = value;
+        offset.gain.value = value;
+      },
+      get: function() {
+        return lfo.__waml_value;
+      }
+    });
+    lfo.setValueAtTime = function(){ AudioParam.prototype.setValueAtTime.apply(offset.gain, arguments);};
+    lfo.linearRampToValueAtTime = function(){ AudioParam.prototype.linearRampToValueAtTime.apply(offset.gain, arguments);};
+    lfo.exponentialRampToValueAtTime = function(){ AudioParam.prototype.exponentialRampToValueAtTime.apply(offset.gain, arguments);};
+    lfo.setTargetAtTime = function(){ AudioParam.prototype.setTargetAtTime.apply(offset.gain, arguments);};
+    lfo.setValueCurveAtTime = function(){ AudioParam.prototype.setValueCurveAtTime.apply(offset.gain, arguments);};
+    lfo.cancelScheduledValues = function(){ AudioParam.prototype.cancelScheduledValues.apply(offset.gain, arguments);};
+    lfo.gain.value = 1.0;
+    lfo.onchange = onchange;
+    offset.connect(lfo);
+    return lfo;
   }
 
-  ParamWatcher.prototype.init = function (ctx) {
-    this.engine = ctx.createScriptProcessor(512,2,2);
-    var that = this;
-    this.engine.onaudioprocess = function (e) {
-      var ownerid,watcher,watchers,i,len, newval, dest, destlen,j;
-      for (ownerid in that.owners) {
-        watchers = that.owners[ownerid];
-        len = watchers.length;
-        for (i=0;i<len;i++) {
-          watcher = watchers[i];
-          if ( watcher.param.value !== watcher.last ) {
-            newval = watcher.last = watcher.param.value;
-            if ( watcher.callback ) {
-              watcher.callback(newval);
-            }
-            else {
-              destlen = watcher.destinations.length;
-              for ( j=0;j<destlen;j++ ) {
-                watcher.destinations[j].value = newval;
-              }
-            }
-          }
-        }
-      }
+  /*
+     createMtofTilde (aka mtof~)
+
+     WaveShaper node only supports input range from -1.0 to 1.0, so
+     once map MIDI note to that range, and pass to shaper.
+     this only supports MIDI note number of from -256 to 256
+   */
+
+  function buildMtofShaper(ctx, from, to, size, centerFreq, centerNote) {
+    var shaper;
+    if ( 'undefined' === typeof from ) { from = 0; }
+    if ( 'undefined' === typeof to ) { to = 128; }
+    if ( !size ) { size=256; }
+    var range = Math.abs(from - to);
+    var curve = new Float32Array(size);
+    for ( var i=0;i<size;i++) {
+      curve[i] = midi2freq( ( from + range * (i/size)), centerFreq, centerNote );
+    }
+    shaper = ctx.createWaveShaper();
+    shaper.curve = curve;
+    return shaper;
+  }
+
+  function createMtofTilde(ctx, from, to, size, centerFreq, centerNote) {
+    var normalize = ctx.createGain();
+    var shaper = buildMtofShaper(ctx,from,to,size,centerFreq,centerNote);
+    normalize.gain.value = 1 / Math.abs(from - to);
+    normalize.connect(shaper);
+
+    // hack: override the connect()
+    normalize.connect = function () {
+      shaper.connect.apply(shaper,arguments);
     };
-    var mute = ctx.createGain();
-    mute.gain.value = 0.0;
-    this.engine.connect(mute);
-    mute.connect(ctx.destination);
-  };
+    normalize.disconnect = function () {
+      shaper.disconnect.apply(shaper,arguments);
+    };
+    return normalize;
+  }
 
-  ParamWatcher.prototype.add = function(owner, param, destinations,callback) {
-    var id = owner.__watcher_id;
-    if (!id) {
-      id = owner.__watcher_id = this.ownerAutoIndex++;
-      this.owners[id] = [];
-    }
-    var watched = { param: param, last: param.value };
-    if ( callback ) {
-      watched.callback = callback;
-    }
-    else if ( ! destinations instanceof Array ) {
-      watched.destinations = [destinations];
-    }
-    else {
-      watched.destinations = destinations;
-    }
-    this.owners[id].push(watched);
-  };
 
-  ParamWatcher.prototype.remove = function(owner) {
-    delete this.owners[owner.__watcher_id];
-  };
 
   function WamlModule (ctx) {
     this.ctx = ctx;
   }
-  WamlModule.prototype = Object.create(AudioNode.prototype);
 
-
-
-  /* A hacky way to create own AudioParam;
-     DC offset(1.0) is connected to Gain node, And publish
-     gain's parameter instance as interface. So we can get
-     the params value as Audio signals. (when it is modulated);
-     There also is needed to watch the static value.
-   */
-  WamlModule.prototype.createAudioParamBridge = function(defaultValue, dest, callback) {
-    var ctx = Waml.getAudioContext();
-    var offset = Waml.createDCOffset(1.0);
-    var gain = ctx.createGain();
-    offset.connect(gain);
-    gain.gain.value = defaultValue;
-    var param = gain.gain;
-    var i, len = dest.length;
-    for (i=0;i<len;i++) {
-      gain.connect(dest[i]);
-    }
-    __paramWatcher.add(this,param,dest,callback);
-    return param;
+  WamlModule.prototype.connect = function () {
+    return this.outlet.connect.apply( this.outlet, arguments );
   };
 
-  WamlModule.prototype.destory = function () {
-    __paramWatcher.remove(this);
+  WamlModule.prototype.disconnect = function () {
+    return this.outlet.disconnect.apply( this.outlet, arguments );
   };
 
   var Waml = {
@@ -209,8 +197,25 @@
     // ********* Helpers *********
     console: console,
     createDCOffset:  createDCOffset,
+    createAudioParam: createAudioParam,
+    createMtofTilde: createMtofTilde,
     midi2freq: midi2freq,
-    freq2midi: freq2midi
+    freq2midi: freq2midi,
+    siglog: function (ctx,prefix) {
+      var i=0;
+      var proc = ctx.createScriptProcessor(8192,1,1);
+      if ( !prefix ) prefix = 'siglog';
+      proc.onaudioprocess = function (e) {
+        if ( i++ % 4 ) return;
+        var ary = e.inputBuffer.getChannelData(0);
+        console.log(prefix+':',ary[0]);
+      };
+      var mute = ctx.createGain();
+      mute.gain.value = 0;
+      proc.connect(mute);
+      mute.connect(ctx.destination);
+      return proc;
+    }
   };
 
   //TBD Node?
