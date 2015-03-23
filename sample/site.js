@@ -89,11 +89,11 @@ $(function () {
         $('<h2 />').text(name).append(
           $('<span />').text(this.description).addClass ));
       var range = Math.abs( this.range[0] - this.range[1] );
-      var $knob = $('<webaudio-knob width="32" height="32" '
-        + 'min="' + this.range[0] + '" '
-        + 'max="' + this.range[1] + '" '
-        + 'step="' + range / 256 + '" '
-        + '/>');
+      var $knob = $('<webaudio-knob width="32" height="32" ' +
+          'min="' + this.range[0] + '" ' +
+          'max="' + this.range[1] + '" ' +
+          'step="' + range / 256 + '" ' +
+          '/>');
       $knob.addClass('knob');
       $knob.data('target', name);
       $knob.addClass('waml-audioparam');

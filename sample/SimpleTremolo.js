@@ -39,7 +39,7 @@
     this.depth = offset.gain;
     osc.start();
     return this;
-  };
+  }
   SimpleTremolo.prototype = Object.create(Waml.Module.prototype);
 
   Waml.registerModule({

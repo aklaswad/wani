@@ -44,17 +44,8 @@
     });
     this.outlet.gain.value = 0.0; //Using as note gate, so set zero at first.
     return this;
-  };
-
+  }
   TriOscillator.prototype = Object.create(Waml.Module.prototype);
-
-  TriOscillator.prototype.connect = function () {
-    return this.outlet.connect.apply(this.outlet,arguments);
-  };
-
-  TriOscillator.prototype.disconnect = function () {
-    return this.outlet.disconnect.apply(this.outlet,arguments);
-  };
 
   TriOscillator.prototype.noteOn = function (noteNumber) {
     this.frequency.cancelScheduledValues(0);
@@ -66,8 +57,8 @@
     this.outlet.gain.value = 0.0;
   };
 
-  if ( 'undefined' !== typeof window
-    && 'undefined' !== typeof window.Waml ) {
+  if ( 'undefined' !== typeof window &&
+       'undefined' !== typeof window.Waml ) {
     Waml.registerModule({
       name: 'TriOscillator',
       author: 'aklaswad<aklaswad@gmail.com>',

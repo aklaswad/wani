@@ -29,7 +29,7 @@
     filterBp.connect(filter);
     filter.connect(outlet);
     return this;
-  };
+  }
   SimpleAutoWah.prototype = Object.create(Waml.Module.prototype);
 
   Waml.registerModule({
