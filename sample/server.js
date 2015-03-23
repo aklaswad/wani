@@ -12,7 +12,8 @@ var documents = {
   'SimpleTremolo.js': '/SimpleTremolo.js',
   'SimpleAutoWah.js': '/SimpleAutoWah.js',
   'SimpleOverDrive.js': '/SimpleOverDrive.js',
-  'site.js': '/site.js'
+  'site.js': '/site.js',
+  'style.css': '/style.css'
 };
 
 var filename, path;
@@ -28,7 +29,8 @@ var httpserver = http.createServer(function(request, response) {
   if ( path === '' ) path = 'index.html';
   content = documents[path];
   if ( content ) {
-    type = path.match(/\.js$/) ? 'text/javascript' : 'text/html';
+    type = path.match(/\.js$/) ? 'text/javascript' :
+           path.match(/\.css$/) ? 'text/css' : 'text/html';
     response.writeHead(200, {"Content-Type": type});
     response.write(content);
   }

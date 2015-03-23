@@ -25,19 +25,32 @@ $(function () {
     // UIs
     this.initUI();
     this.updateModuleList();
-    this.initKeyboard();
+    this.initKeyboard($('.waml-kb'));
     this.rebuildUIBindings();
   };
 
   App.prototype.initUI = function () {
+    var app = this;
     // Keyboard
-    Waml.onmoduleload = function (module) {
-      Waml.describe(module.name, function (message) {
-        var $console = $('#js-console');
-        var html = $console.html();
-        $console.html( html + "<br />" + message );
-      });
+
+    var noteOff = function () {
+      app.primarySynth.noteOff();
+      $('.waml-kb').off('mouseup mouseleave',noteOff);
+      $('.waml-kb-key').off('mouseenter');
+      $('.waml-kb-key').removeClass('waml-kb-key-playing');
     };
+    $(document).on('mousedown', '.waml-kb-key', function () {
+      $('.waml-kb').on('mouseup mouseleave', noteOff);
+      $('.waml-kb-key').on('mouseenter', function () {
+        app.primarySynth.noteOff();
+        app.primarySynth.noteOn( $(this).data('waml-notenumber') );
+        $('.waml-kb-key').removeClass('waml-kb-key-playing');
+        $(this).addClass('waml-kb-key-playing');
+      });
+
+      $(this).addClass('waml-kb-key-playing');
+      app.primarySynth.noteOn( $(this).data('waml-notenumber') );
+    });
 
     // jQuery actions
     var that = this;
@@ -203,18 +216,44 @@ $(function () {
     this.makeDSPChain();
   };
 
-  App.prototype.initKeyboard = function () {
-    var kb = this.kb = document.getElementById('keyboard');
-    var that = this;
-    kb.addEventListener('change', function(e) {
-      var note = e.note;
-      if ( note[0] ) {
-        that.primarySynth.noteOn(note[1]);
+  App.prototype.initKeyboard = function ($elem) {
+    var width = $elem.width();
+    var height = $elem.height();
+    var keys = 25;
+    var from = 48;
+    var blackNotes = {1:1,3:1,6:1,8:1,10:1};
+    var isBlack = function (n) {
+      return blackNotes[ n % 12 ];
+    };
+    var whites={},blacks={};
+    var i,nn, bi=0,wi=0;
+    i = 0;
+    for ( nn=from;nn<keys+from;nn++) {
+      if (isBlack(nn)) {
+        blacks[wi] = nn
       }
       else {
-        that.primarySynth.noteOff();
+        whites[wi++] = nn
       }
-    });
+      i++;
+    }
+
+    var keyWidth = width / wi;
+    for ( i=0;i<wi;i++) {
+      $('<div />')
+        .addClass('waml-kb-wk waml-kb-key')
+        .data('waml-notenumber', whites[i])
+        .css({ width: keyWidth, left: i * keyWidth })
+        .appendTo($elem);
+    }
+    for ( i=0;i<wi;i++) {
+      if ( !blacks[i] ) continue;
+      $('<div />')
+        .addClass('waml-kb-bk waml-kb-key')
+        .data('waml-notenumber', blacks[i])
+        .css({ width: keyWidth * 0.7, left: i * keyWidth - keyWidth * 0.35  })
+        .appendTo($elem);
+    }
   };
 
   window.app = new App();
