@@ -33,24 +33,71 @@ $(function () {
     var app = this;
     // Keyboard
 
-    var noteOff = function () {
-      app.primarySynth.noteOff();
-      $('.waml-kb').off('mouseup mouseleave',noteOff);
-      $('.waml-kb-key').off('mouseenter');
-      $('.waml-kb-key').removeClass('waml-kb-key-playing');
-    };
-    $(document).on('mousedown', '.waml-kb-key', function () {
-      $('.waml-kb').on('mouseup mouseleave', noteOff);
-      $('.waml-kb-key').on('mouseenter', function () {
-        app.primarySynth.noteOff();
-        app.primarySynth.noteOn( $(this).data('waml-notenumber') );
-        $('.waml-kb-key').removeClass('waml-kb-key-playing');
-        $(this).addClass('waml-kb-key-playing');
-      });
+    var leaveTimer;
 
-      $(this).addClass('waml-kb-key-playing');
-      app.primarySynth.noteOn( $(this).data('waml-notenumber') );
+    $(document).on('mousedown', '.waml-kb-key', function () {
+      startPlay($(this));
+      return false;
     });
+
+    function setUpKBListeners ($key) {
+      $('.waml-kb').on('mouseup', function () {
+        endPlay();
+        return false;
+      });
+      $('.waml-kb').on('mouseleave', function () {
+        endPlay(1);
+        return false;
+      });
+      $('.waml-kb-key').on('mouseenter', function () {
+        endPlay();
+        startPlay($(this));
+        return false;
+      });
+    }
+
+    function startPlay($key) {
+      $key.addClass('waml-kb-key-playing');
+      app.primarySynth.noteOn( $key.data('waml-notenumber') );
+      setUpKBListeners($key);
+      $(document).addClass('no-select');
+    }
+
+    function endPlay(backable) {
+      finishLeaveKeyboard();
+      $(document).off('mouseup', finishPlayWhenMouseUpAnywhere);
+      if ( backable) {
+        leaveTimer = setTimeout( function () {
+          clearAllKBListeners();
+        },3000);
+        $(document).on('mouseup', finishPlayWhenMouseUpAnywhere);
+      }
+      else {
+        clearAllKBListeners();
+      }
+      app.primarySynth.noteOff();
+      $('.waml-kb-key').removeClass('waml-kb-key-playing');
+      $(document).removeClass('no-select');
+    }
+
+    function clearAllKBListeners (){
+        finishLeaveKeyboard();
+        $('.waml-kb').off('mouseup mouseleave');
+        $('.waml-kb-key').off('mouseenter');
+        $('.waml-kb-key').removeClass('waml-kb-key-playing');
+    }
+
+    function finishLeaveKeyboard () {
+      if ( leaveTimer ) {
+        clearInterval(leaveTimer);
+        $('.waml-kb-key').off('mouseenter');
+        $(document).off('mouseup', finishLeaveKeyboard);
+        leaveTimer = null;
+      }
+    }
+    function finishPlayWhenMouseUpAnywhere () {
+      endPlay();
+    }
 
     // jQuery actions
     var that = this;
@@ -244,14 +291,14 @@ $(function () {
       $('<div />')
         .addClass('waml-kb-bk waml-kb-key')
         .data('waml-notenumber', blacks[i])
-        .css({ width: keyWidth * 0.7, left: i * keyWidth - keyWidth * 0.35  })
+        .css({ width: keyWidth * 0.7, left: i * keyWidth - keyWidth * 0.35 + 3 })
         .appendTo($elem);
     }
     for ( i=0;i<wi;i++) {
       $('<div />')
         .addClass('waml-kb-wk waml-kb-key')
         .data('waml-notenumber', whites[i])
-        .css({ width: keyWidth - 1, left: i * keyWidth })
+        .css({ width: keyWidth - 1, left: i * keyWidth + 3 })
         .appendTo($elem);
     }
   };

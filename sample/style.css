@@ -3,6 +3,12 @@ html,body{
   height:100%;
 }
 
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
 .tools {
   padding: 10px;
 }
@@ -93,7 +99,14 @@ footer p {
 }
 
 footer a {
+  color: #f84;
+  font-style: bold;
+}
+
+footer a:hover {
   color: #fff;
+  font-style: bold;
+  text-decoration: underline;
 }
 
 .waml-kb {
