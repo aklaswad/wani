@@ -11,14 +11,14 @@
     var mtofs = [];
     var i;
 
-    this.frequency = Waml.audioParam(this.ctx,220);
+    this.frequency = Waml.createAudioParam(this.ctx,220);
 
     for ( i=0;i<3;i++) {
       oscs[i] = ctx.createOscillator();
       oscs[i].frequency.value = 0; //Always zero. use audio signal only!
       oscs[i].start(0);
-      pitches[i] = Waml.audioParam(ctx,0);
-      mtofs[i] = this.createMidi2FreqShaper(-24,24,4096,1,0);
+      pitches[i] = Waml.createAudioParam(ctx,0);
+      mtofs[i] = Waml.createMtofTilde(ctx,-24,24,4096,1,0);
       freqMultipliers[i] = ctx.createGain();
       freqMultipliers[i].gain.value = 0;
 
