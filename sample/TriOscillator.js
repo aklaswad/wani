@@ -7,28 +7,31 @@
     var that = this;
     var oscs = [];
     var freqMultipliers = [];
+    var pitches = [];
+    var mtofs = [];
     var i;
+
+    this.frequency = Waml.audioParam(this.ctx,220,function(v){ console.log('freq:',v); return true });
+
     for ( i=0;i<3;i++) {
       oscs[i] = ctx.createOscillator();
+      oscs[i].frequency.value = 0; //Always zero. use audio signal only!
       oscs[i].start(0);
+      pitches[i] = Waml.audioParam(ctx,0, function(v){ console.log('ptc:',v); });
+      mtofs[i] = this.createMidi2FreqShaper(-24,24,4096,1,0);
       freqMultipliers[i] = ctx.createGain();
-      freqMultipliers[i].gain.value = 1 + i/3;
+      freqMultipliers[i].gain.value = 0;
+
+      pitches[i].connect(mtofs[i]);
+      mtofs[i].connect(freqMultipliers[i].gain);
+      this.frequency.connect(freqMultipliers[i]);
       freqMultipliers[i].connect(oscs[i].frequency);
       oscs[i].connect(this.outlet);
     }
 
-    var setFrequencyValue = function (value) {
-      for ( i=0;i<3;i++) {
-        oscs[i].frequency.value = value * (1 + i/3);
-      }
-    };
-    setFrequencyValue(220); // Set Default value
-
-    this.frequency = this.createAudioParamBridge(
-      220,
-      freqMultipliers,
-      setFrequencyValue
-    );
+    pitches[0].value = 0;
+    this.secondFreqBy = pitches[1];
+    this.thirdFreqBy = pitches[2];
 
     this.detune = this.createAudioParamBridge(
       0,
@@ -81,17 +84,21 @@
           description: 'frequency (hz)',
           range: [0, 20000],
         },
-        detune: {
-          description: 'detune (cent)',
-          range: [-100, 100],
+        secondFreqBy: {
+          description: "multiprier for second oscillator(margin of midinote)",
+          range: [-24,24]
         },
+        thirdFreqBy: {
+          description: "multiprier for third oscillator(margin of midinote)",
+          range: [-24,24]
+        }
       },
       params: {
         type: {
           values: ["sine", "sawtooth", "square", "triangle" ],
-          description: "Wave shape type.",
-        }
-      }
+          description: "Wave shape type."
+        },
+      },
     });
   }
 })();
