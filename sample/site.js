@@ -147,7 +147,7 @@ $(function () {
     var module, last = this.primarySynth, that = this;
     $.each( this.effects, function(idx,name) {
       module = Waml.createModule(name);
-      last.connect( module.inlet );
+      last.connect( module );
       last = module;
       that.effectInstances.push(module);
     });
