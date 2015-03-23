@@ -240,18 +240,18 @@ $(function () {
 
     var keyWidth = width / wi;
     for ( i=0;i<wi;i++) {
-      $('<div />')
-        .addClass('waml-kb-wk waml-kb-key')
-        .data('waml-notenumber', whites[i])
-        .css({ width: keyWidth, left: i * keyWidth })
-        .appendTo($elem);
-    }
-    for ( i=0;i<wi;i++) {
       if ( !blacks[i] ) continue;
       $('<div />')
         .addClass('waml-kb-bk waml-kb-key')
         .data('waml-notenumber', blacks[i])
         .css({ width: keyWidth * 0.7, left: i * keyWidth - keyWidth * 0.35  })
+        .appendTo($elem);
+    }
+    for ( i=0;i<wi;i++) {
+      $('<div />')
+        .addClass('waml-kb-wk waml-kb-key')
+        .data('waml-notenumber', whites[i])
+        .css({ width: keyWidth - 1, left: i * keyWidth })
         .appendTo($elem);
     }
   };
