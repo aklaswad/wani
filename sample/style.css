@@ -18,11 +18,6 @@ html,body{
   color: #e73;
 }
 
-#js-console {
-  max-height: 300px;
-  overflow: scroll;
-}
-
 .waml-module {
   border: 1px solid #888;
   background-color: #abc;
