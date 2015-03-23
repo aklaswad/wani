@@ -33,11 +33,6 @@
     this.secondFreqBy = pitches[1];
     this.thirdFreqBy = pitches[2];
 
-    this.detune = this.createAudioParamBridge(
-      0,
-      [ oscs[0].detune, oscs[1].detune, oscs[2].detune ]
-    );
-
     Object.defineProperty(this, 'type', {
       set: function(type) {
         that._type = type;
