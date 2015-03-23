@@ -9,7 +9,7 @@ module.exports = function(grunt) {
         separator: ';'
       },
       dist: {
-        src: ['lib/**/*.js'],
+        src: ['lib/Waml.js', 'lib/Web.js'],
         dest: './<%= pkg.name %>.js'
       }
     },
@@ -19,11 +19,6 @@ module.exports = function(grunt) {
           './<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
         }
       },
-      publish: {
-        files: {
-          'sample/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
-        }
-      }
     },
     'gh-pages': {
       options: {
@@ -45,7 +40,12 @@ module.exports = function(grunt) {
     grunt.file.delete('./sample/Waml.js');
     grunt.file.delete('./sample/Web.js');
   });
+  grunt.registerTask('before-release', 'jobs before release', function() {
+    grunt.file.delete('./WAML.js');
+  });
+
   grunt.registerTask('test',['jshint']);
-  grunt.registerTask('default', ['jshint','concat', 'uglify']);
-  grunt.registerTask('publish', ['jshint','concat', 'uglify:publish', 'before-publish', 'gh-pages', 'after-publish']);
+  grunt.registerTask('default', []);
+  grunt.registerTask('publish', ['jshint','before-publish', 'gh-pages', 'after-publish']);
+  grunt.registerTask('release', ['jshint', 'concat', 'uglify', 'before-release']);
 };
