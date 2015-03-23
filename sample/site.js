@@ -68,6 +68,7 @@ $(function () {
     var $synth = this.buildModuleUI('TriOscillator', { noClose: true });
     $synth.addClass('synth');
     $('#js-circuit').append($synth);
+
   };
 
   App.prototype.buildModuleUI = function (name, opts) {
@@ -181,6 +182,10 @@ $(function () {
           })($select, target);
         });
       })(module, $moduleUI);
+    });
+
+    $('.waml-audioparam').each(function () {
+      $(this.shadowRoot).append('<style>#wac-value-tip{ opacity: 1.0 !important; transition: none !important; z-index:9999999;}</style>');
     });
   };
 
