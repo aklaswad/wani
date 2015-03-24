@@ -26,7 +26,6 @@ $(function () {
     this.initUI();
     this.updateModuleList();
     this.initKeyboard($('.waml-kb'));
-    this.rebuildUIBindings();
   };
 
   App.prototype.initUI = function () {
@@ -241,7 +240,6 @@ $(function () {
       that.effectInstances.push(module);
     });
     last.connect(this.masterOut);
-    this.rebuildUIBindings();
   };
 
   App.prototype.appendModule = function(name) {
