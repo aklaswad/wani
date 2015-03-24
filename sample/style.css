@@ -3,12 +3,6 @@ html,body{
   height:100%;
 }
 
-.no-select {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
-}
-
 .tools {
   padding: 10px;
 }
@@ -62,6 +56,23 @@ html,body{
   text-align: center;
 }
 
+.waml-knob {
+  margin-left: 16px;
+  border: 1px solid #789;
+}
+
+.waml-knob.waml-knob-active {
+  box-shadow: 0 0 5px #def;
+  border: 1px solid #fff;
+  background-color: #abc;
+}
+
+.waml-knob.waml-knob-active .waml-knob-point {
+  box-shadow: 0 0 5px #def;
+  border: 1px solid #fff;
+  background-color: #abc;
+}
+
 .param-wrapper {
   width: 64px;
   height: 48px;
@@ -107,6 +118,17 @@ footer a:hover {
   color: #fff;
   font-style: bold;
   text-decoration: underline;
+}
+
+
+.waml-no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.waml-grabbing {
+  cursor: move !important;
 }
 
 .waml-kb {
@@ -167,3 +189,25 @@ footer a:hover {
   border-bottom: 1px solid #fff;
   box-shadow: 0 0 5px #def;
 }
+
+
+
+
+.waml-knob {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  background-color: #8f8073;
+  cursor: pointer;
+}
+
+.waml-knob-point {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: #f84;
+  z-index: 9;
+};
+

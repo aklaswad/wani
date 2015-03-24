@@ -31,7 +31,9 @@ $(function () {
 
   App.prototype.initUI = function () {
     var app = this;
-    // Keyboard
+
+
+    // --------------------------------------------- Keyboard
 
     var leaveTimer;
 
@@ -60,7 +62,7 @@ $(function () {
       $key.addClass('waml-kb-key-playing');
       app.primarySynth.noteOn( $key.data('waml-notenumber') );
       setUpKBListeners($key);
-      $(document).addClass('no-select');
+      $(document).addClass('waml-no-select');
     }
 
     function endPlay(backable) {
@@ -77,7 +79,7 @@ $(function () {
       }
       app.primarySynth.noteOff();
       $('.waml-kb-key').removeClass('waml-kb-key-playing');
-      $(document).removeClass('no-select');
+      $(document).removeClass('waml-no-select');
     }
 
     function clearAllKBListeners (){
@@ -100,7 +102,50 @@ $(function () {
       endPlay();
     }
 
-    // jQuery actions
+
+    // --------------------------------------------- Knob
+
+    $(document).on('mousedown', '.waml-knob', function (evt) {
+      $('body').addClass('waml-no-select waml-grabbing');
+      var $knob = $(this);
+      $knob.addClass('waml-knob-active');
+      var opts = $knob.data('waml-knob-data');
+      var lastPos = {x: evt.pageX, y: evt.pageY };
+      var lastValue = $knob.data('waml-value') || 0.0;
+      var listener = function (evt) {
+        var pos = { x: evt.pageX, y: evt.pageY };
+        var d = {x: pos.x - lastPos.x, y: pos.y - lastPos.y};
+
+        // Hmm... what is the good knob?
+        // var dist = Math.sqrt( Math.pow(d.x, 2) + Math.pow(d.y,2));
+        // var radi = Math.atan(d.y / d.x);
+        // for now, just use deltaY :p
+
+        // TODO: some calc about step here
+        var value = lastValue - d.y * opts.multiplier; // y on diplay is negative
+        if ( opts.max < value ) value = opts.max;
+        if ( value < opts.min ) value = opts.min;
+        if ( value === opts.value ) return false;
+        $knob.trigger('change', value);
+        $knob.data('waml-value',value);
+        lastValue = value;
+        lastPos = pos;
+        var range = Math.abs(opts.max - opts.min);
+        var rate = Math.abs(value - opts.min) / Math.abs( opts.max - opts.min );
+        var rotate = 300 * ( rate - 0.5 );
+        $knob.css({ transform: 'rotate(' + rotate + 'deg)' });
+        return false;
+      };
+      $(document).on('mousemove', listener);
+      $(document).on('mouseup', function () {
+        $('body').removeClass('waml-no-select waml-grabbing');
+        $knob.removeClass('waml-knob-active');
+        return $(document).off('mousemove', listener);
+      });
+      return false;
+    });
+
+    // ----------------------------------- jQuery actions
     var that = this;
     $('.js-add-effect').on('click', function(event){
       var name = $(this).siblings('select').val();
@@ -126,13 +171,14 @@ $(function () {
     });
 
     // The first primary synth's UI
-    var $synth = this.buildModuleUI('TriOscillator', { noClose: true });
+    var $synth = this.buildModuleUI('TriOscillator', { noClose: true }, app.primarySynth);
     $synth.addClass('synth');
     $('#js-circuit').append($synth);
 
   };
 
-  App.prototype.buildModuleUI = function (name, opts) {
+  App.prototype.buildModuleUI = function (name, opts, instance) {
+    var app = this;
     if (!opts) opts = {};
     var def = Waml.definition(name);
     var $div = $('<div />');
@@ -143,44 +189,26 @@ $(function () {
     }
     $div.append( $h1 );
     var $knobs = $('<div />').addClass('knobs');
-    $.each( (def.audioParams || []), function (name) {
-      var $knobWrapper = $('<div />');
-      $knobWrapper.addClass('knob-wrapper');
-      $knobWrapper.append(
-        $('<h2 />').text(name).append(
-          $('<span />').text(this.description).addClass ));
+    $.each( (def.audioParams || []), function (name,param) {
       var range = Math.abs( this.range[0] - this.range[1] );
-      var $knob = $('<webaudio-knob width="32" height="32" ' +
-          'min="' + this.range[0] + '" ' +
-          'max="' + this.range[1] + '" ' +
-          'step="' + range / 256 + '" ' +
-          '/>');
-      $knob.addClass('knob');
-      $knob.data('target', name);
+      var $knobWrapper = $('<div />').addClass('knob-wrapper');
+      $('<h2 />').text(name).appendTo($knobWrapper);
+      var $knob = app.initKnob({
+        width: 32,
+        height: 32,
+        min: this.range[0],
+        max: this.range[1],
+        name: this.name,
+        description: this.description
+      });
+      $knob.on('change', function(evt, value) {
+        instance[name].value = value;
+      });
       $knob.addClass('waml-audioparam');
-
-      // FIXME: css help is needed for centering knob ;p
-      $knobWrapperInner = $('<div />').addClass('knob-wrapper-inner');
-      $knobWrapperInner.append($knob);
-      $knobWrapper.append( $knobWrapperInner );
+      $knobWrapper.append($knob);
       $knobs.append($knobWrapper);
     });
     $div.append($knobs);
-
-    var $params = $('<div />').addClass('params');
-    $.each( (def.params || []), function (name, definition) {
-      var $paramBox = $('<div />').addClass('param-wrapper');
-      $('<h2 />').text(name).appendTo($paramBox);
-      if ( definition.values ) {
-        var $select = $('<select />').addClass('waml-param-select').data('target', name);
-        $.each( definition.values, function (idx, value) {
-          $select.append( $('<option />').text(value) );
-        });
-        $select.appendTo($paramBox);
-      }
-      $paramBox.appendTo($params);
-    });
-    $div.append($params);
 
     return $div;
   };
@@ -216,52 +244,32 @@ $(function () {
     this.rebuildUIBindings();
   };
 
-  App.prototype.rebuildUIBindings = function () {
-    var app = this;
-    $('.waml-module').each( function (idx) {
-      var module = idx ? app.effectInstances[idx-1] : app.primarySynth;
-      var $moduleUI = $(this);
-      (function (module, $moduleUI) {  // create scope
-        $moduleUI.find('.waml-audioparam').each( function () {
-          var $knob = $(this);
-          var target = $knob.data('target');
-          (function ($knob, target) {  // create scope again
-            $knob.off('change').on('change', function (e) {
-              module[target].value = e.target.value;
-            });
-          })($knob, target);
-        });
-
-        $moduleUI.find('.waml-param-select').each( function () {
-          var $select = $(this);
-          var target = $select.data('target');
-
-          (function ($select, target) {  // create scope again
-            $select.off('change').on('change', function (e) {
-              module[target] = $select.val();
-            });
-          })($select, target);
-        });
-      })(module, $moduleUI);
-    });
-
-    $('.waml-audioparam').each(function () {
-      $(this.shadowRoot).append('<style>#wac-value-tip{ opacity: 1.0 !important; transition: none !important; z-index:9999999;}</style>');
-    });
-  };
-
   App.prototype.appendModule = function(name) {
-    var $ui = this.buildModuleUI(name);
-    $('#js-circuit').append($ui);
     this.effects.push(name);
     this.updateModuleList();
     this.makeDSPChain();
+    var $ui = this.buildModuleUI(name,{},this.effectInstances[this.effects.length-1]);
+    $('#js-circuit').append($ui);
   };
 
   App.prototype.removeModule = function(nth) {
     this.effects.splice(nth,1);
     this.updateModuleList();
     this.makeDSPChain();
+  };
+
+  App.prototype.initKnob = function (opts) {
+    opts = $.extend({ min:0, max:1,width:32,height:32,step:1,sense:360},opts);
+    var range = Math.abs( opts.max - opts.min );
+    opts.multiplier = range / opts.sense;
+    var $knob = $('<div />')
+      .addClass('waml-knob')
+      .data('waml-knob-data', opts);
+    var $point = $('<div />')
+      .addClass('waml-knob-point')
+      .css({ top: 2, left: opts.width/2 - 3})
+      .appendTo($knob);
+    return $knob;
   };
 
   App.prototype.initKeyboard = function ($elem) {
@@ -304,5 +312,5 @@ $(function () {
     }
   };
 
-  window.app = new App();
+  var app = window.app = new App();
 });
