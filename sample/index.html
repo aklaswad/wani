@@ -59,19 +59,18 @@ var moduleInstance = Wani.createModule('Foobar');
 </pre></p>
 
           <p>Here, add selected module to the end of DSP chain, and building GUIs from it's self-described informations.
-            <div><select class="js-list-effects form-control"></select>
-            <input type="button" value="Add" class="btn js-add-effect" /></div>
+            <div><select class="js-list-effects"></select></div>
+            <div><button class="js-add-effect">Add</button></div>
           </p>
 
           <h3>Load Module from outer world on the fly</h3>
           <p>Also, you can load module from external javascript file on the fly. just push load button to load new module from outer world. ( or If you know any Wani-ized effector, put the URL to try it ;)
-          <div><input type="text" class="js-module-url form-control" value="http://aklaswad.github.io/Wani/SimpleAutoWah.js" />
-          <input type="button" value="Load" class="btn js-load-module" /></div></p>
+          <div><input type="text" class="js-module-url form-control" value="http://aklaswad.github.io/Wani/SimpleAutoWah.js" /></div>
+          <div><button class="js-load-module">Load</button></div></p>
           <p>And then, you can see new module in the select menu above.</p>
 
           <h3>AudioNode Compatible</h3>
-          <p>
-            <div><textarea id="delay-node-module">
+            <div><textarea id="delay-node-module" class="js-eval-textarea">
 Wani.registerModule({
   name: 'NativeDelay',
   isEffect: true,
@@ -82,9 +81,9 @@ Wani.registerModule({
     }
   }
 });
-
           </textarea></div>
-          <button id="load-delay-node">Load</button>
+          <div><button id="load-delay-node">Eval</button></div>
+          <p>You can also register native AudioNode and connect for each. After eval this script, then you can see it's in the module list... it haven't Dry output tho ;)</p>
           <script>
 $( function () {
   $('#load-delay-node').click(function () {
@@ -94,7 +93,7 @@ $( function () {
   });
 });
 </script>
-          </p>
+
           <footer>
             <h3>Disclaimer</h3>
             <p>

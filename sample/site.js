@@ -147,14 +147,14 @@ $(function () {
     // ----------------------------------- jQuery actions
     var that = this;
     $('.js-add-effect').on('click', function(event){
-      var name = $(this).siblings('select').val();
+      var name = $('.js-list-effects').val();
       that.appendModule( name );
       return false;
     });
 
     $('.js-load-module').click( function () {
       Wani.Web.loadScriptFromURL(
-        $(this).siblings('.js-module-url').val(),
+        $('.js-module-url').val(),
         function () {
           that.updateModuleList();
         }

@@ -4,8 +4,8 @@ var http = require('http'),
   fs = require('fs');
 
 var documents = {
-  'Wani.js': '/../lib/Wani.js',
-  'Web.js': '/../lib/Web.js',
+  'wani.js': '/../lib/wani.js',
+  'web.js': '/../lib/web.js',
   'index.html': '/index.html',
   'TriOscillator.js': '/TriOscillator.js',
   'SimpleTremolo.js': '/SimpleTremolo.js',

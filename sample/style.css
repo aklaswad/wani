@@ -27,6 +27,19 @@ html,body{
   margin: 2px;
 }
 
+button {
+  margin-top: 4px;
+}
+
+textarea {
+  width: 80%;
+  height: 200px;
+}
+
+select {
+  width: 80%;
+}
+
 .wani-module.synth {
   background-color: #acb;
 }
