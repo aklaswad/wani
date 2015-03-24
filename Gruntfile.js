@@ -9,7 +9,7 @@ module.exports = function(grunt) {
         separator: ';'
       },
       dist: {
-        src: ['lib/Wani.js', 'lib/Web.js'],
+        src: ['lib/wani.js', 'lib/web.js'],
         dest: './<%= pkg.name %>.js'
       }
     },
@@ -24,7 +24,7 @@ module.exports = function(grunt) {
       options: {
         base: 'sample'
       },
-      src: ['**/*', '../WANI.min.js']
+      src: ['**/*', '../wani.min.js']
     }
   });
   grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -33,12 +33,12 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-gh-pages');
 
   grunt.registerTask('before-publish', 'jobs before publish', function() {
-    grunt.file.copy('./lib/Wani.js', './sample/Wani.js');
-    grunt.file.copy('./lib/Web.js', './sample/Web.js');
+    grunt.file.copy('./lib/wani.js', './sample/wani.js');
+    grunt.file.copy('./lib/web.js', './sample/web.js');
   });
   grunt.registerTask('after-publish', 'jobs after publish', function() {
-    grunt.file.delete('./sample/Wani.js');
-    grunt.file.delete('./sample/Web.js');
+    grunt.file.delete('./sample/wani.js');
+    grunt.file.delete('./sample/web.js');
   });
   grunt.registerTask('before-release', 'jobs before release', function() {
     grunt.file.delete('./WANI.js');
