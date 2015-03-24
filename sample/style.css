@@ -1,10 +1,37 @@
-
 html,body{
   height:100%;
+  background-color: #888980;
+}
+
+body {
+  border-top: 1px solid #f84;
+  border-bottom: 1px solid #fff;
+}
+
+.row, .col.mainarticle, .col.tools {
+  color: #606064;
+  background-color: #fff;
+}
+
+.col h1 {
+  margin-top: 93px;
+  padding-bottom: 77px;
+  color: #789;
+  border-bottom: 1px solid #ddd;
+}
+
+.col h1 small {
+  font-size: 0.5em;
+  color: #aaa;
+  margin-left: 30px;
+  display: inline-block;
+  vertical-align: middle;
 }
 
 .tools {
   padding: 10px;
+  height: 100%;
+  border-bottom: 1px solid #fff;
 }
 
 .tool {
@@ -112,10 +139,13 @@ select {
 
 footer {
   width: 100%;
-  margin: 0;
+  margin: 30px 0 0 0;
   padding: 10px;
   background-color: #888980;
-  color: #bbb;
+  color: #dadacf;
+  border-radius: 5px 5px 0 0;
+  border-top: 1px solid #def;
+  border-right: 1px solid #def;
 }
 
 footer p {
