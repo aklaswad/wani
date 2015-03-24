@@ -1,0 +1,213 @@
+
+html,body{
+  height:100%;
+}
+
+.tools {
+  padding: 10px;
+}
+
+.tool {
+  width: 256px;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+.tool h1 {
+  font-size: 14px;
+  color: #e73;
+}
+
+.waml-module {
+  border: 1px solid #888;
+  background-color: #abc;
+  color: #fff;
+  position: relative;
+  width: 256px;
+  margin: 2px;
+}
+
+.waml-module.synth {
+  background-color: #acb;
+}
+
+.waml-module h1 {
+  color: #fff;
+  padding: 3px;
+  margin: 2px;
+}
+
+.waml-module .js-remove-module {
+  float: right;
+  position: absolute;
+  right: 0px;
+  top: 0x;
+}
+
+.knobs,.params {
+  display: box;
+  display: -webkit-box;
+  display: -moz-box;
+}
+
+.knob-wrapper {
+  width: 64px;
+  height: 48px;
+  text-align: center;
+}
+
+.waml-knob {
+  margin-left: 16px;
+  border: 1px solid #789;
+}
+
+.waml-knob.waml-knob-active {
+  box-shadow: 0 0 5px #def;
+  border: 1px solid #fff;
+  background-color: #abc;
+}
+
+.waml-knob.waml-knob-active .waml-knob-point {
+  box-shadow: 0 0 5px #def;
+  border: 1px solid #fff;
+  background-color: #abc;
+}
+
+.param-wrapper {
+  width: 64px;
+  height: 48px;
+  text-align: center;
+}
+
+.knob-wrapper h2, .param-wrapper h2 {
+  position: relative;
+  top: 0;
+  margin: 0;
+  font-size: 11px;
+  color: #343;
+  z-index: 10000;
+}
+
+.knob-wrapper-inner {
+  position: relative;
+  left: 16px;
+}
+
+.js-module-url {
+  width: 80%;
+}
+
+footer {
+  width: 100%;
+  margin: 0;
+  padding: 10px;
+  background-color: #888980;
+  color: #bbb;
+}
+
+footer p {
+  text-align: right;
+}
+
+footer a {
+  color: #f84;
+  font-style: bold;
+}
+
+footer a:hover {
+  color: #fff;
+  font-style: bold;
+  text-decoration: underline;
+}
+
+
+.waml-no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+.waml-grabbing {
+  cursor: move !important;
+}
+
+.waml-kb {
+  height: 70px;
+  position: relative;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  cursor: pointer;
+  background-color: #abc;
+}
+
+.waml-kb-wk {
+  position: absolute;
+  top: 0px;
+  border-right: 1px solid #abc;
+  border-bottom: 2px solid #424033;
+  background-color: #8f8073;
+/*  background-color: #fff; */
+  border-radius: 0 0 2px 2px;
+  z-index: 2;
+}
+
+.waml-kb-bk {
+  height: 60%;
+  position: absolute;
+  top: 0px;
+  border-right: 1px solid #abc;
+  background-color: #f84;
+/*  background-color: #000; */
+  border-radius: 0 0 2px 2px;
+  z-index: 4;
+}
+
+.waml-kb-bk:hover {
+  background-color: #fca;
+}
+
+.waml-kb-wk:hover {
+  background-color: #654;
+}
+
+.waml-kb-key-playing {
+  background-color: #abc !important;
+}
+
+.waml-kb-key-playing.waml-kb-wk {
+  z-index: 3;
+  border-left: 1px solid #fff;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  box-shadow: 0 0 5px #def;
+}
+
+.waml-kb-key-playing.waml-kb-bk {
+  border-left: 1px solid #fff;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  box-shadow: 0 0 5px #def;
+}
+
+
+
+
+.waml-knob {
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  background-color: #8f8073;
+  cursor: pointer;
+}
+
+.waml-knob-point {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  background-color: #f84;
+  z-index: 9;
+};
+

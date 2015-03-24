@@ -8,7 +8,8 @@
 
   function getAudioContext() {
     if ( __ctx ) return __ctx;
-    __ctx = new AudioContext();
+    var Context = window.AudioContext || window.webkitAudioContext;
+    __ctx = new Context();
     return __ctx;
   }
 
@@ -36,7 +37,7 @@
     gain.gain.value = value;
     osc.connect(offset);
     offset.connect(gain);
-    osc.start();
+    osc.start(0);
     return gain;
   }
 
@@ -107,7 +108,29 @@
     return normalize;
   }
 
-
+  /* Override the AudioNode.prototype.connect to try connecting our pseudo node.
+    Is this illegal ? May be I need some switch to opt out this feature... */
+  var original_connect = AudioNode.prototype.connect;
+  AudioNode.prototype.connect = function () {
+    var theError, dest;
+    // At first, try the original `connect`
+    try {
+      original_connect.apply(this,arguments);
+    }
+    catch(originalError) {
+      // And, if it was failed, try again for our pseudo interface.
+      theError = originalError;
+      dest = arguments[0];
+      arguments[0] = dest.inlet;
+      try {
+        original_connect.apply(this,arguments);
+      }
+      catch (error) {
+        // Everything was going wrong, throw the original error message.
+        throw theError;
+      }
+    }
+  };
 
   function WamlModule (ctx) {
     this.ctx = ctx;
