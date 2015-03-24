@@ -1,8 +1,8 @@
-# WANI
+# wani
 
 Web Audio N Interface
 
-[DEMO](http://aklaswad.github.io/Wani/)
+[DEMO](http://aklaswad.github.io/wani/)
 
 ## なんぞ？
 
