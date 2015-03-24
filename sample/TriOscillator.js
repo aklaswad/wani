@@ -11,14 +11,14 @@
     var mtofs = [];
     var i;
 
-    this.frequency = Waml.createAudioParam(this.ctx,220);
+    this.frequency = Wani.createAudioParam(this.ctx,220);
 
     for ( i=0;i<3;i++) {
       oscs[i] = ctx.createOscillator();
       oscs[i].frequency.value = 0; //Always zero. use audio signal only!
       oscs[i].start(0);
-      pitches[i] = Waml.createAudioParam(ctx,0);
-      mtofs[i] = Waml.createMtofTilde(ctx,-24,24,4096,1,0);
+      pitches[i] = Wani.createAudioParam(ctx,0);
+      mtofs[i] = Wani.createMtofTilde(ctx,-24,24,4096,1,0);
       freqMultipliers[i] = ctx.createGain();
       freqMultipliers[i].gain.value = 0;
 
@@ -45,11 +45,11 @@
     this.outlet.gain.value = 0.0; //Using as note gate, so set zero at first.
     return this;
   }
-  TriOscillator.prototype = Object.create(Waml.Module.prototype);
+  TriOscillator.prototype = Object.create(Wani.Module.prototype);
 
   TriOscillator.prototype.noteOn = function (noteNumber) {
     this.frequency.cancelScheduledValues(0);
-    this.frequency.value = Waml.midi2freq(noteNumber);
+    this.frequency.value = Wani.midi2freq(noteNumber);
     this.outlet.gain.value = 0.3;
   };
 
@@ -58,8 +58,8 @@
   };
 
   if ( 'undefined' !== typeof window &&
-       'undefined' !== typeof window.Waml ) {
-    Waml.registerModule({
+       'undefined' !== typeof window.Wani ) {
+    Wani.registerModule({
       name: 'TriOscillator',
       author: 'aklaswad<aklaswad@gmail.com>',
       description: 'TriOscillator',

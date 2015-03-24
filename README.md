@@ -1,8 +1,8 @@
-# WAML
+# WANI
 
 Web Audio Module Librarian
 
-[DEMO](http://aklaswad.github.io/Waml/)
+[DEMO](http://aklaswad.github.io/Wani/)
 
 ## なんぞ？
 
@@ -19,7 +19,7 @@ WebAudio APIで書かれたシンセサイザーやエフェクターをモジ�
 
 # 仕様
 
-モジュールはざっくりシンセとエフェクターに分類されます。それぞれ、モジュールをWamlから読み込み可能にするために、スクリプトファイルから`Waml.registerModule()`を呼び出してモジュール定義を渡します。以下がモジュール定義の例です。
+モジュールはざっくりシンセとエフェクターに分類されます。それぞれ、モジュールをWaniから読み込み可能にするために、スクリプトファイルから`Wani.registerModule()`を呼び出してモジュール定義を渡します。以下がモジュール定義の例です。
 
 ```
 function TriOscillator (ctx) {
@@ -31,8 +31,8 @@ function TriOscillator (ctx) {
 
 
 if ( 'undefined' !== typeof window
-  && 'undefined' !== typeof window.Waml ) {
-  Waml.registerModule({
+  && 'undefined' !== typeof window.Wani ) {
+  Wani.registerModule({
     name: 'TriOscillator',
     author: 'aklaswad<aklaswad@gmail.com>',
     description: 'TriOscillator',
@@ -82,7 +82,7 @@ ry
 
 ## AudioParamのインスタンス作れないんだけど？
 
-現状、正攻法では作れないようです。黒魔術してください。または`Waml.createAudioParamBridge`を使ってください。
+現状、正攻法では作れないようです。黒魔術してください。または`Wani.createAudioParamBridge`を使ってください。
 See Also https://github.com/WebAudio/web-audio-api/issues/367
 
 ## モジュールの必須プロパティ
@@ -94,11 +94,11 @@ See Also https://github.com/WebAudio/web-audio-api/issues/367
 ## モジュールの利用
 
 ```
-<script src="//example.com/Waml.js"></script>
+<script src="//example.com/Wani.js"></script>
 <script src="//example.com/SomeCoolModule.js"></script>
 <script>
 
-  var synth = Waml.createSynthesizer('Module Name');
+  var synth = Wani.createSynthesizer('Module Name');
   synth.foobar.value = 42;
   synth.connect(ctx.destination);
 

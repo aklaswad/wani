@@ -9,7 +9,7 @@ module.exports = function(grunt) {
         separator: ';'
       },
       dist: {
-        src: ['lib/Waml.js', 'lib/Web.js'],
+        src: ['lib/Wani.js', 'lib/Web.js'],
         dest: './<%= pkg.name %>.js'
       }
     },
@@ -24,7 +24,7 @@ module.exports = function(grunt) {
       options: {
         base: 'sample'
       },
-      src: ['**/*', '../WAML.min.js']
+      src: ['**/*', '../WANI.min.js']
     }
   });
   grunt.loadNpmTasks('grunt-contrib-jshint');
@@ -33,15 +33,15 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-gh-pages');
 
   grunt.registerTask('before-publish', 'jobs before publish', function() {
-    grunt.file.copy('./lib/Waml.js', './sample/Waml.js');
+    grunt.file.copy('./lib/Wani.js', './sample/Wani.js');
     grunt.file.copy('./lib/Web.js', './sample/Web.js');
   });
   grunt.registerTask('after-publish', 'jobs after publish', function() {
-    grunt.file.delete('./sample/Waml.js');
+    grunt.file.delete('./sample/Wani.js');
     grunt.file.delete('./sample/Web.js');
   });
   grunt.registerTask('before-release', 'jobs before release', function() {
-    grunt.file.delete('./WAML.js');
+    grunt.file.delete('./WANI.js');
   });
 
   grunt.registerTask('test',['jshint']);

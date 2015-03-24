@@ -1,11 +1,11 @@
 {
-  "name": "WAML",
+  "name": "WANI",
   "description": "Web Audio Module Librarian",
   "author": "aklaswad<aklaswad@gmail.com>",
   "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/aklaswad/Waml.git"
+    "url": "https://github.com/aklaswad/Wani.git"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

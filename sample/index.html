@@ -1,7 +1,7 @@
 <!DOCTYPE html>
   <head>
     <meta charset="UTF-8">
-    <script src="Waml.js"></script>
+    <script src="Wani.js"></script>
     <script src="Web.js"></script>
     <script src="TriOscillator.js"></script>
     <script src="SimpleTremolo.js"></script>
@@ -15,20 +15,20 @@
       <div class="col-md-9 col-md-push-3 col-sm-8 col-sm-push-4 col-xs-6 col-xs-push-6">
         <section>
           <header>
-          <h1>WAML
-            <small> - WebAudio Module Librarian</small></h1>
+          <h1>WANI
+            <small> - WebAudio N Interface</small></h1>
           </header>
           <p>
-            <h3>WAML is A Specification</h3>
+            <h3>WANI is A Specification</h3>
             propose to Web Audio Community that to make your code Reusable, Self-Descriptive, and Sharable.</p>
           <p>
-            <h3>WAML is Very Simple Interface Spec</h3>
-            to make your code into WAML module.
+            <h3>WANI is Very Simple Interface Spec</h3>
+            to make your code into WANI module.
             <pre>
 function ConstructorOfYourSynthesizer () { ... }
 
 // then, just add this to the end of your *.js file (with some rules tho ;)
-Waml.registerModule({
+Wani.registerModule({
   name: "MySynthesizer",
   create: ConstructorOfYourSyntehsizer,
   isSynth: true
@@ -36,18 +36,18 @@ Waml.registerModule({
 </pre>
           </p>
           <p>
-            <h3>WAML Module behaves like native AudioNode</h3>
+            <h3>WANI Module behaves like native AudioNode</h3>
             such like this.
             <pre>
-var wamlSynth = Waml.createModule('SYNTH_NAME');
+var waniSynth = Wani.createModule('SYNTH_NAME');
 var nativeDelay = ctx.createDelay();
-wamlSynth.connect(nativeDelay);
+waniSynth.connect(nativeDelay);
 nativeDelay.connect(ctx.destination);
 
 var nativeOsc = ctx.createOsc();
-var wamlEffect = Waml.createModule('EFFECT_NAME');
-nativeOsc.connect(wamlEffect.inlet);
-wamlEffect.connect(ctx.destination);
+var waniEffect = Wani.createModule('EFFECT_NAME');
+nativeOsc.connect(waniEffect.inlet);
+waniEffect.connect(ctx.destination);
 </pre>
 
           </p>
@@ -55,7 +55,7 @@ wamlEffect.connect(ctx.destination);
           <h3>Instanciate module with auto generated GUI</h3>
           <p>You can easilly create module instance.
           <pre>
-var moduleInstance = Waml.createModule('Foobar');
+var moduleInstance = Wani.createModule('Foobar');
 </pre></p>
 
           <p>Here, add selected module to the end of DSP chain, and building GUIs from it's self-described informations.
@@ -64,15 +64,15 @@ var moduleInstance = Waml.createModule('Foobar');
           </p>
 
           <h3>Load Module from outer world on the fly</h3>
-          <p>Also, you can load module from external javascript file on the fly. just push load button to load new module from outer world. ( or If you know any Waml-ized effector, put the URL to try it ;)
-          <div><input type="text" class="js-module-url form-control" value="http://aklaswad.github.io/Waml/SimpleAutoWah.js" />
+          <p>Also, you can load module from external javascript file on the fly. just push load button to load new module from outer world. ( or If you know any Wani-ized effector, put the URL to try it ;)
+          <div><input type="text" class="js-module-url form-control" value="http://aklaswad.github.io/Wani/SimpleAutoWah.js" />
           <input type="button" value="Load" class="btn js-load-module" /></div></p>
           <p>And then, you can see new module in the select menu above.</p>
 
           <h3>AudioNode Compatible</h3>
           <p>
             <div><textarea id="delay-node-module">
-Waml.registerModule({
+Wani.registerModule({
   name: 'NativeDelay',
   isEffect: true,
   create: function (ctx) { return ctx.createDelay(5) },
@@ -109,7 +109,7 @@ written by aklaswad <a href="https://github.com/aklaswad">github</a> <a href="ht
         </section>
       </div>
       <div id="tools" class="tools col-md-3 col-md-pull-9 col-sm-4 col-sm-pull-8 col-xs-6 col-xs-pull-6 affix fill">
-        <div class="tool waml-kb" id="waml-kb">
+        <div class="tool wani-kb" id="wani-kb">
         </div>
         <div class="tool">
           <div id="js-circuit"></div>
@@ -119,7 +119,7 @@ written by aklaswad <a href="https://github.com/aklaswad">github</a> <a href="ht
         </div>
       </div>
     </div>
-<a href="https://github.com/aklaswad/Waml" style="z-index:9999"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
+<a href="https://github.com/aklaswad/Wani" style="z-index:9999"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/652c5b9acfaddf3a9c326fa6bde407b87f7be0f4/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_orange_ff7600.png"></a>
     <script src="site.js"></script>
   </body>
 </html>
