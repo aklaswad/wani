@@ -16,8 +16,8 @@
     oscGain.gain.value = 0.0;
     half.connect(oscGain);
 
-    var offset = Waml.createDCOffset(0);
-    var offsetBase = Waml.createDCOffset(1);
+    var offset = Wani.createDCOffset(0);
+    var offsetBase = Wani.createDCOffset(1);
     var offsetHalf = ctx.createGain();
     offsetHalf.gain.value = 0.5;
     offset.connect(offsetHalf);
@@ -40,12 +40,12 @@
     osc.start();
     return this;
   }
-  SimpleTremolo.prototype = Object.create(Waml.Module.prototype);
+  SimpleTremolo.prototype = Object.create(Wani.Module.prototype);
 
-  Waml.registerModule({
+  Wani.registerModule({
     name: 'SimpleTremolo',
     author: 'aklaswad<aklaswad@gmail.com>',
-    description: 'Sample Tremolo effector module for Waml',
+    description: 'Sample Tremolo effector module for Wani',
     isEffect: true,
     create: SimpleTremolo,
     audioParams: {

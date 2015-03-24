@@ -32,12 +32,12 @@
     this.drive = inlet.gain;
     drive.connect(outlet);
   }
-  SimpleOverDrive.prototype = Object.create(Waml.Module.prototype);
+  SimpleOverDrive.prototype = Object.create(Wani.Module.prototype);
 
-  Waml.registerModule({
+  Wani.registerModule({
     name: 'SimpleOverDrive',
     author: 'aklaswad<aklaswad@gmail.com>',
-    description: 'Sample OverDrive effector module for Waml',
+    description: 'Sample OverDrive effector module for Wani',
     create: SimpleOverDrive,
     isEffect: true,
     audioParams: {

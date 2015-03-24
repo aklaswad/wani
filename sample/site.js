@@ -5,13 +5,13 @@ $(function () {
 
   App.prototype.init = function () {
     // DSP
-    var ctx = this.ctx = Waml.getAudioContext();
+    var ctx = this.ctx = Wani.getAudioContext();
     this.masterOut = ctx.createGain();
     this.masterOut.gain.value = 0.3;
     this.effects = [];
     this.effectInstances = [];
-    this.primarySynth = Waml.createModule('TriOscillator');
-    this.renderer = Waml.Web.createWaveFormRenderer('waveform', {
+    this.primarySynth = Wani.createModule('TriOscillator');
+    this.renderer = Wani.Web.createWaveFormRenderer('waveform', {
       waveColor: '#f84',
       backgroundColor: '#fff',
       centerLine: '#abc'
@@ -25,7 +25,7 @@ $(function () {
     // UIs
     this.initUI();
     this.updateModuleList();
-    this.initKeyboard($('.waml-kb'));
+    this.initKeyboard($('.wani-kb'));
   };
 
   App.prototype.initUI = function () {
@@ -36,21 +36,21 @@ $(function () {
 
     var leaveTimer;
 
-    $(document).on('mousedown', '.waml-kb-key', function () {
+    $(document).on('mousedown', '.wani-kb-key', function () {
       startPlay($(this));
       return false;
     });
 
     function setUpKBListeners ($key) {
-      $('.waml-kb').on('mouseup', function () {
+      $('.wani-kb').on('mouseup', function () {
         endPlay();
         return false;
       });
-      $('.waml-kb').on('mouseleave', function () {
+      $('.wani-kb').on('mouseleave', function () {
         endPlay(1);
         return false;
       });
-      $('.waml-kb-key').on('mouseenter', function () {
+      $('.wani-kb-key').on('mouseenter', function () {
         endPlay();
         startPlay($(this));
         return false;
@@ -58,10 +58,10 @@ $(function () {
     }
 
     function startPlay($key) {
-      $key.addClass('waml-kb-key-playing');
-      app.primarySynth.noteOn( $key.data('waml-notenumber') );
+      $key.addClass('wani-kb-key-playing');
+      app.primarySynth.noteOn( $key.data('wani-notenumber') );
       setUpKBListeners($key);
-      $(document).addClass('waml-no-select');
+      $(document).addClass('wani-no-select');
     }
 
     function endPlay(backable) {
@@ -77,21 +77,21 @@ $(function () {
         clearAllKBListeners();
       }
       app.primarySynth.noteOff();
-      $('.waml-kb-key').removeClass('waml-kb-key-playing');
-      $(document).removeClass('waml-no-select');
+      $('.wani-kb-key').removeClass('wani-kb-key-playing');
+      $(document).removeClass('wani-no-select');
     }
 
     function clearAllKBListeners (){
         finishLeaveKeyboard();
-        $('.waml-kb').off('mouseup mouseleave');
-        $('.waml-kb-key').off('mouseenter');
-        $('.waml-kb-key').removeClass('waml-kb-key-playing');
+        $('.wani-kb').off('mouseup mouseleave');
+        $('.wani-kb-key').off('mouseenter');
+        $('.wani-kb-key').removeClass('wani-kb-key-playing');
     }
 
     function finishLeaveKeyboard () {
       if ( leaveTimer ) {
         clearInterval(leaveTimer);
-        $('.waml-kb-key').off('mouseenter');
+        $('.wani-kb-key').off('mouseenter');
         $(document).off('mouseup', finishLeaveKeyboard);
         leaveTimer = null;
       }
@@ -104,13 +104,13 @@ $(function () {
 
     // --------------------------------------------- Knob
 
-    $(document).on('mousedown', '.waml-knob', function (evt) {
-      $('body').addClass('waml-no-select waml-grabbing');
+    $(document).on('mousedown', '.wani-knob', function (evt) {
+      $('body').addClass('wani-no-select wani-grabbing');
       var $knob = $(this);
-      $knob.addClass('waml-knob-active');
-      var opts = $knob.data('waml-knob-data');
+      $knob.addClass('wani-knob-active');
+      var opts = $knob.data('wani-knob-data');
       var lastPos = {x: evt.pageX, y: evt.pageY };
-      var lastValue = $knob.data('waml-value') || 0.0;
+      var lastValue = $knob.data('wani-value') || 0.0;
       var listener = function (evt) {
         var pos = { x: evt.pageX, y: evt.pageY };
         var d = {x: pos.x - lastPos.x, y: pos.y - lastPos.y};
@@ -126,7 +126,7 @@ $(function () {
         if ( value < opts.min ) value = opts.min;
         if ( value === opts.value ) return false;
         $knob.trigger('change', value);
-        $knob.data('waml-value',value);
+        $knob.data('wani-value',value);
         lastValue = value;
         lastPos = pos;
         var range = Math.abs(opts.max - opts.min);
@@ -137,8 +137,8 @@ $(function () {
       };
       $(document).on('mousemove', listener);
       $(document).on('mouseup', function () {
-        $('body').removeClass('waml-no-select waml-grabbing');
-        $knob.removeClass('waml-knob-active');
+        $('body').removeClass('wani-no-select wani-grabbing');
+        $knob.removeClass('wani-knob-active');
         return $(document).off('mousemove', listener);
       });
       return false;
@@ -153,7 +153,7 @@ $(function () {
     });
 
     $('.js-load-module').click( function () {
-      Waml.Web.loadScriptFromURL(
+      Wani.Web.loadScriptFromURL(
         $(this).siblings('.js-module-url').val(),
         function () {
           that.updateModuleList();
@@ -162,7 +162,7 @@ $(function () {
     });
 
     $(document).on('click', '.js-remove-module', function(event) {
-      var $module = $(this).parents('.waml-module');
+      var $module = $(this).parents('.wani-module');
       // minus one because primarySynth is in DOM but not in effects list
       that.removeModule( $module.index() - 1 );
       $module.remove();
@@ -179,9 +179,9 @@ $(function () {
   App.prototype.buildModuleUI = function (name, opts, instance) {
     var app = this;
     if (!opts) opts = {};
-    var def = Waml.definition(name);
+    var def = Wani.definition(name);
     var $div = $('<div />');
-    $div.addClass('waml-module');
+    $div.addClass('wani-module');
     var $h1 = $('<h1 />').text( def.name );
     if ( !opts.noClose ) {
       $('<a>remove</a>').attr('href','#').addClass('js-remove-module').appendTo($h1);
@@ -203,7 +203,7 @@ $(function () {
       $knob.on('change', function(evt, value) {
         instance[name].value = value;
       });
-      $knob.addClass('waml-audioparam');
+      $knob.addClass('wani-audioparam');
       $knobWrapper.append($knob);
       $knobs.append($knobWrapper);
     });
@@ -213,8 +213,8 @@ $(function () {
   };
 
   App.prototype.updateModuleList = function () {
-    var synthesizers = Waml.listSynthesizers();
-    var effects = Waml.listEffects();
+    var synthesizers = Wani.listSynthesizers();
+    var effects = Wani.listEffects();
     var i,len;
     var $synthlist = $('.js-list-synthesizers').empty();
     $.each(synthesizers, function (idx,name) {
@@ -234,7 +234,7 @@ $(function () {
     this.effectInstances = [];
     var module, last = this.primarySynth, that = this;
     $.each( this.effects, function(idx,name) {
-      module = Waml.createModule(name);
+      module = Wani.createModule(name);
       last.connect( module );
       last = module;
       that.effectInstances.push(module);
@@ -261,10 +261,10 @@ $(function () {
     var range = Math.abs( opts.max - opts.min );
     opts.multiplier = range / opts.sense;
     var $knob = $('<div />')
-      .addClass('waml-knob')
-      .data('waml-knob-data', opts);
+      .addClass('wani-knob')
+      .data('wani-knob-data', opts);
     var $point = $('<div />')
-      .addClass('waml-knob-point')
+      .addClass('wani-knob-point')
       .css({ top: 2, left: opts.width/2 - 3})
       .appendTo($knob);
     return $knob;
@@ -296,15 +296,15 @@ $(function () {
     for ( i=0;i<wi;i++) {
       if ( !blacks[i] ) continue;
       $('<div />')
-        .addClass('waml-kb-bk waml-kb-key')
-        .data('waml-notenumber', blacks[i])
+        .addClass('wani-kb-bk wani-kb-key')
+        .data('wani-notenumber', blacks[i])
         .css({ width: keyWidth * 0.7, left: i * keyWidth - keyWidth * 0.35 })
         .appendTo($elem);
     }
     for ( i=0;i<wi;i++) {
       $('<div />')
-        .addClass('waml-kb-wk waml-kb-key')
-        .data('waml-notenumber', whites[i])
+        .addClass('wani-kb-wk wani-kb-key')
+        .data('wani-notenumber', whites[i])
         .css({ width: keyWidth, height: height - 2, left: i * keyWidth })
         .appendTo($elem);
     }

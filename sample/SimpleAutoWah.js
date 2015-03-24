@@ -30,12 +30,12 @@
     filter.connect(outlet);
     return this;
   }
-  SimpleAutoWah.prototype = Object.create(Waml.Module.prototype);
+  SimpleAutoWah.prototype = Object.create(Wani.Module.prototype);
 
-  Waml.registerModule({
+  Wani.registerModule({
     name: 'SimpleAutoWah',
     author: 'aklaswad<aklaswad@gmail.com>',
-    description: 'Sample AutoWah effector module for Waml',
+    description: 'Sample AutoWah effector module for Wani',
     create: SimpleAutoWah,
     isEffect: true,
     inlet: "inlet",

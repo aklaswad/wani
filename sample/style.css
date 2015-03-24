@@ -18,7 +18,7 @@ html,body{
   color: #e73;
 }
 
-.waml-module {
+.wani-module {
   border: 1px solid #888;
   background-color: #abc;
   color: #fff;
@@ -27,17 +27,17 @@ html,body{
   margin: 2px;
 }
 
-.waml-module.synth {
+.wani-module.synth {
   background-color: #acb;
 }
 
-.waml-module h1 {
+.wani-module h1 {
   color: #fff;
   padding: 3px;
   margin: 2px;
 }
 
-.waml-module .js-remove-module {
+.wani-module .js-remove-module {
   float: right;
   position: absolute;
   right: 0px;
@@ -56,18 +56,18 @@ html,body{
   text-align: center;
 }
 
-.waml-knob {
+.wani-knob {
   margin-left: 16px;
   border: 1px solid #789;
 }
 
-.waml-knob.waml-knob-active {
+.wani-knob.wani-knob-active {
   box-shadow: 0 0 5px #def;
   border: 1px solid #fff;
   background-color: #abc;
 }
 
-.waml-knob.waml-knob-active .waml-knob-point {
+.wani-knob.wani-knob-active .wani-knob-point {
   box-shadow: 0 0 5px #def;
   border: 1px solid #fff;
   background-color: #abc;
@@ -121,17 +121,17 @@ footer a:hover {
 }
 
 
-.waml-no-select {
+.wani-no-select {
   -webkit-user-select: none;
   -moz-user-select: none;
   user-select: none;
 }
 
-.waml-grabbing {
+.wani-grabbing {
   cursor: move !important;
 }
 
-.waml-kb {
+.wani-kb {
   height: 70px;
   position: relative;
   -webkit-user-select: none;
@@ -141,7 +141,7 @@ footer a:hover {
   background-color: #abc;
 }
 
-.waml-kb-wk {
+.wani-kb-wk {
   position: absolute;
   top: 0px;
   border-right: 1px solid #abc;
@@ -152,7 +152,7 @@ footer a:hover {
   z-index: 2;
 }
 
-.waml-kb-bk {
+.wani-kb-bk {
   height: 60%;
   position: absolute;
   top: 0px;
@@ -163,19 +163,19 @@ footer a:hover {
   z-index: 4;
 }
 
-.waml-kb-bk:hover {
+.wani-kb-bk:hover {
   background-color: #fca;
 }
 
-.waml-kb-wk:hover {
+.wani-kb-wk:hover {
   background-color: #654;
 }
 
-.waml-kb-key-playing {
+.wani-kb-key-playing {
   background-color: #abc !important;
 }
 
-.waml-kb-key-playing.waml-kb-wk {
+.wani-kb-key-playing.wani-kb-wk {
   z-index: 3;
   border-left: 1px solid #fff;
   border-right: 1px solid #fff;
@@ -183,7 +183,7 @@ footer a:hover {
   box-shadow: 0 0 5px #def;
 }
 
-.waml-kb-key-playing.waml-kb-bk {
+.wani-kb-key-playing.wani-kb-bk {
   border-left: 1px solid #fff;
   border-right: 1px solid #fff;
   border-bottom: 1px solid #fff;
@@ -193,7 +193,7 @@ footer a:hover {
 
 
 
-.waml-knob {
+.wani-knob {
   position: absolute;
   width: 32px;
   height: 32px;
@@ -202,7 +202,7 @@ footer a:hover {
   cursor: pointer;
 }
 
-.waml-knob-point {
+.wani-knob-point {
   position: absolute;
   width: 6px;
   height: 6px;

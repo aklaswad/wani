@@ -4,7 +4,7 @@ var http = require('http'),
   fs = require('fs');
 
 var documents = {
-  'Waml.js': '/../lib/Waml.js',
+  'Wani.js': '/../lib/Wani.js',
   'Web.js': '/../lib/Web.js',
   'index.html': '/index.html',
   'TriOscillator.js': '/TriOscillator.js',
