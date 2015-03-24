@@ -1,3 +1,0 @@
-[submodule "sample/webaudio-controls"]
-	path = sample/webaudio-controls
-	url = git@github.com:g200kg/webaudio-controls.git
