@@ -70,6 +70,33 @@ var moduleInstance = Waml.createModule('Foobar');
           <div><input type="text" class="js-module-url form-control" value="http://aklaswad.github.io/Waml/SimpleAutoWah.js" />
           <input type="button" value="Load" class="btn js-load-module" /></div></p>
           <p>And then, you can see new module in the select menu above.</p>
+
+          <h3>AudioNode Compatible</h3>
+          <p>
+            <div><textarea id="delay-node-module">
+Waml.registerModule({
+  name: 'NativeDelay',
+  isEffect: true,
+  create: function (ctx) { return ctx.createDelay(5) },
+  audioParams: {
+    delayTime: {
+      range: [0, 5]
+    }
+  }
+});
+
+          </textarea></div>
+          <button id="load-delay-node">Load</button>
+          <script>
+$( function () {
+  $('#load-delay-node').click(function () {
+    var script = $('#delay-node-module').text();
+    with(window){ eval(script); }
+    window.app.updateModuleList();
+  });
+});
+</script>
+          </p>
           <footer>
             <h3>Disclaimer</h3>
             <p>

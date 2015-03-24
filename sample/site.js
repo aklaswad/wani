@@ -95,6 +95,7 @@ $(function () {
         leaveTimer = null;
       }
     }
+
     function finishPlayWhenMouseUpAnywhere () {
       endPlay();
     }
@@ -291,14 +292,14 @@ $(function () {
       $('<div />')
         .addClass('waml-kb-bk waml-kb-key')
         .data('waml-notenumber', blacks[i])
-        .css({ width: keyWidth * 0.7, left: i * keyWidth - keyWidth * 0.35 + 3 })
+        .css({ width: keyWidth * 0.7, left: i * keyWidth - keyWidth * 0.35 })
         .appendTo($elem);
     }
     for ( i=0;i<wi;i++) {
       $('<div />')
         .addClass('waml-kb-wk waml-kb-key')
         .data('waml-notenumber', whites[i])
-        .css({ width: keyWidth - 1, left: i * keyWidth + 3 })
+        .css({ width: keyWidth, height: height - 2, left: i * keyWidth })
         .appendTo($elem);
     }
   };

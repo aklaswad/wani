@@ -116,31 +116,33 @@ footer a:hover {
   -moz-user-select: none;
   user-select: none;
   cursor: pointer;
+  background-color: #abc;
 }
 
 .waml-kb-wk {
-  height: 98%;
   position: absolute;
   top: 0px;
-  border-left: 1px solid #424033;
   border-right: 1px solid #abc;
   border-bottom: 2px solid #424033;
   background-color: #8f8073;
+/*  background-color: #fff; */
+  border-radius: 0 0 2px 2px;
   z-index: 2;
 }
 
 .waml-kb-bk {
-  height: 70%;
+  height: 60%;
   position: absolute;
   top: 0px;
-  border-right: 1px solid #fff;
-  border-bottom: 2px solid #fff;
+  border-right: 1px solid #abc;
   background-color: #f84;
+/*  background-color: #000; */
+  border-radius: 0 0 2px 2px;
   z-index: 4;
 }
 
 .waml-kb-bk:hover {
-  background-color: #fba;
+  background-color: #fca;
 }
 
 .waml-kb-wk:hover {
@@ -152,10 +154,16 @@ footer a:hover {
 }
 
 .waml-kb-key-playing.waml-kb-wk {
-  border: 2px solid #def;
+  z-index: 3;
+  border-left: 1px solid #fff;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  box-shadow: 0 0 5px #def;
 }
 
 .waml-kb-key-playing.waml-kb-bk {
-  border: 1px solid #fff;
+  border-left: 1px solid #fff;
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;
   box-shadow: 0 0 5px #def;
 }
