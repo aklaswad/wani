@@ -1,7 +1,7 @@
 (function () {
 
   function createWaveFormRenderer(canvas, opts) {
-    var ctx = Waml.getAudioContext();
+    var ctx = Wani.getAudioContext();
     var proc = ctx.createScriptProcessor(2048,1,1);
     var cvs = document.getElementById(canvas);
     var w = cvs.width;
@@ -74,7 +74,7 @@
     document.body.appendChild(script);
   }
 
-  Waml.Web = {
+  Wani.Web = {
     createWaveFormRenderer: createWaveFormRenderer,
     loadScriptFromURL: loadScriptFromURL
   };

@@ -26,7 +26,7 @@
   }
 
   function createDCOffset(value) {
-    var ctx = Waml.getAudioContext();
+    var ctx = Wani.getAudioContext();
     if ( 'undefined' === typeof value ) {
       value = 1;
     }
@@ -47,14 +47,14 @@
     Object.defineProperty(lfo,'value',{
       set: function(value) {
         if ( 'function' === typeof lfo.onchange ) {
-          var res = lfo.onchange(value, lfo.__waml_value);
+          var res = lfo.onchange(value, lfo.__wani_value);
           if (false === res) return;
         }
-        lfo.__waml_value = value;
+        lfo.__wani_value = value;
         offset.gain.value = value;
       },
       get: function() {
-        return lfo.__waml_value;
+        return lfo.__wani_value;
       }
     });
     lfo.setValueAtTime = function(){ AudioParam.prototype.setValueAtTime.apply(offset.gain, arguments);};
@@ -132,22 +132,22 @@
     }
   };
 
-  function WamlModule (ctx) {
+  function WaniModule (ctx) {
     this.ctx = ctx;
   }
 
-  WamlModule.prototype.connect = function () {
+  WaniModule.prototype.connect = function () {
     return this.outlet.connect.apply( this.outlet, arguments );
   };
 
-  WamlModule.prototype.disconnect = function () {
+  WaniModule.prototype.disconnect = function () {
     return this.outlet.disconnect.apply( this.outlet, arguments );
   };
 
-  var Waml = {
+  var Wani = {
     getAudioContext: getAudioContext,
     // ********* Provide Base Class *********
-    Module: WamlModule,
+    Module: WaniModule,
     modules: {},
     // ********* Package Manager *********
     registerModule: function (module) {
@@ -242,6 +242,6 @@
   };
 
   //TBD Node?
-  window.Waml = Waml;
+  window.Wani = Wani;
 
 })();
