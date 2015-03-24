@@ -1,11 +1,11 @@
 {
-  "name": "WANI",
-  "description": "Web Audio Module Librarian",
+  "name": "wani",
+  "description": "Web Audio N Interface",
   "author": "aklaswad<aklaswad@gmail.com>",
   "version": "0.0.1",
   "repository": {
     "type": "git",
-    "url": "https://github.com/aklaswad/Wani.git"
+    "url": "https://github.com/aklaswad/wani.git"
   },
   "devDependencies": {
     "grunt": "^0.4.5",

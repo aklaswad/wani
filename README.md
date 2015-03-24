@@ -1,6 +1,6 @@
 # WANI
 
-Web Audio Module Librarian
+Web Audio N Interface
 
 [DEMO](http://aklaswad.github.io/Wani/)
 
@@ -8,10 +8,6 @@ Web Audio Module Librarian
 
 WebAudio APIで書かれたシンセサイザーやエフェクターをモジュール化し、外部スクリプトとして読み込み可能にしようという試みです。
 このリポジトリには、モジュールのインターフェース仕様と、既存のコードをモジュール化するためのヘルパーを用意する予定です。
-
-## 名前がださい
-
-ごめん。アイデアください。
 
 ## モジュールとは？
 
