@@ -7,7 +7,6 @@ var documents = {
   'Waml.js': '/../lib/Waml.js',
   'Web.js': '/../lib/Web.js',
   'index.html': '/index.html',
-  'webaudio-controls/webcomponents/controls.html': '/webaudio-controls/webcomponents/controls.html',
   'TriOscillator.js': '/TriOscillator.js',
   'SimpleTremolo.js': '/SimpleTremolo.js',
   'SimpleAutoWah.js': '/SimpleAutoWah.js',

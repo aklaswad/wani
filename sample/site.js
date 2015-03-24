@@ -286,10 +286,10 @@ $(function () {
     i = 0;
     for ( nn=from;nn<keys+from;nn++) {
       if (isBlack(nn)) {
-        blacks[wi] = nn
+        blacks[wi] = nn;
       }
       else {
-        whites[wi++] = nn
+        whites[wi++] = nn;
       }
       i++;
     }
