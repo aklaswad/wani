@@ -57,6 +57,7 @@
         return lfo.__wani_value;
       }
     });
+    lfo.__wani_value = offset.gain.value = defaultValue;
     lfo.setValueAtTime = function(){ AudioParam.prototype.setValueAtTime.apply(offset.gain, arguments);};
     lfo.linearRampToValueAtTime = function(){ AudioParam.prototype.linearRampToValueAtTime.apply(offset.gain, arguments);};
     lfo.exponentialRampToValueAtTime = function(){ AudioParam.prototype.exponentialRampToValueAtTime.apply(offset.gain, arguments);};
@@ -95,8 +96,11 @@
   function createMtofTilde(ctx, from, to, size, centerFreq, centerNote) {
     var normalize = ctx.createGain();
     var shaper = buildMtofShaper(ctx,from,to,size,centerFreq,centerNote);
-    normalize.gain.value = 1 / Math.abs(from - to);
+    var range = Math.abs(from - to);
+    normalize.gain.value = 2 / range;
     normalize.connect(shaper);
+    var offset = createDCOffset(-(from + (range / 2)));
+    offset.connect(normalize);
 
     // hack: override the connect()
     normalize.connect = function () {
