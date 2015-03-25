@@ -90,47 +90,10 @@ select {
   display: -moz-box;
 }
 
-.knob-wrapper {
-  width: 64px;
-  height: 48px;
-  text-align: center;
-}
-
-.wani-knob {
-  margin-left: 16px;
-  border: 1px solid #789;
-}
-
-.wani-knob.wani-knob-active {
-  box-shadow: 0 0 5px #def;
-  border: 1px solid #fff;
-  background-color: #abc;
-}
-
-.wani-knob.wani-knob-active .wani-knob-point {
-  box-shadow: 0 0 5px #def;
-  border: 1px solid #fff;
-  background-color: #abc;
-}
-
 .param-wrapper {
   width: 64px;
   height: 48px;
   text-align: center;
-}
-
-.knob-wrapper h2, .param-wrapper h2 {
-  position: relative;
-  top: 0;
-  margin: 0;
-  font-size: 11px;
-  color: #343;
-  z-index: 10000;
-}
-
-.knob-wrapper-inner {
-  position: relative;
-  left: 16px;
 }
 
 .js-module-url {
@@ -234,6 +197,35 @@ footer a:hover {
 }
 
 
+.wani-knob-box {
+  position: relative;
+}
+
+.wani-knob-backsheet {
+  position: absolute;
+  z-index: 100;
+}
+
+.wani-knob {
+  border: 1px solid #789;
+  z-index: 200;
+}
+
+.wani-knob-title, .wani-knob-title span {
+  color: #fff;
+}
+
+.wani-knob.wani-knob-active {
+  box-shadow: 0 0 5px #def;
+  border: 1px solid #fff;
+  background-color: #abc;
+}
+
+.wani-knob.wani-knob-active .wani-knob-point {
+  box-shadow: 0 0 5px #def;
+  border: 1px solid #fff;
+  background-color: #abc;
+}
 
 
 .wani-knob {
@@ -252,5 +244,32 @@ footer a:hover {
   border-radius: 3px;
   background-color: #f84;
   z-index: 9;
-};
+}
+
+.wani-knob-title {
+  margin: 0;
+  padding: 0;
+}
+
+.wani-knob-title span {
+  font-size: 11px;
+  color: #343;
+  margin: 0;
+  padding: 0;
+  vertical-align: top;
+  display: inline-block;
+}
+
+.wani-knob-activevalue {
+  z-index: 1000000;
+  overflow: hidden;
+  display: none;
+  background-color: #abc;
+  color: #fff;
+  border: 1px solid #def;
+  text-align: center;
+  height: 24px;
+}
+
+
 
