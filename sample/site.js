@@ -112,7 +112,7 @@ $(function () {
         var step = opts.step;
         value = Math.round(value * 1/step) * step;
         if ( opts.max < value ) value = opts.max;
-        if ( value < opts.min ) value = opts.min
+        if ( value < opts.min ) value = opts.min;
         var range = Math.abs(opts.max - opts.min);
         var rate = Math.abs(value - opts.min) / Math.abs( opts.max - opts.min );
         var rotate = 300 * ( rate - 0.5 );
@@ -219,7 +219,6 @@ $(function () {
     var $knobs = $('<div />').addClass('knobs');
     $.each( (def.audioParams || []), function (pname,param) {
       var range = Math.abs( this.range[0] - this.range[1] );
-console.log(instance);
       var $knob = app.initKnob({
         title: pname,
         width: 32,
@@ -367,7 +366,7 @@ console.log(instance);
       ctx.fillStyle = '#abc';
       ctx.fillRect(x-bs.tipWidth/2,y-bs.tipHeight/2,bs.tipWidth,bs.tipHeight);
       ctx.strokeRect(x-bs.tipWidth/2,y-bs.tipHeight/2,bs.tipWidth,bs.tipHeight);
-      ctx.fillStyle = '#fff'
+      ctx.fillStyle = '#fff';
       ctx.fillText(value, x,y, bs.tipWidth);
     }
     var $activeValue = $('<div />')
