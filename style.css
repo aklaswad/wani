@@ -85,9 +85,7 @@ select {
 }
 
 .knobs,.params {
-  display: box;
-  display: -webkit-box;
-  display: -moz-box;
+  display: block;
 }
 
 .param-wrapper {
@@ -199,6 +197,8 @@ footer a:hover {
 
 .wani-knob-box {
   position: relative;
+  display: inline-block;
+  margin-left: -2px;
 }
 
 .wani-knob-backsheet {
