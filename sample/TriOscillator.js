@@ -8,6 +8,7 @@
     var oscs = [];
     var freqMultipliers = [];
     var pitches = [];
+    var gains = [];
     var mtofs = [];
     var i;
 
@@ -22,17 +23,20 @@
       mtofs[i] = Wani.createMtofTilde(ctx,-24,24,4096,1,0);
       freqMultipliers[i] = ctx.createGain();
       freqMultipliers[i].gain.value = 0;
-
       pitches[i].connect(mtofs[i]);
       mtofs[i].connect(freqMultipliers[i].gain);
       this.frequency.connect(freqMultipliers[i]);
       freqMultipliers[i].connect(oscs[i].frequency);
-      oscs[i].connect(this.outlet);
-    }
+      gains[i] = ctx.createGain();
+      gains[i].gain.value = 1.0;
+      oscs[i].connect(gains[i]);
+      gains[i].connect(this.outlet);
 
-    pitches[0].value = 0;
-    this.secondFreqBy = pitches[1];
-    this.thirdFreqBy = pitches[2];
+      // Export audio params
+      this['pitch' + i] = pitches[i];
+      this['gain' + i] = gains[i].gain;
+      this['detune' + i] = oscs[i].detune;
+    }
 
     Object.defineProperty(this, 'type', {
       set: function(type) {
@@ -72,16 +76,46 @@
           range: [0, 20000],
           lfoOnly: true,
         },
-        secondFreqBy: {
-          shortName: 'pitch1',
+        pitch0: {
           description: "multiprier for second oscillator(margin of midinote)",
           range: [-24,24],
-          step: 0.5
+          step: 1,
         },
-        thirdFreqBy: {
-          shortName: 'pitch2',
+        pitch1: {
+          description: "multiprier for second oscillator(margin of midinote)",
+          range: [-24,24],
+          step: 1
+        },
+        pitch2: {
           description: "multiprier for third oscillator(margin of midinote)",
           range: [-24,24],
+          step: 1
+        },
+        gain0: {
+          description: "Gain for second oscillator",
+          range: [0,1],
+        },
+        gain1: {
+          description: "Gain for second oscillator",
+          range: [0,1],
+        },
+        gain2: {
+          description: "Gain for second oscillator",
+          range: [0,1],
+        },
+        detune0: {
+          description: "Gain for third oscillator",
+          range: [-100,100],
+          step: 0.5
+        },
+        detune1: {
+          description: "Gain for third oscillator",
+          range: [-100,100],
+          step: 0.5
+        },
+        detune2: {
+          description: "Gain for third oscillator",
+          range: [-100,100],
           step: 0.5
         }
       },
