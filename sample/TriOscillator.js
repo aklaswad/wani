@@ -11,13 +11,14 @@
     var mtofs = [];
     var i;
 
-    this.frequency = Wani.createAudioParam(this.ctx,220);
+    this.frequency = Wani.createAudioParam(this.ctx,0);
 
     for ( i=0;i<3;i++) {
       oscs[i] = ctx.createOscillator();
       oscs[i].frequency.value = 0; //Always zero. use audio signal only!
       oscs[i].start(0);
       pitches[i] = Wani.createAudioParam(ctx,0);
+      pitches[i].value = 0;
       mtofs[i] = Wani.createMtofTilde(ctx,-24,24,4096,1,0);
       freqMultipliers[i] = ctx.createGain();
       freqMultipliers[i].gain.value = 0;
