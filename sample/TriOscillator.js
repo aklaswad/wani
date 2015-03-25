@@ -125,6 +125,40 @@
           description: "Wave shape type."
         },
       },
+      presets: {
+        plain: {
+          audioParams: {
+            pitch0:   0,   gain0: 0.9,    detune0:  0.0,
+            pitch1:   0,   gain1: 0.9,    detune1:  0.0,
+            pitch2:   0,   gain2: 0.9,    detune2:  0.0,
+          },
+          params: { type: 'sine' }
+        },
+        fatSaw: {
+          audioParams: {
+            pitch0: -12,   gain0: 1.0,    detune0:  0.0,
+            pitch1:   0,   gain1: 0.9,    detune1:  8.0,
+            pitch2:   0,   gain2: 0.9,    detune2: -8.0,
+          },
+          params: { type: 'sawtooth' }
+        },
+        major7: {
+          audioParams: {
+            pitch0:   0,   gain0: 1.0,    detune0:  0.0,
+            pitch1:   4,   gain1: 0.3,    detune1:  6.0,
+            pitch2:  11,   gain2: 0.2,    detune2: -6.0,
+          },
+          params: { type: 'sine' }
+        },
+        nes: {
+          audioParams: {
+            pitch0:   0,   gain0: 1.0,    detune0: -5.0,
+            pitch1:   0,   gain1: 1.0,    detune1:  5.0,
+            pitch2:  12,   gain2: 0.4,    detune2:  0.0,
+          },
+          params: { type: 'triangle' }
+        }
+      }
     });
   }
 })();
