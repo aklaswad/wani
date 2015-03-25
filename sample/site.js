@@ -104,15 +104,39 @@ $(function () {
 
     // --------------------------------------------- Knob
 
-    $(document).on('mousedown', '.wani-knob', function (evt) {
+    $.fn.knobValue = function (value) {
+      $(this).each( function () {
+        var $box = $(this);
+        var $knob = $box.find('.wani-knob-knob');
+        var opts = $box.data('wani-knob-data');
+        if ( opts.max < value ) value = opts.max;
+        if ( value < opts.min ) value = opts.min
+        if ( value !== opts.value ) {
+          $(this).trigger('change', value, opts);
+        }
+        opts.value = value;
+        var range = Math.abs(opts.max - opts.min);
+        var rate = Math.abs(value - opts.min) / Math.abs( opts.max - opts.min );
+        var rotate = 300 * ( rate - 0.5 );
+        $knob.css({ transform: 'rotate(' + rotate + 'deg)' });
+        var valueStr = value.toFixed(6).substr(0,7);
+        $box.find('.wani-knob-activevalue').text(valueStr);
+        $box.find('.wani-knob-value').text(valueStr);
+      });
+      return this;
+    };
+
+    $(document).on('mousedown', '.wani-knob-knob', function (evt) {
       $('body').addClass('wani-no-select wani-grabbing');
       var $knob = $(this);
+      var $box = $knob.parents('.wani-knob-box');
       $knob.addClass('wani-knob-active');
-      var opts = $knob.data('wani-knob-data');
+      var opts = $box.data('wani-knob-data');
       var lastPos = {x: evt.pageX, y: evt.pageY };
-      var lastValue = $knob.data('wani-value') || 0.0;
+      var lastValue = opts.value || 0.0;
       var $activeValue = $knob.siblings('.wani-knob-activevalue').show();
       var $backsheet = $knob.siblings('.wani-knob-backsheet').show();
+      var $currentValue = $knob.siblings('.wani-knob-value').hide();
       var listener = function (evt) {
         var pos = { x: evt.pageX, y: evt.pageY };
         var d = {x: pos.x - lastPos.x, y: pos.y - lastPos.y};
@@ -124,18 +148,9 @@ $(function () {
 
         // TODO: some calc about step here
         var value = lastValue - d.y * opts.multiplier; // y on diplay is negative
-        if ( opts.max < value ) value = opts.max;
-        if ( value < opts.min ) value = opts.min;
-        if ( value === opts.value ) return false;
-        $knob.trigger('change', value);
-        $knob.data('wani-value',value);
-        $activeValue.text(value);
+        $box.knobValue(value);
         lastValue = value;
         lastPos = pos;
-        var range = Math.abs(opts.max - opts.min);
-        var rate = Math.abs(value - opts.min) / Math.abs( opts.max - opts.min );
-        var rotate = 300 * ( rate - 0.5 );
-        $knob.css({ transform: 'rotate(' + rotate + 'deg)' });
         return false;
       };
       $(document).on('mousemove', listener);
@@ -144,7 +159,9 @@ $(function () {
         $knob.removeClass('wani-knob-active');
         $activeValue.hide();
         $backsheet.hide();
-        return $(document).off('mousemove', listener);
+        $currentValue.show();
+        $(document).off('mousemove', listener);
+        return true;
       });
       return false;
     });
@@ -202,7 +219,8 @@ $(function () {
         min: this.range[0],
         max: this.range[1],
         name: this.name,
-        description: this.description
+        description: this.description,
+        value: instance[name].value
       });
       $knob.on('change', function(evt, value) {
         instance[name].value = value;
@@ -264,7 +282,7 @@ $(function () {
     var range = Math.abs( opts.max - opts.min );
     opts.multiplier = range / opts.sense;
     var $box = $('<div />')
-      .addClass('wani-knob-box')
+      .addClass('wani-knob-box wani-knob')
       .css({width: opts.width + 32, height: opts.height + 32, position: 'relative'});
     $('<h2 />').css({
         textAlign: 'center',
@@ -325,19 +343,29 @@ $(function () {
         width: opts.width + 32
       })
       .appendTo($box);
+    var $currentValue = $('<div />')
+      .addClass('wani-knob-value')
+      .css({
+        position: 'absolute',
+        top: opts.height + 16,
+        width: opts.width + 32
+      })
+      .text('hoge')
+      .appendTo($box);
     var $knob = $('<div />')
-      .addClass('wani-knob')
+      .addClass('wani-knob-knob')
       .css({
         position: 'absolute',
         top: 16,
         left: 16
       })
-      .data('wani-knob-data', opts)
       .appendTo($box);
     var $point = $('<div />')
       .addClass('wani-knob-point')
       .css({ top: 2, left: opts.width/2 - 3})
       .appendTo($knob);
+    $box.data('wani-knob-data', opts);
+    $box.knobValue(opts.value || 0);
     return $box;
   };
 

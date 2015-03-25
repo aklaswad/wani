@@ -206,29 +206,25 @@ footer a:hover {
   z-index: 100;
 }
 
-.wani-knob {
+.wani-knob-knob {
   border: 1px solid #789;
   z-index: 200;
 }
 
-.wani-knob-title, .wani-knob-title span {
-  color: #fff;
-}
-
-.wani-knob.wani-knob-active {
+.wani-knob-knob.wani-knob-active {
   box-shadow: 0 0 5px #def;
   border: 1px solid #fff;
   background-color: #abc;
 }
 
-.wani-knob.wani-knob-active .wani-knob-point {
+.wani-knob-knob.wani-knob-active .wani-knob-point {
   box-shadow: 0 0 5px #def;
   border: 1px solid #fff;
   background-color: #abc;
 }
 
 
-.wani-knob {
+.wani-knob-knob {
   position: absolute;
   width: 32px;
   height: 32px;
@@ -249,15 +245,23 @@ footer a:hover {
 .wani-knob-title {
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 .wani-knob-title span {
   font-size: 11px;
-  color: #343;
+  color: #fff;
   margin: 0;
   padding: 0;
   vertical-align: top;
   display: inline-block;
+}
+
+.wani-knob-value {
+  text-align: center;
+  vertical-align: top;
+  font-size: 0.8em;
+  overflow: hidden;
 }
 
 .wani-knob-activevalue {
