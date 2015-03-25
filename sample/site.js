@@ -218,16 +218,18 @@ $(function () {
     $div.append( $h1 );
     var $knobs = $('<div />').addClass('knobs');
     $.each( (def.audioParams || []), function (pname,param) {
+      if ( param.lfoOnly ) return true;
       var range = Math.abs( this.range[0] - this.range[1] );
       var $knob = app.initKnob({
-        title: pname,
+        title: param.shortName || pname,
         width: 32,
         height: 32,
         range: range,
         min: this.range[0],
         max: this.range[1],
         description: this.description,
-        value: instance[pname].value
+        value: instance[pname].value,
+        step: param.step || range / 512,
       });
       $knob.on('change', function(evt, value) {
         instance[pname].value = value;
@@ -301,7 +303,8 @@ $(function () {
   };
 
   App.prototype.initKnob = function (opts) {
-    opts = $.extend({ min:0, max:1,width:32,height:32,step:1,sense:360},opts);
+    opts = $.extend({ min:0, max:1,width:32,height:32,step:1,sense:360, margin: 16},opts);
+    var canvasMargin = 48;
     var values, range;
     if ( opts.isSelect ) {
       values = opts.values;
@@ -318,7 +321,7 @@ $(function () {
     }
     var $box = $('<div />')
       .addClass('wani-knob-box wani-knob')
-      .css({width: opts.width + 32, height: opts.height + 32, position: 'relative'});
+      .css({width: opts.width + opts.margin*2, height: opts.height + opts.margin*2, position: 'relative'});
     $('<h2 />').css({
         textAlign: 'center',
         zIndex: 3
@@ -326,14 +329,14 @@ $(function () {
       .addClass('wani-knob-title')
       .append( $('<span />').text(opts.title) )
       .appendTo($box);
-
+    // BackSheet
     var bs = {
-      width: opts.width + 64,
-      height: opts.height + 64,
-      radius: opts.width / 2 + 15,
-      tipWidth: 28,
-      tipHeight: 10
+      width: (opts.width + opts.margin * 2)  + canvasMargin * 2,
+      height: (opts.width + opts.margin * 2) + canvasMargin * 2,
+      tipWidth: 52,
+      tipHeight: 18
     };
+    bs.radius = bs.width/2 - bs.tipWidth / 2;
     var $canvas = $('<canvas />')
       .addClass('wani-knob-backsheet')
       .attr('width', bs.width)
@@ -342,8 +345,8 @@ $(function () {
         position: 'absolute',
         width: bs.width,
         height: bs.height,
-        left: -16,
-        top: -16,
+        left: -1 * canvasMargin,
+        top: -1 * canvasMargin,
         display: 'none'
       })
       .appendTo($box);
@@ -362,18 +365,18 @@ $(function () {
       ctx.moveTo(x,y);
       ctx.lineTo(bs.width/2,bs.height/2);
       ctx.stroke();
-      ctx.font = '10px';
-      ctx.fillStyle = '#abc';
+      ctx.fillStyle = '#789';
       ctx.fillRect(x-bs.tipWidth/2,y-bs.tipHeight/2,bs.tipWidth,bs.tipHeight);
       ctx.strokeRect(x-bs.tipWidth/2,y-bs.tipHeight/2,bs.tipWidth,bs.tipHeight);
       ctx.fillStyle = '#fff';
-      ctx.fillText(value, x,y, bs.tipWidth);
+      ctx.font = 'normal lighter 14px "Courier New", arial';
+      ctx.fillText(value, x,y, bs.tipWidth - 2);
     }
     var $activeValue = $('<div />')
       .addClass('wani-knob-activevalue')
       .css({
         position: 'absolute',
-        top: opts.height + 32,
+        top: opts.height + opts.margin + canvasMargin + 3,
         width: opts.width + 32
       })
       .appendTo($box);

@@ -70,14 +70,19 @@
         frequency: {
           description: 'frequency (hz)',
           range: [0, 20000],
+          lfoOnly: true,
         },
         secondFreqBy: {
+          shortName: 'pitch1',
           description: "multiprier for second oscillator(margin of midinote)",
-          range: [-24,24]
+          range: [-24,24],
+          step: 0.5
         },
         thirdFreqBy: {
+          shortName: 'pitch2',
           description: "multiprier for third oscillator(margin of midinote)",
-          range: [-24,24]
+          range: [-24,24],
+          step: 0.5
         }
       },
       params: {
