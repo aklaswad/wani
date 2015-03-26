@@ -58,6 +58,19 @@ select {
   color: #e73;
 }
 
+header {
+  position: relative;
+}
+
+header .subtitle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: box;
+  color: #aaa;
+  font-size: 13px;
+}
+
 .wani-module {
   border: 1px solid #888;
   background-color: #808a90;
