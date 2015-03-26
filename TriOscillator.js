@@ -8,6 +8,7 @@
     var oscs = [];
     var freqMultipliers = [];
     var pitches = [];
+    var gains = [];
     var mtofs = [];
     var i;
 
@@ -22,17 +23,20 @@
       mtofs[i] = Wani.createMtofTilde(ctx,-24,24,4096,1,0);
       freqMultipliers[i] = ctx.createGain();
       freqMultipliers[i].gain.value = 0;
-
       pitches[i].connect(mtofs[i]);
       mtofs[i].connect(freqMultipliers[i].gain);
       this.frequency.connect(freqMultipliers[i]);
       freqMultipliers[i].connect(oscs[i].frequency);
-      oscs[i].connect(this.outlet);
-    }
+      gains[i] = ctx.createGain();
+      gains[i].gain.value = 1.0;
+      oscs[i].connect(gains[i]);
+      gains[i].connect(this.outlet);
 
-    pitches[0].value = 0;
-    this.secondFreqBy = pitches[1];
-    this.thirdFreqBy = pitches[2];
+      // Export audio params
+      this['pitch' + i] = pitches[i];
+      this['gain' + i] = gains[i].gain;
+      this['detune' + i] = oscs[i].detune;
+    }
 
     Object.defineProperty(this, 'type', {
       set: function(type) {
@@ -70,14 +74,49 @@
         frequency: {
           description: 'frequency (hz)',
           range: [0, 20000],
+          lfoOnly: true,
         },
-        secondFreqBy: {
+        pitch0: {
           description: "multiprier for second oscillator(margin of midinote)",
-          range: [-24,24]
+          range: [-24,24],
+          step: 1,
         },
-        thirdFreqBy: {
+        pitch1: {
+          description: "multiprier for second oscillator(margin of midinote)",
+          range: [-24,24],
+          step: 1
+        },
+        pitch2: {
           description: "multiprier for third oscillator(margin of midinote)",
-          range: [-24,24]
+          range: [-24,24],
+          step: 1
+        },
+        gain0: {
+          description: "Gain for second oscillator",
+          range: [0,1],
+        },
+        gain1: {
+          description: "Gain for second oscillator",
+          range: [0,1],
+        },
+        gain2: {
+          description: "Gain for second oscillator",
+          range: [0,1],
+        },
+        detune0: {
+          description: "Gain for third oscillator",
+          range: [-100,100],
+          step: 0.5
+        },
+        detune1: {
+          description: "Gain for third oscillator",
+          range: [-100,100],
+          step: 0.5
+        },
+        detune2: {
+          description: "Gain for third oscillator",
+          range: [-100,100],
+          step: 0.5
         }
       },
       params: {
@@ -86,6 +125,40 @@
           description: "Wave shape type."
         },
       },
+      presets: {
+        plain: {
+          audioParams: {
+            pitch0:   0,   gain0: 0.9,    detune0:  0.0,
+            pitch1:   0,   gain1: 0.9,    detune1:  0.0,
+            pitch2:   0,   gain2: 0.9,    detune2:  0.0,
+          },
+          params: { type: 'sine' }
+        },
+        fatSaw: {
+          audioParams: {
+            pitch0: -12,   gain0: 1.0,    detune0:  0.0,
+            pitch1:   0,   gain1: 0.9,    detune1:  8.0,
+            pitch2:   0,   gain2: 0.9,    detune2: -8.0,
+          },
+          params: { type: 'sawtooth' }
+        },
+        major7: {
+          audioParams: {
+            pitch0:   0,   gain0: 1.0,    detune0:  0.0,
+            pitch1:   4,   gain1: 0.3,    detune1:  6.0,
+            pitch2:  11,   gain2: 0.2,    detune2: -6.0,
+          },
+          params: { type: 'sine' }
+        },
+        nes: {
+          audioParams: {
+            pitch0:   0,   gain0: 1.0,    detune0: -5.0,
+            pitch1:   0,   gain1: 1.0,    detune1:  5.0,
+            pitch2:  12,   gain2: 0.4,    detune2:  0.0,
+          },
+          params: { type: 'triangle' }
+        }
+      }
     });
   }
 })();

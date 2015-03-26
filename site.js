@@ -109,6 +109,9 @@ $(function () {
         var $box = $(this);
         var $knob = $box.find('.wani-knob-knob');
         var opts = $box.data('wani-knob-data');
+        if (opts.isSelect && 'string' === typeof value ) {
+          value = opts.values.indexOf(value);
+        }
         var step = opts.step;
         value = Math.round(value * 1/step) * step;
         if ( opts.max < value ) value = opts.max;
@@ -118,7 +121,7 @@ $(function () {
         var rotate = 300 * ( rate - 0.5 );
         $knob.css({ transform: 'rotate(' + rotate + 'deg)' });
 
-        if (opts.isSelect) {
+        if ( opts.isSelect ) {
           opts._value = value;
           value = opts.values[value];
         }
@@ -190,6 +193,26 @@ $(function () {
       );
     });
 
+    $(document).on('change', '.preset', function (evt) {
+      var $module = $(this).parents('.wani-module');
+      var idx = $module.index() - 1;
+      var def = idx === -1 ? Wani.definition('TriOscillator') : app.effects[idx];
+      var presetName = $(this).val();
+      var preset = def.presets[presetName];
+      if ( preset.audioParams ) {
+        for ( var p in preset.audioParams ) {
+          $module.find('.wani-knob-ap-' + p)
+            .knobValue( preset.audioParams[p] );
+        }
+      }
+      if ( preset.params ) {
+        for ( var param in preset.params ) {
+          $module.find('.wani-knob-p-' + param)
+            .knobValue( preset.params[param] );
+        }
+      }
+    });
+
     $(document).on('click', '.js-remove-module', function(event) {
       var $module = $(this).parents('.wani-module');
       // minus one because primarySynth is in DOM but not in effects list
@@ -215,19 +238,28 @@ $(function () {
     if ( !opts.noClose ) {
       $('<a>remove</a>').attr('href','#').addClass('js-remove-module').appendTo($h1);
     }
+    if ( def.presets ) {
+      var $presets = $('<select />').addClass('preset').appendTo($h1);
+      for ( name in def.presets ) {
+        var params = def.presets[name];
+        var $preset = $('<option />').text(name).data('preset-params', params).appendTo($presets);
+      }
+    }
     $div.append( $h1 );
     var $knobs = $('<div />').addClass('knobs');
     $.each( (def.audioParams || []), function (pname,param) {
+      if ( param.lfoOnly ) return true;
       var range = Math.abs( this.range[0] - this.range[1] );
       var $knob = app.initKnob({
-        title: pname,
+        title: param.shortName || pname,
         width: 32,
         height: 32,
         range: range,
         min: this.range[0],
         max: this.range[1],
         description: this.description,
-        value: instance[pname].value
+        value: instance[pname].value,
+        step: param.step || range / 512,
       });
       $knob.on('change', function(evt, value) {
         instance[pname].value = value;
@@ -301,14 +333,15 @@ $(function () {
   };
 
   App.prototype.initKnob = function (opts) {
-    opts = $.extend({ min:0, max:1,width:32,height:32,step:1,sense:360},opts);
+    opts = $.extend({ min:0, max:1,width:32,height:32,step:1,sense:360, margin: 16},opts);
+    var canvasMargin = 48;
     var values, range;
     if ( opts.isSelect ) {
       values = opts.values;
       opts.min = 0;
       opts.max = opts.values.length-1;
       range = [0, opts.values.length-1];
-      opts.multiplier = 0.1;
+      opts.multiplier = 0.05;
       opts._value = 0;
     }
     else {
@@ -316,9 +349,10 @@ $(function () {
       range = Math.abs( opts.max - opts.min );
       opts.multiplier = range / opts.sense;
     }
+    var midfix = opts.isSelect ? 'p-' : 'ap-';
     var $box = $('<div />')
-      .addClass('wani-knob-box wani-knob')
-      .css({width: opts.width + 32, height: opts.height + 32, position: 'relative'});
+      .addClass('wani-knob-box wani-knob wani-knob-' + midfix + opts.title)
+      .css({width: opts.width + opts.margin*2, height: opts.height + opts.margin*2, position: 'relative'});
     $('<h2 />').css({
         textAlign: 'center',
         zIndex: 3
@@ -327,13 +361,15 @@ $(function () {
       .append( $('<span />').text(opts.title) )
       .appendTo($box);
 
+
+    // BackSheet
     var bs = {
-      width: opts.width + 64,
-      height: opts.height + 64,
-      radius: opts.width / 2 + 15,
-      tipWidth: 28,
-      tipHeight: 10
+      width: (opts.width + opts.margin * 2)  + canvasMargin * 2,
+      height: (opts.width + opts.margin * 2) + canvasMargin * 2,
+      tipWidth: 52,
+      tipHeight: 18
     };
+    bs.radius = bs.width/2 - bs.tipWidth / 2;
     var $canvas = $('<canvas />')
       .addClass('wani-knob-backsheet')
       .attr('width', bs.width)
@@ -342,8 +378,8 @@ $(function () {
         position: 'absolute',
         width: bs.width,
         height: bs.height,
-        left: -16,
-        top: -16,
+        left: -1 * canvasMargin,
+        top: -1 * canvasMargin,
         display: 'none'
       })
       .appendTo($box);
@@ -362,18 +398,18 @@ $(function () {
       ctx.moveTo(x,y);
       ctx.lineTo(bs.width/2,bs.height/2);
       ctx.stroke();
-      ctx.font = '10px';
-      ctx.fillStyle = '#abc';
+      ctx.fillStyle = '#789';
       ctx.fillRect(x-bs.tipWidth/2,y-bs.tipHeight/2,bs.tipWidth,bs.tipHeight);
       ctx.strokeRect(x-bs.tipWidth/2,y-bs.tipHeight/2,bs.tipWidth,bs.tipHeight);
       ctx.fillStyle = '#fff';
-      ctx.fillText(value, x,y, bs.tipWidth);
+      ctx.font = 'normal lighter 14px "Courier New", arial';
+      ctx.fillText(value, x,y, bs.tipWidth - 2);
     }
     var $activeValue = $('<div />')
       .addClass('wani-knob-activevalue')
       .css({
         position: 'absolute',
-        top: opts.height + 32,
+        top: opts.height + opts.margin + canvasMargin + 3,
         width: opts.width + 32
       })
       .appendTo($box);
