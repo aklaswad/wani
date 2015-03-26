@@ -48,7 +48,7 @@ nativeDelay.connect(ctx.destination);
 
 var nativeOsc = ctx.createOsc();
 var waniEffect = Wani.createModule('EFFECT_NAME');
-nativeOsc.connect(waniEffect.inlet);
+nativeOsc.connect(waniEffect);
 waniEffect.connect(ctx.destination);
 </pre>
 
