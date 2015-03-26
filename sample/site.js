@@ -200,9 +200,9 @@ $(function () {
       var presetName = $(this).val();
       var preset = def.presets[presetName];
       if ( preset.audioParams ) {
-        for ( var param in preset.audioParams ) {
-          $module.find('.wani-knob-ap-' + param)
-            .knobValue( preset.audioParams[param] );
+        for ( var p in preset.audioParams ) {
+          $module.find('.wani-knob-ap-' + p)
+            .knobValue( preset.audioParams[p] );
         }
       }
       if ( preset.params ) {
@@ -341,7 +341,7 @@ $(function () {
       opts.min = 0;
       opts.max = opts.values.length-1;
       range = [0, opts.values.length-1];
-      opts.multiplier = 0.1;
+      opts.multiplier = 0.05;
       opts._value = 0;
     }
     else {

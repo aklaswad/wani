@@ -8,6 +8,19 @@ body {
   border-bottom: 1px solid #fff;
 }
 
+button {
+  margin-top: 4px;
+}
+
+textarea {
+  width: 80%;
+  height: 200px;
+}
+
+select {
+  width: 80%;
+}
+
 .row, .col.mainarticle, .col.tools {
   color: #606064;
   background-color: #fff;
@@ -47,28 +60,15 @@ body {
 
 .wani-module {
   border: 1px solid #888;
-  background-color: #abc;
+  background-color: #808a90;
   color: #fff;
   position: relative;
   width: 256px;
   margin: 2px;
 }
 
-button {
-  margin-top: 4px;
-}
-
-textarea {
-  width: 80%;
-  height: 200px;
-}
-
-select {
-  width: 80%;
-}
-
 .wani-module.synth {
-  background-color: #acb;
+  background-color: #80908a;
 }
 
 .wani-module h1 {
@@ -203,11 +203,11 @@ footer a:hover {
 
 .wani-knob-backsheet {
   position: absolute;
-  z-index: 100;
+  z-index: 300;
 }
 
 .wani-knob-knob {
-  border: 1px solid #789;
+  border: 1px solid #abc;
   z-index: 200;
 }
 
@@ -215,12 +215,14 @@ footer a:hover {
   box-shadow: 0 0 5px #def;
   border: 1px solid #fff;
   background-color: #abc;
+  z-index: 400;
 }
 
 .wani-knob-knob.wani-knob-active .wani-knob-point {
   box-shadow: 0 0 5px #def;
   border: 1px solid #fff;
   background-color: #abc;
+  z-index: 400;
 }
 
 
@@ -268,7 +270,7 @@ footer a:hover {
   z-index: 1000000;
   overflow: hidden;
   display: none;
-  background-color: #abc;
+  background-color: #789;
   color: #fff;
   border: 1px solid #def;
   text-align: center;
