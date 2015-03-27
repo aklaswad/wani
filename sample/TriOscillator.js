@@ -69,7 +69,7 @@
       author: 'aklaswad<aklaswad@gmail.com>',
       description: 'TriOscillator',
       create: TriOscillator,
-      isSynth: true,
+      type: 'synth',
       audioParams: {
         frequency: {
           description: 'frequency (hz)',

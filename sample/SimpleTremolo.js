@@ -46,7 +46,7 @@
     name: 'SimpleTremolo',
     author: 'aklaswad<aklaswad@gmail.com>',
     description: 'Sample Tremolo effector module for Wani',
-    isEffect: true,
+    type: 'effect',
     create: SimpleTremolo,
     audioParams: {
       frequency: {

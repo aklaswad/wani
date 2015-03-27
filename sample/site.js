@@ -289,8 +289,8 @@ $(function () {
   };
 
   App.prototype.updateModuleList = function () {
-    var synthesizers = Wani.listSynthesizers();
-    var effects = Wani.listEffects();
+    var synthesizers = Wani.list('synth');
+    var effects = Wani.list('effect');
     var i,len;
     var $synthlist = $('.js-list-synthesizers').empty();
     $.each(synthesizers, function (idx,name) {
