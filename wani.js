@@ -170,11 +170,6 @@
         this.console.error('Cannot register unnamed module');
         return false;
       }
-      name = module.name;
-      if ( !module.isSynth && !module.isEffect ) {
-        this.console.error('Module must be synth or effect');
-        return false;
-      }
       return true;
     },
     createModule: function (name) {
@@ -182,23 +177,14 @@
       if (!module) throw("Module '" + name + "' is not found");
       return new module.create(this.getAudioContext());
     },
-    listSynthesizers: function () {
-      var name, synthesizers = [];
+    list: function (type) {
+      var name, modules = [];
       for (name in this.modules) {
-        if ( this.modules[name].isSynth ) {
-          synthesizers.push(name);
+        if ( this.modules[name].type === type ) {
+          modules.push(name);
         }
       }
-      return synthesizers;
-    },
-    listEffects: function () {
-      var name, effects = [];
-      for (name in this.modules) {
-        if ( this.modules[name].isEffect ) {
-          effects.push(name);
-        }
-      }
-      return effects;
+      return modules;
     },
     describeAll: function (reader) {
       for (var name in this.modules) {

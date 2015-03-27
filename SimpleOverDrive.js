@@ -39,7 +39,7 @@
     author: 'aklaswad<aklaswad@gmail.com>',
     description: 'Sample OverDrive effector module for Wani',
     create: SimpleOverDrive,
-    isEffect: true,
+    type: 'effect',
     audioParams: {
       drive: {
         description: 'Amplifier!!',

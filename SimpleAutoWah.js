@@ -37,7 +37,7 @@
     author: 'aklaswad<aklaswad@gmail.com>',
     description: 'Sample AutoWah effector module for Wani',
     create: SimpleAutoWah,
-    isEffect: true,
+    type: 'effect',
     inlet: "inlet",
   });
 })();

@@ -11,8 +11,16 @@ var documents = {
   'SimpleTremolo.js': '/SimpleTremolo.js',
   'SimpleAutoWah.js': '/SimpleAutoWah.js',
   'SimpleOverDrive.js': '/SimpleOverDrive.js',
+  'tuna.js': '/tuna.js',
+  'tunawani.js': '/tunawani.js',
   'site.js': '/site.js',
-  'style.css': '/style.css'
+  'style.css': '/style.css',
+
+  'impulses/Sweetspot1M.wav': '/impulses/Sweetspot1M.wav',
+  'impulses/impulse_rev.wav': '/impulses/impulse_rev.wav',
+  'impulses/impulse_guitar.wav': '/impulses/impulse_guitar.wav',
+  'impulses/ir_rev_short.wav': '/impulses/ir_rev_short.wav'
+
 };
 
 var filename, path;
