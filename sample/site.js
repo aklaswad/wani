@@ -259,7 +259,8 @@ $(function () {
         max: this.range[1],
         description: this.description,
         value: instance[pname].value,
-        step: param.step || range / 512,
+        isAudio: true,
+        step: param.step || range / 512
       });
       $knob.on('change', function(evt, value) {
         instance[pname].value = value;
@@ -268,15 +269,28 @@ $(function () {
       $knobs.append($knob);
     });
     $.each( (def.params || []), function (pname,param) {
-      var $knob = app.initKnob({
+      var prop = {
         title: pname,
         width: 32,
         height: 32,
-        values: this.values,
         description: this.description,
-        value: instance[pname],
-        isSelect: true,
-      });
+        value: param.value || instance[pname],
+        isAudio: false
+      };
+      if (this.values) {
+        prop.isSelect = true;
+        prop.values = this.values;
+        prop.step = 1;
+      }
+      else {
+        prop.range = Math.abs(this.range[1] - this.range[0]);
+        prop.min = this.range[0];
+        prop.max = this.range[1];
+        prop.step = param.step || prop.range / 512;
+      }
+      console.log('....default v', prop);
+      var $knob = app.initKnob(prop);
+
       $knob.on('change', function(evt, value) {
         instance[pname] = value;
       });
@@ -333,7 +347,7 @@ $(function () {
   };
 
   App.prototype.initKnob = function (opts) {
-    opts = $.extend({ min:0, max:1,width:32,height:32,step:1,sense:360, margin: 16},opts);
+    opts = $.extend({ min:0, max:1,width:32,height:32,sense:360, margin: 16},opts);
     var canvasMargin = 48;
     var values, range;
     if ( opts.isSelect ) {
@@ -420,7 +434,6 @@ $(function () {
         top: opts.height + 16,
         width: opts.width + 32
       })
-      .text('hoge')
       .appendTo($box);
     var $knob = $('<div />')
       .addClass('wani-knob-knob')
