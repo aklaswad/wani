@@ -35,7 +35,7 @@ if ( 'undefined' !== typeof window
     author: 'aklaswad<aklaswad@gmail.com>',
     description: 'TriOscillator',
     create: TriOscillator,
-    isSynth: true,
+    type: 'synth',
     audioParams: {
       frequency: {
         description: 'frequency (hz)',
@@ -46,6 +46,12 @@ if ( 'undefined' !== typeof window
       type: {
         values: ["sine", "sawtooth", "square", "triangle" ],
         description: "Wave shape type.",
+      }
+    },
+    presets: {
+      foobar: {
+        audioParams: { frequency: 440 },
+        params: { type: 'sine' }
       }
     }
   });
@@ -62,9 +68,9 @@ ry
 
 モジュールのインスタンスを生成するコンストラクタを指定します。いわゆるJavaScriptのfunctionです。`new foobar(ctx)`のように呼ばれます。
 
-### isSynth and isEffect
+### type
 
-モジュールのタイプを指定します。
+モジュールのタイプを指定します。現在有効な値は`synth`と`effect`のみです。
 
 ### audioParams
 
@@ -74,10 +80,6 @@ ry
 
 モジュールが公開するその他のプロパティを指定します。
 
-### inlet (エフェクターのみ)
-
-モジュールの音声入力に使用するAudioNodeのプロパティ名を指定します。 *inletという名前決め打ちでもいいか？複数必要な場合は？*
-
 ## AudioParamのインスタンス作れないんだけど？
 
 現状、正攻法では作れないようです。黒魔術してください。または`Wani.createAudioParamBridge`を使ってください。
@@ -85,7 +87,8 @@ See Also https://github.com/WebAudio/web-audio-api/issues/367
 
 ## モジュールの必須プロパティ
 
- * 全てのモジュールは、`connect`メソッドを実装する必要があります。
+ * エフェクターは、inletという名前のAudioNodeをプロパティにもつ必要があります。
+ * エフェクターとシンセサイザーは、outletという名前のAudioNodeをプロパティに保つ必要があります。
  * シンセサイザーとして登録したモジュールは、`NoteOn(noteNumber)`と`NoteOff()`のふたつのメソッドを実装する必要があります。 *TODO:ポリ音源について*
 
 
