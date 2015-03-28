@@ -1,0 +1,97 @@
+<script src="parser.js"></script>
+<script src="//code.jquery.com/jquery-2.1.3.min.js"></script>
+<script src="http://coffeescript.org/extras/coffee-script.js"></script>
+<script type="text/coffeescript">
+lines = []
+io = {}
+tail = 1
+p = (s)-> lines.push s
+offset = (val) ->
+  "Wani.createDCOffset(#{val})"
+
+prefix = """
+var io = (function () {
+  var io = {};
+  var nodes = [];
+
+"""
+
+suffix = """
+
+  return io;
+})();
+"""
+
+generate = (expression) ->
+  tail = 0
+  io = {}
+  lines = []
+  tree = Parser.parse(expression)
+  $('#tree').val( JSON.stringify tree );
+  dest = _generate tree,1
+  p "io['output'] = nodes[#{dest}]; //output"
+  prefix + "  " + lines.join("\n  ") + suffix
+
+
+_generate = (tree, output) ->
+  if tree.func
+    throw "function is not supported"
+  else if tree.word
+    me = tail
+    if io[tree.word]
+      return io[tree.word]
+    p "nodes[#{tail++}] = io['#{tree.word}'] = ctx.createGain(); // make io"
+    io[tree.word] = me
+    return me
+  else if tree.number
+    me = tail
+    p "nodes[#{tail++}] = #{offset(tree.number)}; // number"
+    return me
+  else if tree.op == '+'
+    me = tail++
+    p "nodes[#{me}] = ctx.createGain(); // adder(#{me})"
+    left = _generate tree.left, me
+    right = _generate tree.right, me
+    p "nodes[#{left}].connect(nodes[#{me}]); // to adder(#{me})"
+    p "nodes[#{right}].connect(nodes[#{me}]); // to adder(#{me})"
+    return me
+  else if tree.op == '-'
+    me = tail++
+    neg = tail++
+    p "nodes[#{me}] = ctx.createGain();  // minus(#{me})"
+    p "nodes[#{neg}] = #{offset(-1)}.connect(nodes[#{me}]); // negativer for minus(#{me})"
+    left = _generate tree.left, me
+    right = _generate tree.right, me
+    p "nodes[#{left}].connect(nodes[#{me}]); // to minus(#{me})"
+    p "nodes[#{right}].connect(nodes[#{neg}]); // to minus(#{me}) negativer"
+    return me
+  else if tree.op == '*'
+    me = tail++
+    p "nodes[#{me}] = ctx.createGain();  // multi(#{me})"
+    left = _generate tree.left, me
+    right = _generate tree.right, me
+    p "nodes[#{left}].connect(nodes[#{me}]); // to multi(#{me}) base"
+    p "nodes[#{right}].connect(nodes[#{me}].gain); // to multi(#{me}) multiplier"
+    return me
+
+
+$('#expression').on 'keyup', ()->
+  expression = $('#expression').val()
+  try
+    code = generate(expression)
+  catch e
+    $('#code').val('')
+    $('#error').text(e)
+    return
+  $('#code').val(code)
+  $('#error').text('')
+
+
+</script>
+
+
+<div>
+<input id="expression" style="width: 600px; margin: 3px; border: 1px solid #789;" />
+</div>
+<div><textarea id="code" style="width: 600px; height: 400px;"></textarea></div>
+<div id="error"></div>
