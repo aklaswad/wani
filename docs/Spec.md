@@ -33,7 +33,7 @@ name of the module.
 
 *required*
 
-an object contructor function.
+an object constructor function.
 
 ### type
 
@@ -73,22 +73,21 @@ a collection of the preset values for audioParams and params.
 
 ## audioParams
 
-All audioParams **MUST** be represented as set of key and object. Module **MUST** specify `min` and `max` for any audioParams. User **SHOULD NOT** set value out of this range.
+All audioParams **MUST** be represented as set of key and object. Module **MUST** specify `range` for any audioParams. `range` MUST be an array having 2 values, means minimum acceptable value and maximum acceptable value for this parameter. User **SHOULD NOT** set value out of this range.
 Module **MAY** specify the `step` value which requests to user how the value for this parameter should be increase and decrease. User **SHOULD** respect the step value.
 
 ```
 audioParams:
   pitch: {
-    min: -12,
-    max: -12
-    step: 1,
+    range: [-12, 12],
+    step: 1
   }
 ```
 
 
 ## params
 
-All params **MUST** be respresented as set of key and object. Module **MUST** specify a set of `min` and `max`, or `values` which is array of strings. If values has specified, user **SHOULD NOT** pass non-listed values to this parameter.
+All params **MUST** be respresented as set of key and object. Module **MUST** specify `range` as same as audioParam's one, or `values` which is array of strings. If values has specified, user **SHOULD NOT** pass non-listed values to this parameter.
 
 
 ```
@@ -98,6 +97,19 @@ params: {
   }
 }
 ```
+
+## Connecting Modules
+
+Module instance which have audio input (other words, Modules who specifid type as `effect`) **MUST** have a property named `inlet`. And that property **MUST** be connectable from other AudioNode.
+
+Module instance which have audio output (currently all module) **MUST** have `connect` method and `disconnect` method, behaves as same as AudioNode's one. And Also, `connect` method should try to connect to both passed object itself and it's `inlet` property.
+
+
+## Required Methods for Synth
+
+`synth` type module **MUST** implement methods `noteOn` and `noteOff`. User **MAY** pass a MIDI note number to `noteOn` method, and module **SHOULD** play an expected note.
+
+
 
 # EXAMPLE
 
