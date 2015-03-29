@@ -1,12 +1,12 @@
 # wani API documentation
 
-wani.js provides minimal set of functions which required to load WAML modules into WebAudio world, and also have some functions to manage loaded modules.
+wani.js provides minimal set of functions which required to load WANI modules into WebAudio world, and also have some functions to manage loaded modules.
 
 # Module management
 
 ## void Wani.registerModule(object definition)
 
-Register a module to waml. this should be called from module script.
+Register a module to wani. this should be called from module script.
 
 ## AudioContext Wani.getAudioContext()
 
@@ -45,7 +45,7 @@ Returns an emulated AudioParam object.
 
 ## number Wani.midi2freq(number notenumber, optional number centerFrequency, optional number centerNote)
 
-returns frequency of given MIDI note number. You may also pass the center frequecy and notenumber, so go to higher pitch world by `Waml.midi2freq(69,444)`, or can get multiplier of relative pitch `Waml.midi2freq(-2, 1, 0) // returns multiplier to make frequency 1 downer note of musical interval`.
+returns frequency of given MIDI note number. You may also pass the center frequecy and notenumber, so go to higher pitch world by `Wani.midi2freq(69,444)`, or can get multiplier of relative pitch `Wani.midi2freq(-2, 1, 0) // returns multiplier to make frequency 1 downer note of musical interval`.
 
 ## number Wani.freq2midi(number frequency, optional number centerFrequency, number centerNode)
 
