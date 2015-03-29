@@ -221,6 +221,11 @@ $(function () {
       return false;
     });
 
+    $(document).on('click', '.js-toggle-knobs', function(event) {
+      $(this).parents('.wani-module').find('.knobs').toggle();
+      return false;
+    });
+
     // The first primary synth's UI
     var $synth = this.buildModuleUI('TriOscillator', { noClose: true }, app.primarySynth);
     $synth.addClass('synth');
@@ -234,10 +239,12 @@ $(function () {
     var def = Wani.definition(name);
     var $div = $('<div />');
     $div.addClass('wani-module');
-    var $h1 = $('<h1 />').text( def.name );
+    var $h1 = $('<h1 />').addClass('wani-module-name').text( def.name );
     if ( !opts.noClose ) {
-      $('<a>remove</a>').attr('href','#').addClass('js-remove-module').appendTo($h1);
+      $('<a>x</a>').attr('href','#').addClass('js-remove-module').appendTo($h1);
     }
+    $('<a>+-</a>').attr('href','#').addClass('js-toggle-knobs').appendTo($h1);
+
     if ( def.presets ) {
       var $presets = $('<select />').addClass('preset').appendTo($h1);
       for ( name in def.presets ) {
@@ -288,7 +295,6 @@ $(function () {
         prop.max = this.range[1];
         prop.step = param.step || prop.range / 512;
       }
-      console.log('....default v', prop);
       var $knob = app.initKnob(prop);
 
       $knob.on('change', function(evt, value) {
@@ -342,8 +348,14 @@ $(function () {
 
   App.prototype.removeModule = function(nth) {
     this.effects.splice(nth,1);
-    this.updateModuleList();
-    this.makeDSPChain();
+
+    var parent = this.effectInstances[nth-1] || this.primarySynth;
+    var self = this.effectInstances[nth];
+    var child = this.effectInstances[nth+1] || this.masterOut;
+    parent.disconnect();
+    self.disconnect();
+    parent.connect(child);
+    this.effectInstances.splice(nth,1);
   };
 
   App.prototype.initKnob = function (opts) {

@@ -86,15 +86,23 @@ header .subtitle {
 
 .wani-module h1 {
   color: #fff;
-  padding: 3px;
+  padding: 3px 3px 3px 20px;
   margin: 2px;
 }
 
 .wani-module .js-remove-module {
   float: right;
   position: absolute;
-  right: 0px;
-  top: 0x;
+  right: 5px;
+  top: 5px;
+  color: #def;
+}
+
+.wani-module .js-toggle-knobs {
+  position: absolute;
+  left: 5px;
+  top: 5px;
+  color: #def;
 }
 
 .knobs,.params {
