@@ -24,11 +24,12 @@
           <i class="subtitle">Native, Natural, Normalized... and hope if it could be Nice ;)</i>
           </header>
           <p>
-            <h3>wani is A Specification</h3>
-            propose to Web Audio Community that to make your code Reusable, Self-Descriptive, and Sharable.</p>
+            <h3>WANI is A Specification</h3>
+            propose to Web Audio Community that to make your code Reusable, Self-Descriptive, and Sharable. Basically, WANI is not an implementation, but interface specification. You can see very draft spec <a href="https://github.com/aklaswad/wani/blob/master/docs/Spec.md">here</a>
+          </p>
           <p>
-            <h3>wani is Very Simple Interface Spec</h3>
-            to make your code into WANI module.
+            <h3>WANI is Simple and Flexible</h3>
+            To make your code into WANI module, just call a register function from module script, like this.
             <pre>
 function ConstructorOfYourSynthesizer () { ... }
 
@@ -36,25 +37,24 @@ function ConstructorOfYourSynthesizer () { ... }
 Wani.registerModule({
   name: "MySynthesizer",
   create: ConstructorOfYourSyntehsizer,
-  isSynth: true
+  type: 'synth'
 });
 </pre>
+            It has very small required rule set. Almost are optional and free to expand.
           </p>
           <p>
-            <h3>wani Module behaves like native AudioNode</h3>
+            <h3>WANI is Headless</h3>
+            WANI and it's modules aren't includes any implementation about Graphical User Interface. But you can give a hint to UI builder via wani's registry. In other words, WANI could be an interface between GUI and DSP. For example, GUIs in this page are automatically generated, picks default values and ranges.
+          </p>
+          <p>
+            <h3>Behaves as same as native AudioNode</h3>
             such like this.
-            <pre>
-var waniSynth = Wani.createModule('SYNTH_NAME');
-var nativeDelay = ctx.createDelay();
-waniSynth.connect(nativeDelay);
-nativeDelay.connect(ctx.destination);
-
-var nativeOsc = ctx.createOsc();
+            <pre>var nativeOsc = ctx.createOsc();
 var waniEffect = Wani.createModule('EFFECT_NAME');
 nativeOsc.connect(waniEffect);
 waniEffect.connect(ctx.destination);
 </pre>
-
+            This means, module user needn't think about like <i>"which node is native and which is from library? they have diferrent methods..."</i> things. <br />And also, this could help to import or combine some existing audio library to others. In this page, open source effects library <a href="https://github.com/Dinahmoe/tuna">tuna</a> is working with wani, via about 60 lines <a href="http://aklaswad.github.io/wani/tunawani.js">simple bridge script</a>.
           </p>
           <h2>DEMOS</h2>
           <h3>Instanciate module with auto generated GUI</h3>
