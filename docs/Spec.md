@@ -23,41 +23,57 @@ Module **SHOULD** be represented as single `*.js` module. And In that file, modu
 
 Registry is a JavaScript object which describes how the registered module behaves, and what user inputs could be acceptable by the module, and anything other informations.
 
-### name *required*
+### name
+
+*required*
 
 name of the module.
 
-### create *required*
+### create
+
+*required*
 
 an object contructor function.
 
-### type *required*
+### type
 
-The type of module's behaviro. currently, The values `synth` and `effect` are acceptable.
+*required*
 
-### author *optional*
+The type of module's behavior. currently, The values `synth` and `effect` are acceptable.
+
+### author
+
+*optional*
 
 author name
 
-### description **
+### description
+
+*optional*
 
 description of module
 
-### audioParams *optional*
+### audioParams
+
+*optional*
 
 a collection of audio parameters. Module instance **MUST** have `AudioParam` type properties with names specified in this list. details are described below
 
-### params *optional*
+### params
+
+*optional*
 
 a collection of non-audio parameters. Module instance **MUST** have properties with names specified in this list.
 
-### presets *optional*
+### presets
+
+*optional*
 
 a collection of the preset values for audioParams and params.
 
 ## audioParams
 
-All audioParams **MUST** be represented as set of key and object. Module **MUST** specify `min` and `max` for any audioParams. User **SHOULDN'T** set value out of this range.
+All audioParams **MUST** be represented as set of key and object. Module **MUST** specify `min` and `max` for any audioParams. User **SHOULD NOT** set value out of this range.
 Module **MAY** specify the `step` value which requests to user how the value for this parameter should be increase and decrease. User **SHOULD** respect the step value.
 
 ```
@@ -72,7 +88,7 @@ audioParams:
 
 ## params
 
-All params **MUST** be respresented as set of key and object. Module **MUST** specify a set of `min` and `max`, or `values` which is array of strings. If values has specified, user **MUST NOT** pass non-listed values to this parameter.
+All params **MUST** be respresented as set of key and object. Module **MUST** specify a set of `min` and `max`, or `values` which is array of strings. If values has specified, user **SHOULD NOT** pass non-listed values to this parameter.
 
 
 ```
