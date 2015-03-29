@@ -348,8 +348,14 @@ $(function () {
 
   App.prototype.removeModule = function(nth) {
     this.effects.splice(nth,1);
-    this.updateModuleList();
-    this.makeDSPChain();
+
+    var parent = this.effectInstances[nth-1] || this.primarySynth;
+    var self = this.effectInstances[nth];
+    var child = this.effectInstances[nth+1] || this.masterOut;
+    parent.disconnect();
+    self.disconnect();
+    parent.connect(child);
+    this.effectInstances.splice(nth,1);
   };
 
   App.prototype.initKnob = function (opts) {
