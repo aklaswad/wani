@@ -5,7 +5,7 @@ Web Audio N Interface
 _Native, Natural, Normalized... and hope if it could be Nice ;)_
 
 [DEMO](http://aklaswad.github.io/wani/)
-
+[SPEC](https://github.com/aklaswad/wani/tree/master/docs/Spec.md
 ## なんぞ？
 
 WebAudio APIで書かれたシンセサイザーやエフェクターをモジュール化し、外部スクリプトとして読み込み可能にしようという試みです。
