@@ -74,31 +74,6 @@ var moduleInstance = Wani.createModule('Foobar');
           <div><button class="js-load-module">Load</button></div></p>
           <p>And then, you can see new module in the select menu above.</p>
 
-          <h3>AudioNode Compatible</h3>
-            <div><textarea id="delay-node-module" class="js-eval-textarea">
-Wani.registerModule({
-  name: 'NativeDelay',
-  isEffect: true,
-  create: function (ctx) { return ctx.createDelay(5) },
-  audioParams: {
-    delayTime: {
-      range: [0, 5]
-    }
-  }
-});
-          </textarea></div>
-          <div><button id="load-delay-node">Eval</button></div>
-          <p>You can also register native AudioNode. After eval this script, then you can see it's in the module list... it haven't Dry output tho ;)</p>
-          <script>
-$( function () {
-  $('#load-delay-node').click(function () {
-    var script = $('#delay-node-module').text();
-    with(window){ eval(script); }
-    window.app.updateModuleList();
-  });
-});
-</script>
-
           <footer>
             <h3>Disclaimer</h3>
             <p>
