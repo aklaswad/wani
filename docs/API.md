@@ -2,6 +2,7 @@
 
 wani.js provides minimal set of functions which required to load WAML modules into WebAudio world, and also have some functions to manage loaded modules.
 
+# Module management
 
 ## void Wani.registerModule(object definition)
 
@@ -22,6 +23,15 @@ Returns a list of registered module names which matches to given type.
 ## object Wani.definition(string name)
 
 Returns an definition of module specified by given name.
+
+# Class
+
+## Wani.WaniModule
+
+Base Class of Wani module. When you use this class as base of your module, your module must have an propery named `outlet` which outputs the final result of processing.
+
+Note that you can create WANI module without inheriting this Class. This class provides just 2 function prototypes `connect` and `disconnect`, This class is existing for just to avoid 6 lines of cut and paste and typing your module name twice ;)
+
 
 # WebAudio Helper methods
 
