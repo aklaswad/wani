@@ -77,44 +77,44 @@
           lfoOnly: true,
         },
         pitch0: {
-          description: "multiprier for second oscillator(margin of midinote)",
+          description: "margin of midinote for 1st oscillator",
           range: [-24,24],
           step: 1,
         },
         pitch1: {
-          description: "multiprier for second oscillator(margin of midinote)",
+          description: "margin of midinote for 2nd oscillator",
           range: [-24,24],
           step: 1
         },
         pitch2: {
-          description: "multiprier for third oscillator(margin of midinote)",
+          description: "margin of note for 3rd oscillator",
           range: [-24,24],
           step: 1
         },
         gain0: {
-          description: "Gain for second oscillator",
+          description: "Gain for 1st oscillator",
           range: [0,1],
         },
         gain1: {
-          description: "Gain for second oscillator",
+          description: "Gain for 2nd oscillator",
           range: [0,1],
         },
         gain2: {
-          description: "Gain for second oscillator",
+          description: "Gain for 3rd oscillator",
           range: [0,1],
         },
         detune0: {
-          description: "Gain for third oscillator",
+          description: "Detune for 1st oscillator",
           range: [-100,100],
           step: 0.5
         },
         detune1: {
-          description: "Gain for third oscillator",
+          description: "Detune for 2nd oscillator",
           range: [-100,100],
           step: 0.5
         },
         detune2: {
-          description: "Gain for third oscillator",
+          description: "Detune for 3rd oscillator",
           range: [-100,100],
           step: 0.5
         }
