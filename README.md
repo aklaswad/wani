@@ -4,9 +4,7 @@ Web Audio N Interface
 
 _Native, Natural, Normalized... and hope if it could be Nice ;)_
 
-[DEMO](http://aklaswad.github.io/wani/)
-
-[SPEC](https://github.com/aklaswad/wani/tree/master/docs/Spec.md)
+[DEMO](http://aklaswad.github.io/wani/) [SPEC](https://github.com/aklaswad/wani/tree/master/docs/Spec.md) [API Referrence](https://github.com/aklaswad/wani/tree/master/docs/API.md)
 
 ## なんぞ？
 
