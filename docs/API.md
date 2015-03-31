@@ -28,7 +28,7 @@ Returns an definition of module specified by given name.
 
 ## Wani.WaniModule
 
-Base Class of Wani module. When you use this class as base of your module, your module must have an propery named `outlet` which outputs the final result of processing.
+Base Class of Wani module. When you use this class as base of your module, your module must have an propery named `output` which outputs the final result of processing.
 
 Note that you can create WANI module without inheriting this Class. This class provides just 2 function prototypes `connect` and `disconnect`, This class is existing for just to avoid 6 lines of cut and paste and typing your module name twice ;)
 

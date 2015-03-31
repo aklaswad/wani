@@ -87,8 +87,8 @@ See Also https://github.com/WebAudio/web-audio-api/issues/367
 
 ## モジュールの必須プロパティ
 
- * エフェクターは、inletという名前のAudioNodeをプロパティにもつ必要があります。
- * エフェクターとシンセサイザーは、outletという名前のAudioNodeをプロパティに保つ必要があります。
+ * エフェクターは、inputという名前のAudioNodeをプロパティにもつ必要があります。
+ * エフェクターとシンセサイザーは、outputという名前のAudioNodeをプロパティに保つ必要があります。
  * シンセサイザーとして登録したモジュールは、`NoteOn(noteNumber)`と`NoteOff()`のふたつのメソッドを実装する必要があります。 *TODO:ポリ音源について*
 
 

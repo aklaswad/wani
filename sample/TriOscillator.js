@@ -3,7 +3,7 @@
 
   function TriOscillator(ctx) {
     this.ctx = ctx;
-    this.outlet = ctx.createGain();
+    this.output = ctx.createGain();
     var that = this;
     var oscs = [];
     var freqMultipliers = [];
@@ -30,7 +30,7 @@
       gains[i] = ctx.createGain();
       gains[i].gain.value = 1.0;
       oscs[i].connect(gains[i]);
-      gains[i].connect(this.outlet);
+      gains[i].connect(this.output);
 
       // Export audio params
       this['pitch' + i] = pitches[i];
@@ -47,7 +47,7 @@
         return that._type;
       }
     });
-    this.outlet.gain.value = 0.0; //Using as note gate, so set zero at first.
+    this.output.gain.value = 0.0; //Using as note gate, so set zero at first.
     return this;
   }
   TriOscillator.prototype = Object.create(Wani.Module.prototype);
@@ -55,11 +55,11 @@
   TriOscillator.prototype.noteOn = function (noteNumber) {
     this.frequency.cancelScheduledValues(0);
     this.frequency.value = Wani.midi2freq(noteNumber);
-    this.outlet.gain.value = 0.3;
+    this.output.gain.value = 0.3;
   };
 
   TriOscillator.prototype.noteOff = function (noteNumber) {
-    this.outlet.gain.value = 0.0;
+    this.output.gain.value = 0.0;
   };
 
   if ( 'undefined' !== typeof window &&

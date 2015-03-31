@@ -100,9 +100,9 @@ params: {
 
 ## Connecting Modules
 
-Module instance which have audio input (other words, Modules who specifid type as `effect`) **MUST** have a property named `inlet`. And that property **MUST** be connectable from other AudioNode.
+Module instance which have audio input (other words, Modules who specifid type as `effect`) **MUST** have a property named `input`. And that property **MUST** be connectable from other AudioNode.
 
-Module instance which have audio output (currently all module) **MUST** have `connect` method and `disconnect` method, behaves as same as AudioNode's one. And Also, `connect` method should try to connect to both passed object itself and it's `inlet` property.
+Module instance which have audio output (currently all module) **MUST** have `connect` method and `disconnect` method, behaves as same as AudioNode's one. And Also, `connect` method should try to connect to both passed object itself and it's `input` property.
 
 
 ## Required Methods for Synth
