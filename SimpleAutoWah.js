@@ -3,8 +3,8 @@
 
   function SimpleAutoWah(ctx) {
     this.ctx = ctx;
-    var inlet = this.inlet = ctx.createGain();
-    var outlet = this.outlet = ctx.createGain();
+    var input = this.input = ctx.createGain();
+    var output = this.output = ctx.createGain();
     var filter = ctx.createBiquadFilter();
     filter.type = "peaking";
     var filterBp = ctx.createBiquadFilter();
@@ -25,9 +25,9 @@
     filter.gain.value = 20;
     filter.Q.value = 20;
     osc.start();
-    inlet.connect(filterBp);
+    input.connect(filterBp);
     filterBp.connect(filter);
-    filter.connect(outlet);
+    filter.connect(output);
     return this;
   }
   SimpleAutoWah.prototype = Object.create(Wani.Module.prototype);
@@ -38,6 +38,6 @@
     description: 'Sample AutoWah effector module for Wani',
     create: SimpleAutoWah,
     type: 'effect',
-    inlet: "inlet",
+    input: "input",
   });
 })();

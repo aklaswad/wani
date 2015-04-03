@@ -19,18 +19,18 @@
 
   function SimpleOverDrive(ctx) {
     this.ctx = ctx;
-    var inlet = this.inlet = ctx.createGain();
-    inlet.gain.value = 0.6;
-    var outlet = this.outlet = ctx.createGain();
+    var input = this.input = ctx.createGain();
+    input.gain.value = 0.6;
+    var output = this.output = ctx.createGain();
     if ( !table ) {
       table = new Float32Array(1024);
       build_table(0.8,1024,table);
     }
     var drive = ctx.createWaveShaper();
     drive.curve = table;
-    inlet.connect(drive);
-    this.drive = inlet.gain;
-    drive.connect(outlet);
+    input.connect(drive);
+    this.drive = input.gain;
+    drive.connect(output);
   }
   SimpleOverDrive.prototype = Object.create(Wani.Module.prototype);
 
@@ -46,6 +46,6 @@
         range: [0.5, 1.5],
       },
     },
-    inlet: "inlet",
+    input: "input",
   });
 })();

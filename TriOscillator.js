@@ -3,7 +3,7 @@
 
   function TriOscillator(ctx) {
     this.ctx = ctx;
-    this.outlet = ctx.createGain();
+    this.output = ctx.createGain();
     var that = this;
     var oscs = [];
     var freqMultipliers = [];
@@ -30,7 +30,7 @@
       gains[i] = ctx.createGain();
       gains[i].gain.value = 1.0;
       oscs[i].connect(gains[i]);
-      gains[i].connect(this.outlet);
+      gains[i].connect(this.output);
 
       // Export audio params
       this['pitch' + i] = pitches[i];
@@ -47,7 +47,7 @@
         return that._type;
       }
     });
-    this.outlet.gain.value = 0.0; //Using as note gate, so set zero at first.
+    this.output.gain.value = 0.0; //Using as note gate, so set zero at first.
     return this;
   }
   TriOscillator.prototype = Object.create(Wani.Module.prototype);
@@ -55,11 +55,11 @@
   TriOscillator.prototype.noteOn = function (noteNumber) {
     this.frequency.cancelScheduledValues(0);
     this.frequency.value = Wani.midi2freq(noteNumber);
-    this.outlet.gain.value = 0.3;
+    this.output.gain.value = 0.3;
   };
 
   TriOscillator.prototype.noteOff = function (noteNumber) {
-    this.outlet.gain.value = 0.0;
+    this.output.gain.value = 0.0;
   };
 
   if ( 'undefined' !== typeof window &&
@@ -77,44 +77,44 @@
           lfoOnly: true,
         },
         pitch0: {
-          description: "multiprier for second oscillator(margin of midinote)",
+          description: "margin of midinote for 1st oscillator",
           range: [-24,24],
           step: 1,
         },
         pitch1: {
-          description: "multiprier for second oscillator(margin of midinote)",
+          description: "margin of midinote for 2nd oscillator",
           range: [-24,24],
           step: 1
         },
         pitch2: {
-          description: "multiprier for third oscillator(margin of midinote)",
+          description: "margin of note for 3rd oscillator",
           range: [-24,24],
           step: 1
         },
         gain0: {
-          description: "Gain for second oscillator",
+          description: "Gain for 1st oscillator",
           range: [0,1],
         },
         gain1: {
-          description: "Gain for second oscillator",
+          description: "Gain for 2nd oscillator",
           range: [0,1],
         },
         gain2: {
-          description: "Gain for second oscillator",
+          description: "Gain for 3rd oscillator",
           range: [0,1],
         },
         detune0: {
-          description: "Gain for third oscillator",
+          description: "Detune for 1st oscillator",
           range: [-100,100],
           step: 0.5
         },
         detune1: {
-          description: "Gain for third oscillator",
+          description: "Detune for 2nd oscillator",
           range: [-100,100],
           step: 0.5
         },
         detune2: {
-          description: "Gain for third oscillator",
+          description: "Detune for 3rd oscillator",
           range: [-100,100],
           step: 0.5
         }

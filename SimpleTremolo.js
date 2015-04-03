@@ -6,17 +6,17 @@
     var lfo = ctx.createOscillator();
     lfo.frequency.value = 0;
     var that = this;
-    var inlet = this.inlet = ctx.createGain();
-    var outlet = this.outlet = ctx.createGain();
-    outlet.gain.value = 0;
+    var input = this.input = ctx.createGain();
+    var output = this.output = ctx.createGain();
+    output.gain.value = 0;
 
 /*
 audioParam('speed',5);
 audioParam('depth',0.6);
 
 lfo.frequency = :speed;
-outlet = inlet;
-outlet.gain = lfo * 0.5 * :depth + (1 - :depth )
+output = input;
+output.gain = lfo * 0.5 * :depth + (1 - :depth )
 
 */
 
@@ -26,9 +26,9 @@ var io = (function (ctx) {
   nodes[1] = io['speed'] = Wani.createAudioParam(ctx,5.0);
   nodes[2] = io['depth'] = Wani.createAudioParam(ctx,0.6);
   nodes[3] = lfo.frequency; // Existing node
-  nodes[4] = outlet; // Existing node
-  nodes[5] = inlet; // Existing node
-  nodes[6] = outlet.gain; // Existing node
+  nodes[4] = output; // Existing node
+  nodes[5] = input; // Existing node
+  nodes[6] = output.gain; // Existing node
   nodes[7] = ctx.createGain();  // multi(7)
   nodes[8] = nodes[7].gain;
   nodes[8].value = 0.0;
@@ -78,8 +78,8 @@ return io;
         range: [0, 3]
       },
     },
-    // Specify the inlet as string. "inlet" should be default.
-    // XXX: should allow multiple inlet?
-    inlet: "inlet",
+    // Specify the input as string. "input" should be default.
+    // XXX: should allow multiple input?
+    input: "input",
   });
 })();

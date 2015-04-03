@@ -12,8 +12,6 @@ for ( var modulename in tuna ) {
       type: 'effect',
       create: function () {
         var mod = new tuna_constructor({});
-        mod.inlet = mod.input;
-        mod.outlet = mod.output;
         return mod;
       },
       audioParams: {},

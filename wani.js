@@ -125,7 +125,7 @@
       // And, if it was failed, try again for our pseudo interface.
       theError = originalError;
       dest = arguments[0];
-      arguments[0] = dest.inlet;
+      arguments[0] = dest.input;
       try {
         original_connect.apply(this,arguments);
       }
@@ -136,16 +136,24 @@
     }
   };
 
+  AudioNode.prototype.profile = function () {
+    return this.__profile;
+  };
+
+  AudioParam.prototype.profile = function () {
+    return this.__profile;
+  };
+
   function WaniModule (ctx) {
     this.ctx = ctx;
   }
 
   WaniModule.prototype.connect = function () {
-    return this.outlet.connect.apply( this.outlet, arguments );
+    return this.output.connect.apply( this.output, arguments );
   };
 
   WaniModule.prototype.disconnect = function () {
-    return this.outlet.disconnect.apply( this.outlet, arguments );
+    return this.output.disconnect.apply( this.output, arguments );
   };
 
   var Wani = {
@@ -173,9 +181,14 @@
       return true;
     },
     createModule: function (name) {
-      var module = this.modules[name];
-      if (!module) throw("Module '" + name + "' is not found");
-      return new module.create(this.getAudioContext());
+      var profile = this.modules[name];
+      if (!profile) throw("Module '" + name + "' is not found");
+      var module = new module.create(this.getAudioContext());
+      module.__profile = profile;
+      for ( var p in profile.audioParams ) {
+        module[p].__profile = profile.audioParams[p];
+      }
+      return module;
     },
     list: function (type) {
       var name, modules = [];
