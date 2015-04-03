@@ -9,7 +9,7 @@ module.exports = function(grunt) {
         separator: ';'
       },
       dist: {
-        src: ['lib/wani.js', 'lib/web.js'],
+        src: ['lib/wani.js', 'lib/web.js', 'lib/LFO.js'],
         dest: './<%= pkg.name %>.js'
       }
     },
