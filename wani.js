@@ -183,7 +183,7 @@
     createModule: function (name) {
       var profile = this.modules[name];
       if (!profile) throw("Module '" + name + "' is not found");
-      var module = new module.create(this.getAudioContext());
+      var module = new profile.create(this.getAudioContext());
       module.__profile = profile;
       for ( var p in profile.audioParams ) {
         module[p].__profile = profile.audioParams[p];
