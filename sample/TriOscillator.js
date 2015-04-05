@@ -75,45 +75,55 @@
           description: 'frequency (hz)',
           range: [0, 20000],
           lfoOnly: true,
+          looks: ['none']
         },
         pitch0: {
+          group: 'pitch',
           description: "margin of midinote for 1st oscillator",
           range: [-24,24],
           step: 1,
         },
         pitch1: {
+          group: 'pitch',
           description: "margin of midinote for 2nd oscillator",
           range: [-24,24],
           step: 1
         },
         pitch2: {
+          group: 'pitch',
           description: "margin of note for 3rd oscillator",
           range: [-24,24],
           step: 1
         },
         gain0: {
+          group: 'gain',
           description: "Gain for 1st oscillator",
           range: [0,1],
         },
         gain1: {
+          group: 'gain',
           description: "Gain for 2nd oscillator",
           range: [0,1],
         },
         gain2: {
+          group: 'gain',
           description: "Gain for 3rd oscillator",
           range: [0,1],
         },
         detune0: {
+          group: 'detune',
           description: "Detune for 1st oscillator",
           range: [-100,100],
           step: 0.5
         },
         detune1: {
+          group: 'detune',
           description: "Detune for 2nd oscillator",
           range: [-100,100],
           step: 0.5
         },
         detune2: {
+          group: 'detune',
           description: "Detune for 3rd oscillator",
           range: [-100,100],
           step: 0.5
