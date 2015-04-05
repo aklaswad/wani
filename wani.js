@@ -136,14 +136,6 @@
     }
   };
 
-  AudioNode.prototype.profile = function () {
-    return this.__profile;
-  };
-
-  AudioParam.prototype.profile = function () {
-    return this.__profile;
-  };
-
   function WaniModule (ctx) {
     this.ctx = ctx;
   }
@@ -184,9 +176,9 @@
       var profile = this.modules[name];
       if (!profile) throw("Module '" + name + "' is not found");
       var module = new profile.create(this.getAudioContext());
-      module.__profile = profile;
+      module.profile = profile;
       for ( var p in profile.audioParams ) {
-        module[p].__profile = profile.audioParams[p];
+        module[p].profile = profile.audioParams[p];
       }
       return module;
     },
