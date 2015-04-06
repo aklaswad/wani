@@ -58,8 +58,10 @@
   TriOscillator.prototype = Object.create(Wani.Module.prototype);
 
   TriOscillator.prototype.noteOn = function (noteNumber,pow) {
-    if ('undefined' === typeof pow) pow = 1.0;
+    if ('undefined' === typeof pow) pow = 0.5;
     if ( !this.poly ) {
+      this.frequency.cancelScheduledValues(0);
+      this.frequency.value = Wani.midi2freq(noteNumber);
       this.output.gain.value = pow;
       return;
     }
