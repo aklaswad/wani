@@ -47,5 +47,5 @@ module.exports = function(grunt) {
   grunt.registerTask('test',['jshint']);
   grunt.registerTask('default', []);
   grunt.registerTask('publish', ['before-publish', 'gh-pages', 'after-publish']);
-  grunt.registerTask('release', ['jshint', 'concat', 'uglify', 'before-release']);
+  grunt.registerTask('release', ['concat', 'uglify', 'before-release']);
 };
