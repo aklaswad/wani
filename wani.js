@@ -248,6 +248,7 @@
       return true;
     },
     createModule: function (name,options) {
+      if ( 'undefined' === typeof options ) options = {};
       if (options && options.poly) {
         return new Poly(name);
       }
