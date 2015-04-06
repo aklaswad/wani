@@ -148,6 +148,81 @@
     return this.output.disconnect.apply( this.output, arguments );
   };
 
+  function Poly (name) {
+    var ctx = Wani.getAudioContext();
+    var m = Wani.createModule(name);
+    this.name = name;
+    this.modules = [m];
+    this.muting = [m];
+    this.playing = {};
+    this.values = {};
+    this.profile = Wani.definition(name);
+    var that = this;
+    var prop;
+    for (prop in this.profile.audioParams) {
+      this[prop] = Wani.createAudioParam(ctx,m[prop].value);
+      this[prop].connect( m[prop] );
+      m[prop].value = 0;
+    }
+    for (prop in this.profile.params) {
+      (function(prop) {
+        Object.defineProperty(that,prop,{
+          set: function (v) {
+            that.values[prop] = v;
+            var len = this.modules.length;
+            var i=0;
+            for (i=0;i<len;i++) {
+              that.modules[i][prop] = v;
+            }
+          },
+          get: function () {
+            return that.values[prop];
+          }
+        });
+      })(prop);
+      this.values[prop] = m[prop];
+    }
+    this.output = ctx.createGain();
+    m.connect(this.output);
+    for (var i = 0; i<8;i++) {
+      this.muting.push(this.wantInstance());
+    }
+    return this;
+  }
+  Poly.prototype = Object.create(WaniModule.prototype);
+
+  Poly.prototype.wantInstance = function() {
+    // create instance, and set up current values before enable it.
+    var ctx = Wani.getAudioContext();
+    var m = Wani.createModule(this.name);
+    var prop;
+    for ( prop in this.profile.audioParams ) {
+      m[prop].value = 0;
+      this[prop].connect(m[prop]);
+    }
+    for (prop in this.values) {
+      m[prop] = this.values[prop];
+    }
+    m.connect(this.output);
+    this.modules.push(m);
+    return m;
+  }
+
+  Poly.prototype.noteOn = function (nn,v) {
+    var m;
+    m = this.muting.length ? this.muting.shift() : this.wantInstance()
+    if ( 'undefined' === typeof this.playing[nn] ) this.playing[nn] = [];
+    this.playing[nn].push(m);
+    m.noteOn(nn,v);
+  }
+
+  Poly.prototype.noteOff = function (nn) {
+    var m = this.playing[nn].shift();
+    if ( 'undefined' === typeof m ) return;
+    m.noteOff(nn);
+    this.muting.push(m);
+  }
+
   var Wani = {
     getAudioContext: getAudioContext,
     // ********* Provide Base Class *********
@@ -172,7 +247,10 @@
       }
       return true;
     },
-    createModule: function (name) {
+    createModule: function (name,options) {
+      if (options && options.poly) {
+        return new Poly(name);
+      }
       var profile = this.modules[name];
       if (!profile) throw("Module '" + name + "' is not found");
       var module = new profile.create(this.getAudioContext());

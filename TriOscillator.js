@@ -4,6 +4,10 @@
   function TriOscillator(ctx) {
     this.ctx = ctx;
     this.output = ctx.createGain();
+    this.attack = 0.2;
+    this.decay = 0.2;
+    this.sustain = 0.3;
+    this.release = 1;
     var that = this;
     var oscs = [];
     var freqMultipliers = [];
@@ -52,14 +56,27 @@
   }
   TriOscillator.prototype = Object.create(Wani.Module.prototype);
 
-  TriOscillator.prototype.noteOn = function (noteNumber) {
+  TriOscillator.prototype.noteOn = function (noteNumber,pow) {
+    if ('undefined' === typeof pow) pow = 1.0;
+    var now = this.ctx.currentTime;
     this.frequency.cancelScheduledValues(0);
     this.frequency.value = Wani.midi2freq(noteNumber);
-    this.output.gain.value = 0.3;
+    this.output.gain.value = this.sustain * pow;
+    this.output.gain.cancelScheduledValues(now);
+    this.output.gain.setValueAtTime(0.0,now);
+    var that = this;
+    setTimeout(function () {
+      var now = that.ctx.currentTime;
+      that.output.gain.linearRampToValueAtTime(pow, now + that.attack + 0.001);
+      that.output.gain.setTargetAtTime(that.sustain * pow, now + that.attack + 0.002, that.decay);
+    },1);
+    this.decayEndAt = now + this.attack + this.decay;
   };
 
   TriOscillator.prototype.noteOff = function (noteNumber) {
-    this.output.gain.value = 0.0;
+    var now = this.ctx.currentTime;
+    var begin = now < this.decayEndAt ? this.decayEndAt : now;
+    this.output.gain.setTargetAtTime(0.0, begin, this.release);
   };
 
   if ( 'undefined' !== typeof window &&
@@ -75,45 +92,55 @@
           description: 'frequency (hz)',
           range: [0, 20000],
           lfoOnly: true,
+          looks: ['none']
         },
         pitch0: {
+          group: 'pitch',
           description: "margin of midinote for 1st oscillator",
           range: [-24,24],
           step: 1,
         },
         pitch1: {
+          group: 'pitch',
           description: "margin of midinote for 2nd oscillator",
           range: [-24,24],
           step: 1
         },
         pitch2: {
+          group: 'pitch',
           description: "margin of note for 3rd oscillator",
           range: [-24,24],
           step: 1
         },
         gain0: {
+          group: 'gain',
           description: "Gain for 1st oscillator",
           range: [0,1],
         },
         gain1: {
+          group: 'gain',
           description: "Gain for 2nd oscillator",
           range: [0,1],
         },
         gain2: {
+          group: 'gain',
           description: "Gain for 3rd oscillator",
           range: [0,1],
         },
         detune0: {
+          group: 'detune',
           description: "Detune for 1st oscillator",
           range: [-100,100],
           step: 0.5
         },
         detune1: {
+          group: 'detune',
           description: "Detune for 2nd oscillator",
           range: [-100,100],
           step: 0.5
         },
         detune2: {
+          group: 'detune',
           description: "Detune for 3rd oscillator",
           range: [-100,100],
           step: 0.5
@@ -124,6 +151,26 @@
           values: ["sine", "sawtooth", "square", "triangle" ],
           description: "Wave shape type."
         },
+        attack: {
+          group: 'ADSR',
+          range: [0,0.5],
+          description: "Attack time (s)"
+        },
+        decay: {
+          group: 'ADSR',
+          range: [0,1],
+          description: "Decay time (s)"
+        },
+        sustain: {
+          group: 'ADSR',
+          range: [0,1],
+          description: "Sustain volume (0.0-1.0)"
+        },
+        release: {
+          group: 'ADSR',
+          range: [0,2],
+          description: "Release time (s)"
+        },
       },
       presets: {
         plain: {
@@ -132,7 +179,13 @@
             pitch1:   0,   gain1: 0.9,    detune1:  0.0,
             pitch2:   0,   gain2: 0.9,    detune2:  0.0,
           },
-          params: { type: 'sine' }
+          params: {
+            type: 'sine',
+            attack: 0.04,
+            decay: 0.1,
+            sustain: 0.3,
+            release: 0.5
+          }
         },
         fatSaw: {
           audioParams: {
@@ -140,7 +193,13 @@
             pitch1:   0,   gain1: 0.9,    detune1:  8.0,
             pitch2:   0,   gain2: 0.9,    detune2: -8.0,
           },
-          params: { type: 'sawtooth' }
+          params: {
+            type: 'sawtooth',
+            attack: 0.07,
+            decay: 0.5,
+            sustain: 0.7,
+            release: 0.1
+          }
         },
         major7: {
           audioParams: {
@@ -148,7 +207,13 @@
             pitch1:   4,   gain1: 0.3,    detune1:  6.0,
             pitch2:  11,   gain2: 0.2,    detune2: -6.0,
           },
-          params: { type: 'sine' }
+          params: {
+            type: 'sine',
+            attack: 0.1,
+            decay: 0.5,
+            sustain: 0.8,
+            release: 0.5
+          }
         },
         nes: {
           audioParams: {
@@ -156,7 +221,13 @@
             pitch1:   0,   gain1: 1.0,    detune1:  5.0,
             pitch2:  12,   gain2: 0.4,    detune2:  0.0,
           },
-          params: { type: 'triangle' }
+          params: {
+            type: 'triangle',
+            attack: 0.02,
+            decay: 0.2,
+            sustain: 0.8,
+            release: 0.01
+          }
         }
       }
     });
