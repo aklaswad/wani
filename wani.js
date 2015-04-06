@@ -156,7 +156,7 @@
     this.muting = [m];
     this.playing = {};
     this.values = {};
-    this.profile = Wani.profile(name);
+    this.profile = Wani.definition(name);
     var that = this;
     var prop;
     for (prop in this.profile.audioParams) {
@@ -287,7 +287,7 @@
       reader( "Name: " + name );
       reader( "Author: " + module.author || '(unknown)' );
     },
-    profile: function(name) {
+    definition: function(name) {
       return this.modules[name];
     },
 
