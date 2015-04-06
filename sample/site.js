@@ -196,7 +196,7 @@ $(function () {
     $(document).on('change', '.preset', function (evt) {
       var $module = $(this).parents('.wani-module');
       var idx = $module.index() - 1;
-      var def = idx === -1 ? Wani.definition('TriOscillator') : app.effects[idx];
+      var def = idx === -1 ? Wani.profile('TriOscillator') : app.effects[idx];
       var presetName = $(this).val();
       var preset = def.presets[presetName];
       if ( preset.audioParams ) {
@@ -236,7 +236,7 @@ $(function () {
   App.prototype.buildModuleUI = function (name, opts, instance) {
     var app = this;
     if (!opts) opts = {};
-    var def = Wani.definition(name);
+    var def = Wani.profile(name);
     var $div = $('<div />');
     $div.addClass('wani-module');
     var $h1 = $('<h1 />').addClass('wani-module-name').text( def.name );

@@ -16,7 +16,12 @@
     var mtofs = [];
     var i;
     var poly = options.poly;
-
+    if ( !poly ) {
+      this.profile.params.attack.looks = ['none'];
+      this.profile.params.decay.looks = ['none'];
+      this.profile.params.sustain.looks = ['none'];
+      this.profile.params.release.looks = ['none'];
+    }
     this.frequency = Wani.createAudioParam(this.ctx,0);
 
     for ( i=0;i<3;i++) {
