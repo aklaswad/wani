@@ -1,7 +1,7 @@
 (function(){
   "use strict";
 
-  function TriOscillator(ctx) {
+  function TriOscillator(ctx,options) {
     this.ctx = ctx;
     this.output = ctx.createGain();
     this.attack = 0.2;
@@ -15,6 +15,7 @@
     var gains = [];
     var mtofs = [];
     var i;
+    var poly = options.poly;
 
     this.frequency = Wani.createAudioParam(this.ctx,0);
 
@@ -57,6 +58,10 @@
   TriOscillator.prototype = Object.create(Wani.Module.prototype);
 
   TriOscillator.prototype.noteOn = function (noteNumber,pow) {
+    if ( !this.poly ) {
+      this.output.gain.value = pow;
+      return;
+    }
     if ('undefined' === typeof pow) pow = 1.0;
     var now = this.ctx.currentTime;
     this.frequency.cancelScheduledValues(0);
@@ -74,6 +79,10 @@
   };
 
   TriOscillator.prototype.noteOff = function (noteNumber) {
+    if ( !this.poly ) {
+      this.output.gain.value = 0;
+      return;
+    }
     var now = this.ctx.currentTime;
     var begin = now < this.decayEndAt ? this.decayEndAt : now;
     this.output.gain.setTargetAtTime(0.0, begin, this.release);
