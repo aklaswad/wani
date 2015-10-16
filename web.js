@@ -67,10 +67,32 @@
     return proc;
   }
 
+  // hmm. I don't have idea to know register method was invoked from which
+  // script, when it loaded asynchronously. for now just load synchronous.
+  var loading;
+  var loadQueue = [];
   function loadScriptFromURL(url,cb) {
+    if ( loading ) {
+      loadQueue.push([url,cb]);
+      return;
+    }
+    var onmoduleregister = Wani.onmoduleregister;
+    wani.onmoduleregister = function (module) {
+      module.fromURL = url;
+      onmoduleregister(module);
+    };
     var script = document.createElement('script');
-    script.src = url;
-    if (cb) script.onload = cb;
+    script.src = loading = url;
+    var that = this;
+    script.onload = function (e) {
+      if (cb) cb(e);
+      Wani.onmoduleregister = onmoduleregister;
+      loading = null;
+      if (loadQueue.length) {
+        var next = loadQueue.shift();
+        loadScriptFromURL.apply(that, next);
+      }
+    }
     document.body.appendChild(script);
   }
 

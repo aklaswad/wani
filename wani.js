@@ -1,7 +1,3 @@
-/*
-  WebAudio Module Library
- */
-
 (function () {
   "use strict";
   var __ctx;
@@ -12,6 +8,10 @@
     __ctx = new Context();
     return __ctx;
   }
+
+  function clearAudioContext() {
+    __ctx = null;
+  };
 
   function midi2freq(noteNumber, centerFreq, centerNote) {
     if ( 'undefined' === typeof centerFreq ) { centerFreq = 440; }
@@ -137,7 +137,6 @@
   };
 
   function WaniModule (ctx) {
-    this.ctx = ctx;
   }
 
   WaniModule.prototype.connect = function () {
@@ -225,6 +224,7 @@
 
   var Wani = {
     getAudioContext: getAudioContext,
+    clearAudioContext: crearAudioContext,
     // ********* Provide Base Class *********
     Module: WaniModule,
     modules: {},
@@ -235,8 +235,8 @@
         return;
       }
       this.modules[module.name] = module;
-      if ( 'undefined' !== typeof this.onmoduleload ) {
-        this.onmoduleload(module);
+      if ( 'undefined' !== typeof this.onmoduleregister ) {
+        this.onmoduleregister(module);
       }
     },
     __validate: function(module) {
