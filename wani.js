@@ -224,7 +224,7 @@
 
   var Wani = {
     getAudioContext: getAudioContext,
-    clearAudioContext: crearAudioContext,
+    clearAudioContext: clearAudioContext,
     // ********* Provide Base Class *********
     Module: WaniModule,
     modules: {},
